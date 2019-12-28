@@ -43,7 +43,6 @@ public class ListOfFighters extends LinkedList<Fighter> implements ChangeListene
         }
 
         fighter.addListener(this);
-        fighter.iniProperty().addListener(this);
 
         int ini = fighter.getIni();
         int currentIni = 0;
@@ -101,8 +100,6 @@ public class ListOfFighters extends LinkedList<Fighter> implements ChangeListene
         if(fighter == null) {
             return;
         }
-
-        fighter.iniProperty().removeListener(this);
 
         Fighter toRemove = null;
 

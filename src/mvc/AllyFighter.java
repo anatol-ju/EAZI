@@ -6,8 +6,20 @@ public class AllyFighter extends Fighter {
 
     private int level;
 
+    /**
+     * Erstellt eine Klasse für Verbündete.
+     * Diese enthält zusätzliche Parameter, die für die von Spielern
+     * gesteuerten Kämpfer keine Verwendung haben.
+     * Es wird empfohlen, den Konstruktor mit Parameter zu verwenden und damit
+     * die Attribute zu erhalten.
+     */
     public AllyFighter() {
         super();
+        super.setColor(Color.MEDIUMBLUE);
+    }
+
+    public AllyFighter(Fighter fighter) {
+        super(fighter);
         super.setColor(Color.MEDIUMBLUE);
     }
 

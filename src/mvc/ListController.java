@@ -16,6 +16,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ListController implements Initializable, ChangeListener {
@@ -41,9 +42,6 @@ public class ListController implements Initializable, ChangeListener {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        selectedIndex = listEntries.getSelectionModel().selectedIndexProperty();
-        selectedIndex.addListener(this);
-
         buttonNew.setTooltip(new Tooltip("Einen neuen Teilnehmer erstellen."));
         buttonEdit.setTooltip(new Tooltip("Den ausgewählten Teilnehmer bearbeiten."));
         buttonEdit.setDisable(true);
@@ -54,8 +52,8 @@ public class ListController implements Initializable, ChangeListener {
         listEntries.setPlaceholder(makePlaceholder());
 
         selectionModel = listEntries.getSelectionModel();
-        selectionModel.selectedIndexProperty().addListener(this);
-
+        selectedIndex = selectionModel.selectedIndexProperty();
+        selectedIndex.addListener(this);
     }
 
     @Override
@@ -102,31 +100,40 @@ public class ListController implements Initializable, ChangeListener {
     }
 
     public void makeNewFighter(ActionEvent actionEvent) {
-        ObservableList observableList = model.getObservableList();
+        ObservableList<Fighter> observableList = model.getObservableList();
         try {
+            /*
             EditFighterDialog efd = new EditFighterDialog();
             efd.display(null);
             if (fightersList.addFighter(efd.getFighter())) {
                 controller.getMenuController().action();
                 controller.getLogController().action(efd.getFighter(), "join");
             }
+
+             */
+            SelectionDialog sd = new SelectionDialog();
+            Optional<Fighter> returned = sd.showAndWait();
+            if (returned.isPresent() && fightersList.addFighter(returned.get())) {
+                controller.getMenuController().action();
+                controller.getLogController().action(returned.get(), "join");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         listEntries.refresh();
 
-        buttonEdit.setDisable(observableList.isEmpty());
-        buttonRemove.setDisable(observableList.isEmpty());
     }
 
     public void editFighter(ActionEvent actionEvent) {
         try {
             toReturn = listEntries.getSelectionModel().getSelectedItem();
-            if(toReturn != null) {
-                EditFighterDialog efd = new EditFighterDialog();
 
-                efd.display(toReturn);
+            SelectionDialog sd = new SelectionDialog(toReturn);
+            Optional<Fighter> returned = sd.showAndWait();
+            if (returned.isPresent()) {
+                fightersList.updateSubLists(returned.get());
                 controller.getMenuController().action();
+                controller.getLogController().action(returned.get(), "bearbeitet");
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -11,8 +11,8 @@ import java.io.Serializable;
 public class Fighter extends SimpleObjectProperty<Fighter> implements Serializable {
 
     private String name;
-    private SimpleIntegerProperty ini;
-    private int previousIni = -1;
+    private int ini;
+    private int previousIni;
     private int modAT;
     private int modPosition;
     private int modOrientieren;
@@ -21,9 +21,17 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
     private boolean isSelected;
     private javafx.scene.paint.Color color;
 
+    /**
+     * Basisklasse für Teilnehmer. Damit werden die Kämpfer beschrieben, die
+     * von den Spielern gesteuert werden.
+     * Um Verbündete zu erstellen steht die Unterklasse
+     * <code>AllyFighter</code> und für Gegner <code>EnemyFighter</code>
+     * zur Verfügung.
+     */
     public Fighter() {
         name = "(leer)";
-        ini = new SimpleIntegerProperty(7);
+        ini = 7;
+        previousIni = -1;
         modAT = 0;
         modPosition = 0;
         modOrientieren = 0;
@@ -33,12 +41,16 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
         color = Color.LIMEGREEN;
     }
 
+    /**
+     * Liefert eine Kopie des Kämpfers als neue Instanz.
+     * @param fighter
+     */
     public Fighter(Fighter fighter) {
         if(fighter == null) {
             fighter = new Fighter();
         }
         this.name = fighter.getName();
-        this.ini = new SimpleIntegerProperty(fighter.getIni());
+        this.ini = fighter.getIni();
         this.modAT = fighter.getModAT();
         this.modPosition = fighter.getModPosition();
         this.modOrientieren = fighter.getModOrientieren();
@@ -58,15 +70,11 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
     }
 
     public int getIni() {
-        return ini.get();
-    }
-
-    public ObservableIntegerValue iniProperty() {
-        return ini;
+        return this.ini;
     }
 
     public void setIni(int ini) {
-        this.ini.set(ini);
+        this.ini = ini;
     }
 
     public int getModAT() {
@@ -139,7 +147,7 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
      */
     public void setFighter(Fighter fighter) {
         this.name = fighter.getName();
-        this.ini.set(fighter.getIni());
+        this.ini = fighter.getIni();
         this.modAT = fighter.getModAT();
         this.modPosition = fighter.getModPosition();
         this.modOrientieren = fighter.getModOrientieren();

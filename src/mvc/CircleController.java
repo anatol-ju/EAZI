@@ -159,10 +159,22 @@ public class CircleController implements Initializable, ChangeListener, ListChan
                 fontSize = fontSize * 1.4;
             }
 
-            gcTokens.setFill(entry.getKey().getColor());
-            gcTokens.fillOval(x, y, size, size);
-            gcTokens.strokeOval(x, y, size, size);
+            // Unterscheidung nach Zugehörigkeit des Teilnehmers
+            if (entry.getKey() instanceof AllyFighter) {
+                gcTokens.setFill(entry.getKey().getColor());
+                gcTokens.fillRoundRect(x, y, size, size, size/2, size/2);
+                gcTokens.strokeRoundRect(x, y, size, size, size/2, size/2);
+            } else if (entry.getKey() instanceof EnemyFighter) {
+                gcTokens.setFill(entry.getKey().getColor());
+                gcTokens.fillRect(x, y, size, size);
+                gcTokens.strokeRect(x, y, size, size);
+            } else {
+                gcTokens.setFill(entry.getKey().getColor());
+                gcTokens.fillOval(x, y, size, size);
+                gcTokens.strokeOval(x, y, size, size);
+            }
 
+            // Beschriftung ist immer grau
             gcTokens.setFill(Color.GREY);
             gcTokens.setFont(new Font(fontSize));
             gcTokens.fillText(entry.getKey().getName(), x + size / 2, y - size / 2);
@@ -229,6 +241,11 @@ public class CircleController implements Initializable, ChangeListener, ListChan
         foregroundCanvas.setWidth(panel.getWidth());
     }
 
+
+    /**
+     * Zeichnet ein Kreissegment an einer Stelle, die dem Parameter entspricht.
+     * @param index
+     */
     private void drawArc(int index) {
 
         double angle = index * arcAngle + 90;

@@ -153,6 +153,10 @@ public class LogMessageFactory {
                 "macht etwas, das länger dauert."
         };
 
+        String[] edited = new String[] {
+                "wurde bearbeitet."
+        };
+
         data.put("join",join);
         data.put("leave",leave);
         data.put("init",init);
@@ -173,6 +177,7 @@ public class LogMessageFactory {
         data.put("ziehen", equip);
         data.put("frei", free);
         data.put("langfristiges", talent);
+        data.put("bearbeitet", edited);
     }
 
     public String getRandomMessage(String identifier) {

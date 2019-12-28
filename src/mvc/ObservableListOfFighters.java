@@ -40,7 +40,6 @@ public class ObservableListOfFighters extends SimpleListProperty<Fighter> implem
 
         synchronized (this) {
             fighter.addListener(this);
-            fighter.iniProperty().addListener(this);
 
             int ini = fighter.getIni();
             int currentIni = 0;
@@ -96,7 +95,6 @@ public class ObservableListOfFighters extends SimpleListProperty<Fighter> implem
         }
 
         synchronized (this) {
-            fighter.iniProperty().removeListener(this);
 
             Fighter toRemove = null;
 

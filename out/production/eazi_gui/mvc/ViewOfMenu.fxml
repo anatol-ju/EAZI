@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<MenuBar fx:id="menuBar" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mvc.MenuController">
+  <menus>
+    <Menu mnemonicParsing="false" text="Daten">
+      <items>
+            <MenuItem fx:id="reset" mnemonicParsing="false" onAction="#resetAction" text="Reset" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem fx:id="saveWindow" mnemonicParsing="false" onAction="#saveWindowAction" text="Runde Speichern" />
+            <MenuItem fx:id="loadWindow" mnemonicParsing="false" onAction="#loadWindowAction" text="Runde Laden" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+        <MenuItem fx:id="close" mnemonicParsing="false" onAction="#closeAction" text="Schließen" />
+      </items>
+    </Menu>
+      <Menu mnemonicParsing="false" text="Einstellungen">
+        <items>
+            <MenuItem fx:id="saveImage" disable="true" mnemonicParsing="false" onAction="#saveImageAction" text="Bild speichern" />
+          <MenuItem fx:id="clearLog" mnemonicParsing="false" onAction="#clearLogAction" text="Log löschen" />
+            <CheckMenuItem fx:id="useAssistant" disable="true" mnemonicParsing="false" text="Assistent verwenden" />
+        </items>
+      </Menu>
+    <Menu mnemonicParsing="false" text="Handlungen">
+      <items>
+        <MenuItem fx:id="undo" mnemonicParsing="false" onAction="#undoAction" text="Rückgängig" />
+            <MenuItem fx:id="redo" mnemonicParsing="false" onAction="#redoAction" text="Wiederholen" />
+      </items>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Teilnehmer">
+      <items>
+        <MenuItem fx:id="makeNewFighter" mnemonicParsing="false" onAction="#makeNewFighterAction" text="Neu" />
+            <MenuItem fx:id="editFighter" mnemonicParsing="false" onAction="#editFighterAction" text="Bearbeiten" />
+            <MenuItem fx:id="removeFighter" mnemonicParsing="false" onAction="#removeFighterAction" text="Löschen" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem fx:id="saveFighter" mnemonicParsing="false" onAction="#saveFighterAction" text="Teilnehmer speichern" />
+            <MenuItem fx:id="loadFighter" mnemonicParsing="false" onAction="#loadFighterAction" text="Teilnehmer laden" />
+      </items>
+    </Menu>
+      <Menu mnemonicParsing="false" text="Info">
+        <items>
+          <MenuItem fx:id="about" mnemonicParsing="false" onAction="#aboutAction" text="Info" />
+        </items>
+      </Menu>
+  </menus>
+</MenuBar>
