@@ -1,0 +1,7 @@
+TODO model, view, controller sortieren in mvc.model etc.
+TODO Serializer ausprobieren
+TODO Dialog für Einstellungen basteln
+TODO LanguageModule benutzen
+TODO Dialoge umbauen
+TODO Action-Buttons abhängig von Auswahl anzeigen/auslenden
+TODO internalization javaFX
