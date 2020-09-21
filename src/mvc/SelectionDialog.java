@@ -2,6 +2,7 @@ package mvc;
 
 import javafx.application.Platform;
 import javafx.beans.Observable;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -44,6 +45,8 @@ public class SelectionDialog extends Dialog<Fighter> {
     private ComboBox<String> levelSelection;
     @FXML
     private Label modText;
+    @FXML
+    private Button randomIni;
 
     private Fighter fighter;
     private List<String> levelString;
@@ -255,6 +258,14 @@ public class SelectionDialog extends Dialog<Fighter> {
         }
 
         this.close();
+    }
+
+    /**
+     * Calculates a random number for INI as of rolling 2 6-sided dice.
+     */
+    public void calcRandomIni() {
+        int randomInt = new Random().nextInt(6) + new Random().nextInt(6) + 2;
+        this.ini.setText(String.valueOf(randomInt));
     }
 
     public void actionReset() {
