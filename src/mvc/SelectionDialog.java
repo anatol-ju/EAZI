@@ -263,6 +263,7 @@ public class SelectionDialog extends Dialog<Fighter> {
     /**
      * Calculates a random number for INI as of rolling 2 6-sided dice.
      */
+    @FXML
     public void calcRandomIni() {
         int randomInt = new Random().nextInt(6) + new Random().nextInt(6) + 2;
         this.ini.setText(String.valueOf(randomInt));

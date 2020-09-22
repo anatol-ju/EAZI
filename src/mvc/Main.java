@@ -37,7 +37,6 @@ public class Main extends Application {
      */
     private ResourceBundle getResources() {
         Locale sysDefaultLocale = Locale.getDefault();
-        System.out.println(sysDefaultLocale);
         ResourceBundle rb = ResourceBundle.getBundle("locales.Languages", Locale.ENGLISH);
 
         if(sysDefaultLocale.equals(Locale.GERMANY)) {

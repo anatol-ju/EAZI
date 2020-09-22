@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a8b18af6-fbb2-4074-a7c7-ef8d2f399183" name="Default Changelist" comment="Updated language files and added function to create a random number for INI in the dialog panel.">
+      <change beforePath="$PROJECT_DIR$/src/mvc/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mvc/SelectionDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/SelectionDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mvc/Serializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/Serializer.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="FxmlFile" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1hbIv2Gzg5DZgVpWJ0bHxM6YW7t" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="TEXT" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/locales" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Eigene Dateien\Repositories\EAZI\src\locales" />
+      <recent name="D:\Eigene Dateien\Repositories\EAZI" />
+      <recent name="D:\Eigene Dateien\Repositories\EAZI\src\mvc" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Userprop">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="mvc.Main" />
+      <module name="EAZI" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="mvc.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Userprop" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="mvc.Userprop" />
+      <module name="EAZI" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="mvc.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Userprop" />
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a8b18af6-fbb2-4074-a7c7-ef8d2f399183" name="Default Changelist" comment="" />
+      <created>1600273598910</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1600273598910</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Prepared LanguageModule for later language changes in the UI.">
+      <created>1600275912256</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1600275912256</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Deleted LanguageModule etc.&#10;Switching to ResourceBundle usage and .properties for JavaFX">
+      <created>1600346894056</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1600346894056</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Updated language files and added function to create a random number for INI in the dialog panel.">
+      <created>1600701831070</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1600701831070</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Prepared LanguageModule for later language changes in the UI." />
+    <MESSAGE value="Deleted LanguageModule etc.&#10;Switching to ResourceBundle usage and .properties for JavaFX" />
+    <MESSAGE value="Updated language files and added function to create a random number for INI in the dialog panel." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated language files and added function to create a random number for INI in the dialog panel." />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="574" y="119" key="#com.intellij.ide.util.MemberChooser" timestamp="1600280212670">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="574" y="119" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1600280212670" />
+    <state x="545" y="142" width="447" height="388" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1600692846093">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="545" y="142" width="447" height="388" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1536.824@0.0.1536.824" timestamp="1600692846093" />
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1600350266634">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1600350266634" />
+    <state x="395" y="0" key="CommitChangelistDialog2" timestamp="1600701886680">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="395" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1600701886680" />
+    <state x="549" y="154" key="FileChooserDialogImpl" timestamp="1600699070278">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="549" y="154" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1600699070278" />
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1600786579131">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1600786579131" />
+    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1600786579131">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1600786579131" />
+    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1600786579131">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1600786579131" />
+    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1600786579131">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1600786579131" />
+    <state x="277" y="57" key="SettingsEditor" timestamp="1600349570662">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1600349570662" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1600701835851">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1600701835851" />
+    <state x="425" y="187" key="run.anything.popup" timestamp="1600786278138">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1600786278138" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1600785816311">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1600785816311" />
+  </component>
+</project>

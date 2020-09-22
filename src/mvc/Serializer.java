@@ -1,5 +1,6 @@
 package mvc;
 
+import javafx.beans.property.Property;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -7,6 +8,7 @@ import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.*;
 import java.net.URISyntaxException;
+import java.util.Properties;
 
 /**
  * Diese Klasse kann dazu verwendet werden Daten zu serialisieren und zu
@@ -108,5 +110,49 @@ public class Serializer {
                 decoder.close();
         } // end of try
         return loaded;
+    }
+
+    /**
+     * Write properties into a file.
+     * Directory is "user.home" followed by "\eazi\filename".
+     */
+    private static void writeConfigFile() {
+        try(FileOutputStream output = new FileOutputStream(
+                // output directory and file
+                System.getProperty("user.home") + "\\eazi\\userConfig.properties")) {
+            Properties prp = new Properties();
+
+            // fill properties
+            // prp.setProperty("key","value");
+
+            prp.store(output, null);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Read properties file.
+     * @return Properties class containing data
+     */
+    private static Properties readConfigFile() {
+        try(FileInputStream input = new FileInputStream(
+                // input directory and file
+                System.getProperty("user.home") + "\\eazi\\userConfig.properties")) {
+            Properties prp = new Properties();
+            prp.load(input);
+
+            // get properties by key
+            // prp.getProperty("key");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    // TODO modify property utility function
+    private static void editConfig(Property property, String key, String value) {
+
     }
 }
