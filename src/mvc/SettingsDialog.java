@@ -1,6 +1,6 @@
 package mvc;
 
-import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -45,12 +45,19 @@ public class SettingsDialog extends Dialog<Boolean> {
         this.getDialogPane().getButtonTypes().add(buttonOk);
         this.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
-        this.setResultConverter(param -> {
-            if (param.equals(buttonOk)) {
-                return true;
-            } else {
-                return false;
+        // validating and saving
+        final Button btOk = (Button) this.getDialogPane().lookupButton(buttonOk);
+        btOk.addEventFilter(ActionEvent.ACTION, event -> {
+            if (!validateAndStore()) {
+                event.consume();
             }
+        });
+
+        // resetting to default
+        final Button btRes = (Button) this.getDialogPane().lookupButton(reset);
+        btRes.addEventFilter(ActionEvent.ACTION, event -> {
+            resetForm();
+            event.consume();
         });
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("SettingsDialog.fxml"));
@@ -65,18 +72,17 @@ public class SettingsDialog extends Dialog<Boolean> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setTitle("Einstellungen");
+        setTitle(ResourceBundle.getBundle("locales.Languages").getString("settings"));
 
-        Platform.runLater(() -> {
-        });
+        // Platform.runLater(() -> { });
+        this.showAndWait();
     }
 
-    public void initialize(URL location, ResourceBundle resources) {
-        // TODO replace by <settings.properties> values
-        savePath.setText(System.getProperty("user.home") + "\\eazi");
-
-        actionCircleFieldCount.getItems().addAll(12,16,20,24);
-        actionCircleFieldCount.setValue(12);    // default
+    /**
+     * Set form values to default.
+     */
+    private void resetForm() {
+        actionCircleFieldCount.setValue(12);
 
         autoSaveButton.setSelected(true);
         intervalBox.setDisable(false);
@@ -84,8 +90,36 @@ public class SettingsDialog extends Dialog<Boolean> {
 
         hideLogButton.setSelected(false);
 
-        colorPickerFighter.setValue(Color.web("#32CD32")); //LIMEGREEN
-        colorPickerAlly.setValue(Color.web("#0000CD")); //MEDIUMBLUE
-        colorPickerEnemy.setValue(Color.web("#FF0000")); //RED
+        colorPickerFighter.setValue(Fighter.getColor()); //LIMEGREEN
+        colorPickerAlly.setValue(AllyFighter.getColor()); //MEDIUMBLUE
+        colorPickerEnemy.setValue(EnemyFighter.getColor()); //RED
+    }
+
+    /**
+     * Used to validate form data and store them into preferences
+     * before closing dialog manually.
+     * @return true if properly validated.
+     */
+    private boolean validateAndStore() {
+        // TODO validation logic
+        return false;
+    }
+
+    public void initialize(URL location, ResourceBundle resources) {
+        ResourceBundle settings = ResourceBundle.getBundle("settings.settings");
+        savePath.setText(System.getProperty("user.home") + settings.getString("savePath"));
+
+        actionCircleFieldCount.getItems().addAll(12,16,20,24);
+        actionCircleFieldCount.setValue(Integer.valueOf(settings.getString("actionCircleFieldCount")));    // default
+
+        autoSaveButton.setSelected(Boolean.parseBoolean(settings.getString("autoSaveButton")));
+        intervalBox.setDisable(Boolean.parseBoolean(settings.getString("intervalBox")));
+        autoSaveIntervalField.setText(settings.getString("autoSaveInterval"));
+
+        hideLogButton.setSelected(Boolean.parseBoolean(settings.getString("hideLogButton")));
+
+        colorPickerFighter.setValue(Color.web(settings.getString("colorFighter"))); //LIMEGREEN
+        colorPickerAlly.setValue(Color.web(settings.getString("colorAlly"))); //MEDIUMBLUE
+        colorPickerEnemy.setValue(Color.web(settings.getString("colorEnemy"))); //RED
     }
 }

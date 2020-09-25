@@ -137,6 +137,7 @@ public class Serializer {
      * @return Properties class containing data
      */
     private static Properties readConfigFile() {
+        // TODO get properties by key
         try(FileInputStream input = new FileInputStream(
                 // input directory and file
                 System.getProperty("user.home") + "\\eazi\\userConfig.properties")) {
