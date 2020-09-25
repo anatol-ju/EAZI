@@ -1,9 +1,6 @@
 package mvc;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableIntegerValue;
-import javafx.collections.FXCollections;
 import javafx.scene.paint.Color;
 
 import java.io.Serializable;
@@ -19,7 +16,7 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
     private int modLaden;
     private int modZiehen;
     private boolean isSelected;
-    private javafx.scene.paint.Color color;
+    private static Color color; // default color
 
     /**
      * Basisklasse für Teilnehmer. Damit werden die Kämpfer beschrieben, die
@@ -43,7 +40,7 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
 
     /**
      * Liefert eine Kopie des Kämpfers als neue Instanz.
-     * @param fighter
+     * @param fighter das zu kopierende Objekt.
      */
     public Fighter(Fighter fighter) {
         if(fighter == null) {
@@ -125,12 +122,8 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
         isSelected = selected;
     }
 
-    public javafx.scene.paint.Color getColor() {
+    public static Color getColor() {
         return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
     }
 
     public int getPreviousIni() {
@@ -143,7 +136,7 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
 
     /**
      * Setzt die Attribute des Parameters und kopiert die Werte.
-     * @param fighter
+     * @param fighter Objekt dessen Werte übernommen werden sollen.
      */
     public void setFighter(Fighter fighter) {
         this.name = fighter.getName();
@@ -153,7 +146,7 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
         this.modOrientieren = fighter.getModOrientieren();
         this.modLaden = fighter.getModLaden();
         this.modZiehen = fighter.getModZiehen();
-        this.color = fighter.getColor();
+        Fighter.color = Fighter.getColor();
     }
 
     @Override

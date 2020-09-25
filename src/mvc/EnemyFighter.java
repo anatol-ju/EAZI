@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 public class EnemyFighter extends Fighter {
 
     private int level;
+    private static Color color; // default color
 
     /**
      * Erstellt eine Klasse für Gegner.
@@ -15,12 +16,16 @@ public class EnemyFighter extends Fighter {
      */
     public EnemyFighter() {
         super();
-        super.setColor(Color.RED);
+        color = Color.RED;
     }
 
     public EnemyFighter(Fighter fighter) {
         super(fighter);
-        super.setColor(Color.RED);
+        color = Color.RED;
+    }
+
+    public static Color getColor() {
+        return color;
     }
 
     public int getLevel() {
@@ -30,7 +35,7 @@ public class EnemyFighter extends Fighter {
     /**
      * Der Level des Teilnehmers sollte zwischen 0 und 6 liegen.
      * Er wird zur Berechnung der Werte für zufällige AT verwendet.
-     * @param level
+     * @param level Numerische Darstellung der Stufe.
      */
     public void setLevel(int level) {
         this.level = level;

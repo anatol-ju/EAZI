@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a8b18af6-fbb2-4074-a7c7-ef8d2f399183" name="Default Changelist" comment="Updated language files and added function to create a random number for INI in the dialog panel.">
-      <change afterPath="$PROJECT_DIR$/src/settings/settings.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mvc/AllyFighter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/AllyFighter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mvc/EnemyFighter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/EnemyFighter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mvc/Fighter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/Fighter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mvc/Serializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/Serializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mvc/SettingsDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/SettingsDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/settings/settings.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/settings/settings.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -161,10 +166,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1600701835851" />
-    <state x="425" y="187" key="run.anything.popup" timestamp="1600870075408">
+    <state x="425" y="187" key="run.anything.popup" timestamp="1601038681795">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1600870075408" />
+    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1601038681795" />
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1600785816311">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
