@@ -20,7 +20,7 @@ public class InfoDialog extends Dialog {
         this.getDialogPane().setPadding(new Insets(10, 10, 10, 10));
         this.getDialogPane().setContent(text);
 
-        this.show();
+        this.showAndWait();
 
     }
 }

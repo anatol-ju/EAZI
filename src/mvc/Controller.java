@@ -10,6 +10,7 @@ import javafx.scene.control.SelectionModel;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable, ListChangeListener {
@@ -22,6 +23,7 @@ public class Controller implements Initializable, ListChangeListener {
 
     private ObservableList<Fighter> observableList;
     private FightersList fightersList;
+    private Properties settings;
 
     @FXML
     private ListController listController;
@@ -47,6 +49,12 @@ public class Controller implements Initializable, ListChangeListener {
 
         this.url = location;
         this.resourceBundle = resources;
+
+        // load once and pass to sub-controllers
+        this.settings = Serializer.readConfigFile();
+        if (settings.isEmpty()) {
+            settings = ConfigContainer.makeDefaultConfigFile();
+        }
 
         fightersList = model.getFightersList();
 
@@ -78,6 +86,7 @@ public class Controller implements Initializable, ListChangeListener {
 
     /**
      * Wird von ListChangeListener verwendet.
+     * Debug only.
      * @param c
      */
     @Override

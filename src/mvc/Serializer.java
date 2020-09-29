@@ -1,6 +1,5 @@
 package mvc;
 
-import javafx.beans.property.Property;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -113,19 +112,14 @@ public class Serializer {
     }
 
     /**
-     * Write properties into a file.
+     * Write settings properties into a file.
      * Directory is "user.home" followed by "\eazi\filename".
      */
-    private static void writeConfigFile() {
-        try(FileOutputStream output = new FileOutputStream(
-                // output directory and file
-                System.getProperty("user.home") + "\\eazi\\userConfig.properties")) {
-            Properties prp = new Properties();
-
-            // fill properties
-            // prp.setProperty("key","value");
-
-            prp.store(output, null);
+    public static void writeConfigFile(Properties properties) {
+        try(FileOutputStream output = new FileOutputStream(ConfigContainer.getSettingsFilePath())) {
+            if (properties != null) {
+                properties.store(output, null);
+            }
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -133,27 +127,26 @@ public class Serializer {
     }
 
     /**
-     * Read properties file.
-     * @return Properties class containing data
+     * Read properties file from directory.
+     * @return Properties class containing data. If no file present returns null.
      */
-    private static Properties readConfigFile() {
-        // TODO get properties by key
-        try(FileInputStream input = new FileInputStream(
-                // input directory and file
-                System.getProperty("user.home") + "\\eazi\\userConfig.properties")) {
-            Properties prp = new Properties();
-            prp.load(input);
+    public static Properties readConfigFile() {
+        Properties prp = new Properties();
+        File file = new File(ConfigContainer.getSettingsFilePath());
 
-            // get properties by key
-            // prp.getProperty("key");
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (file.exists() && !file.isDirectory()) {
+            try (FileInputStream input = new FileInputStream(file)) {
+                prp.load(input);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        return null;
+        return prp;
     }
+
     // TODO modify property utility function
-    private static void editConfig(Property property, String key, String value) {
+    public static void editConfig(Properties properties, String key, String value) {
 
     }
+
 }
