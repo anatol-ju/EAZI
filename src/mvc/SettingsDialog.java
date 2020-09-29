@@ -10,8 +10,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class SettingsDialog extends Dialog<Boolean> {
@@ -36,6 +39,8 @@ public class SettingsDialog extends Dialog<Boolean> {
     private HBox intervalBox;
 
     private ButtonType reset, buttonOk;
+
+    private final ResourceBundle settings = ResourceBundle.getBundle("settings.settings");
 
     public SettingsDialog() {
 
@@ -101,12 +106,32 @@ public class SettingsDialog extends Dialog<Boolean> {
      * @return true if properly validated.
      */
     private boolean validateAndStore() {
-        // TODO validation logic
-        return false;
+        // validate
+        int interval = -1;
+        try {
+            interval = Integer.parseInt(autoSaveIntervalField.getText());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        if (interval <= -1 || interval > 20) {
+            return false;
+        }
+        // store
+        Properties prop = new Properties();
+        try {
+            prop.load(new FileInputStream("settings.settings.properties"));
+            prop.setProperty("autoSaveInterval", String.valueOf(interval));
+            prop.store(new FileOutputStream("settings.settings.properties"), "updated");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     public void initialize(URL location, ResourceBundle resources) {
-        ResourceBundle settings = ResourceBundle.getBundle("settings.settings");
+
         savePath.setText(System.getProperty("user.home") + settings.getString("savePath"));
 
         actionCircleFieldCount.getItems().addAll(12,16,20,24);
