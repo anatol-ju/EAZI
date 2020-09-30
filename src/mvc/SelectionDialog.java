@@ -51,6 +51,7 @@ public class SelectionDialog extends Dialog<Fighter> {
     private Fighter fighter;
     private List<String> levelString;
     private ButtonType reset, buttonOk;
+    ResourceBundle rb = null;
 
     public SelectionDialog() {
         this(new Fighter());
@@ -70,6 +71,8 @@ public class SelectionDialog extends Dialog<Fighter> {
         this.getDialogPane().getButtonTypes().add(reset);
         this.getDialogPane().getButtonTypes().add(buttonOk);
         this.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+        rb = ResourceBundle.getBundle("SelectionDialog", Locale.getDefault());
 
         // Liefert einen gültigen Rückgabewert (Fighter) oder Null wenn keine Änderungen erfolgt sind.
         this.setResultConverter(param -> {
@@ -91,7 +94,7 @@ public class SelectionDialog extends Dialog<Fighter> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setTitle("Werte des Teilnehmers bearbeiten");
+        setTitle(rb.getString("selectionDialogTitle"));
 
         Platform.runLater(() -> {
             initFields(this.fighter);
@@ -112,7 +115,7 @@ public class SelectionDialog extends Dialog<Fighter> {
     public void initFields(Fighter fighter) {
 
         if (fighter == null) {
-            name.setText("(leer)");
+            name.setText(rb.getString("emptyName"));
             ini.setText("1");
             attacke.setText("0");
             position.setText("0");
@@ -142,8 +145,7 @@ public class SelectionDialog extends Dialog<Fighter> {
      * Initialisiert eventuell verwendete Tooltips.
      */
     private void initTooltips() {
-        modText.setTooltip(new Tooltip("Alle Einträge beziehen sich auf den jeweiligen AkP-Wert (Dauer)" +
-                " und nicht auf Erschwernisse."));
+        modText.setTooltip(new Tooltip(rb.getString("tooltipModText")));
     }
 
     /**
@@ -151,7 +153,7 @@ public class SelectionDialog extends Dialog<Fighter> {
      */
     private void initBoxes(Fighter fighter) {
         // Initialisierung
-        List<String> list = Arrays.asList("Kämpfer", "Gegner", "Verbündeter");
+        List<String> list = Arrays.asList(rb.getString("fighter"), rb.getString("enemy"), rb.getString("ally"));
         ObservableList<String> initList = FXCollections.observableList(list);
         fighterSelection.setItems(initList);
         fighterSelection.getSelectionModel().select(0);
@@ -179,15 +181,19 @@ public class SelectionDialog extends Dialog<Fighter> {
         }
 
         if (obs == 0) {
-            String[] initStrings = {"Abenteurer"};
+            String[] initStrings = {rb.getString("hero")};
             ObservableList<String> initList = FXCollections.observableList(Arrays.asList(initStrings));
             levelSelection.setItems(initList);
         } else if (obs == 1) {
-            String[] initStrings = {"Halbstarker", "Taschendieb", "Raufbold", "Räuber", "Veteran", "Anführer", "Endgegner"};
+            String[] initStrings = {rb.getString("enemy0"), rb.getString("enemy1"), rb.getString("enemy2"),
+                    rb.getString("enemy3"), rb.getString("enemy4"),
+                    rb.getString("enemy5"), rb.getString("enemy6")};
             ObservableList<String> initList = FXCollections.observableList(Arrays.asList(initStrings));
             levelSelection.setItems(initList);
         } else if (obs == 2) {
-            String[] initStrings = {"Niemand", "Helfer", "Unterstützung", "Profi", "Berufssoldat", "Elitekämpfer", "Waffenmeister"};
+            String[] initStrings = {rb.getString("ally0"), rb.getString("ally1"), rb.getString("ally2"),
+                    rb.getString("ally3"), rb.getString("ally4"),
+                    rb.getString("ally5"), rb.getString("ally6")};
             ObservableList<String> initList = FXCollections.observableList(Arrays.asList(initStrings));
             levelSelection.setItems(initList);
         }
@@ -209,8 +215,7 @@ public class SelectionDialog extends Dialog<Fighter> {
         Button buttonOk = (Button) this.getDialogPane().lookupButton(this.buttonOk);
         buttonOk.addEventFilter(ActionEvent.ACTION, event -> {
             if (fighter.getIni() <= 0) {
-                new TextDialog("Fehler bei der Eingabe. \n" +
-                        "Die Initiative muss einen Wert größer als 0 haben.").display();
+                new TextDialog(rb.getString("errorIni")).display();
                 event.consume();
             }
         });
@@ -243,7 +248,7 @@ public class SelectionDialog extends Dialog<Fighter> {
             parsedFighter.setModZiehen(Integer.parseInt(waffeZiehen.getText()));
             parsedFighter.setModLaden(Integer.parseInt(bogenLaden.getText()));
         } catch (NumberFormatException e) {
-            new TextDialog("Fehler bei der Eingabe. \n Für INI und Modifikatoren numerische Werte benutzen.").display();
+            new TextDialog(rb.getString("errorNumber")).display();
         }
 
         return parsedFighter;
@@ -254,7 +259,7 @@ public class SelectionDialog extends Dialog<Fighter> {
         fighter = parseData();
 
         if (fighter.getIni() <= 0) {
-            new TextDialog("Die Initiative muss gleich '1' oder größer sein.").display();
+            new TextDialog(rb.getString("errorIni")).display();
         }
 
         this.close();

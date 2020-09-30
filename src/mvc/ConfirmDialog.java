@@ -6,12 +6,16 @@ import javafx.scene.control.Dialog;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 public class ConfirmDialog extends Dialog<Boolean> {
 
     public ConfirmDialog(String confirmMessage) {
 
         super();
-        this.setTitle("Abfrage");
+        ResourceBundle rb = ResourceBundle.getBundle("OtherDialog", Locale.getDefault());
+        this.setTitle(rb.getString("confirmTitle"));
         this.getDialogPane().getButtonTypes().add(ButtonType.OK);
         this.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
