@@ -19,7 +19,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class ListController implements Initializable, ChangeListener {
+public class ListController implements ChangeListener {
 
     private Model model;
     private Controller controller;
@@ -39,8 +39,8 @@ public class ListController implements Initializable, ChangeListener {
     private Button buttonRemove;
     private FightersList fightersList;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    private void initialize() {
 
         buttonNew.setTooltip(new Tooltip("Einen neuen Teilnehmer erstellen."));
         buttonEdit.setTooltip(new Tooltip("Den ausgewählten Teilnehmer bearbeiten."));
@@ -50,8 +50,9 @@ public class ListController implements Initializable, ChangeListener {
 
         listEntries.setCellFactory(new FighterCellFactory());
         listEntries.setPlaceholder(makePlaceholder());
+        listEntries.setItems(observableList);
 
-        selectionModel = listEntries.getSelectionModel();
+        selectionModel = listEntries.getSelectionModel();   // TODO error seems to be here
         selectedIndex = selectionModel.selectedIndexProperty();
         selectedIndex.addListener(this);
     }

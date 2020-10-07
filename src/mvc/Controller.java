@@ -8,12 +8,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.SelectionModel;
 
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable, ListChangeListener {
+public class Controller implements ListChangeListener {
 
     private Model model;
 
@@ -38,50 +39,19 @@ public class Controller implements Initializable, ListChangeListener {
 
     /**
      * Initialisiert das Model und andere Attribute.
-     * @param location
-     * @param resources
      */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    private void initialize() {
 
-        // Das Model erstellen
+        // make a new model
         model = new Model(this);
-
-        this.url = location;
-        this.resourceBundle = resources;
 
         // load once and pass to sub-controllers
         this.settings = Serializer.readConfigFile();
-        if (settings.isEmpty()) {
-            settings = ConfigContainer.makeDefaultConfigFile();
-        }
 
         fightersList = model.getFightersList();
 
-        observableList = fightersList.getSortedList();
-        observableList.addListener(this);
-
-        // Das Model und den Controller bei allen anderen Controllern anmelden
-        listController.setModel(model);
-        listController.setController(this);
-
-        actionsController.setModel(model);
-        actionsController.setController(this);
-
-        circleController.setModel(model);
-        circleController.setController(this);
-
-        logController.setModel(model);
-        logController.setController(this);
-
-        menuController.setModel(model);
-        menuController.setController(this);
-
-        // Alle Controller im Model anmelden für späteren Zugriff
-        model.setListController(listController);
-        model.setActionsController(actionsController);
-        model.setCircleController(circleController);
-        model.setLogController(logController);
+        wire();
     }
 
     /**
@@ -111,16 +81,13 @@ public class Controller implements Initializable, ListChangeListener {
     }
 
     /**
-     * Diese Funktion sollte von Main aufgerufen werden um alle Verbindungen
-     * zwischen den Controllern und anderen Komponenten herzustellen.
-     * Das Ausführen dieser Funktion stellt sicher, dass alle Controller und
-     * deren Komponenten bereits geladen und nicht leer sind. Insbesondere
-     * können ChangeListener zugeordnet werden.
+     * Wires all connections between sub-controllers and registers listeners
      */
-    public void setRelations() {
+    private void wire() {
+        /*
         listController.setObservableList(observableList);
 
-        SelectionModel selectionModel = listController.getSelectionModel();
+        SelectionModel selectionModel = listController.getSelectionModel(); // TODO null here
         actionsController.setSelectionModel(selectionModel);
 
         observableList.addListener(circleController);
@@ -130,6 +97,42 @@ public class Controller implements Initializable, ListChangeListener {
         actionsController.setRelations();
         circleController.setRelations();
         menuController.setRelations();
+         */
+        observableList = fightersList.getSortedList();
+        observableList.addListener(this);
+        observableList.addListener(circleController);
+        observableList.addListener(menuController);
+
+        // register model and main controller at all sub-controllers
+        // to allow access between all of them
+        listController.setModel(model);
+        listController.setController(this);
+        listController.setFightersList(fightersList);
+        listController.setObservableList(observableList);
+        listController.getSelectionModel().selectedIndexProperty().addListener(actionsController);
+
+        actionsController.setModel(model);
+        actionsController.setController(this);
+        actionsController.setSelectionModel(listController.getSelectionModel());
+        actionsController.setSelectedIndex(listController.getSelectionModel().selectedIndexProperty());
+        actionsController.setFightersList(fightersList);
+
+        circleController.setModel(model);
+        circleController.setController(this);
+        circleController.setObservableList(observableList);
+        circleController.setFightersList(fightersList);
+
+        logController.setModel(model);
+        logController.setController(this);
+
+        menuController.setModel(model);
+        menuController.setController(this);
+
+        // Alle Controller im Model anmelden für späteren Zugriff
+        model.setListController(listController);
+        model.setActionsController(actionsController);
+        model.setCircleController(circleController);
+        model.setLogController(logController);
     }
 
     public void updateObservableList() {
@@ -160,14 +163,6 @@ public class Controller implements Initializable, ListChangeListener {
     public void setOnKeyPressed(Scene scene) {
         this.actionsController.setKeyEventHandlers(scene);
         this.listController.setKeyEventHandlers(scene);
-    }
-
-    public Model getModel() {
-        return this.model;
-    }
-
-    public void setNewModel() {
-        this.initialize(url, resourceBundle);
     }
 
     public ListController getListController() {

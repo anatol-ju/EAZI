@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class CircleController implements Initializable, ChangeListener, ListChangeListener {
+public class CircleController implements ChangeListener, ListChangeListener {
 
     private Model model;
     private Controller controller;
@@ -58,8 +58,8 @@ public class CircleController implements Initializable, ChangeListener, ListChan
     private Canvas foregroundCanvas;
     private FightersList fightersList;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    private void initialize() {
 
         gcBackground = backgroundCanvas.getGraphicsContext2D();
         gcTokens = tokenCanvas.getGraphicsContext2D();
@@ -443,5 +443,9 @@ public class CircleController implements Initializable, ChangeListener, ListChan
 
     public void setFightersList(FightersList fightersList) {
         this.fightersList = fightersList;
+    }
+
+    public void setObservableList(ObservableList observableList) {
+        this.observableList = observableList;
     }
 }

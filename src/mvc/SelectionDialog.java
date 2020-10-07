@@ -72,7 +72,7 @@ public class SelectionDialog extends Dialog<Fighter> {
         this.getDialogPane().getButtonTypes().add(buttonOk);
         this.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
-        rb = ResourceBundle.getBundle("SelectionDialog", Locale.getDefault());
+        rb = ResourceBundle.getBundle("locales.SelectionDialog", Locale.getDefault());
 
         // Liefert einen gültigen Rückgabewert (Fighter) oder Null wenn keine Änderungen erfolgt sind.
         this.setResultConverter(param -> {

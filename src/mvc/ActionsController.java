@@ -16,7 +16,7 @@ import javafx.util.converter.NumberStringConverter;
 import java.net.URL;
 import java.util.*;
 
-public class ActionsController implements Initializable, ChangeListener {
+public class ActionsController implements ChangeListener {
 
     private Model model;
     private Controller controller;
@@ -31,67 +31,70 @@ public class ActionsController implements Initializable, ChangeListener {
     private int actionMod;
 
     @FXML
-    private Button attacke;
+    private Button attack;
     @FXML
-    private Button attacke2;
+    private Button attack2;
     @FXML
-    private Button parade;
+    private Button parry;
     @FXML
-    private Button parade2;
+    private Button parry2;
     @FXML
-    private Button warten;
+    private Button wait;
     @FXML
-    private Button ausw;
+    private Button dodge;
     @FXML
-    private Button beweg;
+    private Button move;
     @FXML
     private Button sprint;
     @FXML
     private Button position;
     @FXML
-    private Button orientieren;
+    private Button orientate;
     @FXML
-    private Button ziehen;
+    private Button drawWeapon;
     @FXML
-    private Button laden;
+    private Button loadBow;
     @FXML
-    private RadioButton zaubern;
+    private RadioButton useMagic;
     @FXML
-    private RadioButton zielen;
+    private RadioButton aim;
     @FXML
-    private RadioButton langfristiges;
+    private RadioButton longAction;
     @FXML
-    private RadioButton sonstiges;
+    private RadioButton otherAction;
     @FXML
-    private Button wahl;
+    private Button choice;
     @FXML
-    private ToggleButton unbew;
+    private ToggleButton unarmed;
     @FXML
     private ComboBox mod;
     @FXML
-    private TextField wert;
+    private TextField value;
     @FXML
     private Button incr;
     @FXML
     private Button decr;
     @FXML
-    private Button frei;
+    private Button freeAction;
     @FXML
     private ToggleButton more;
     @FXML
     private ToggleButton less;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    private void initialize() {
 
         ToggleGroup toggleGroup = new ToggleGroup();
-        toggleGroup.getToggles().addAll(zaubern, zielen, langfristiges, sonstiges);
+        toggleGroup.getToggles().addAll(useMagic, aim, longAction, otherAction);
+
+        ResourceBundle rb = ResourceBundle.getBundle("locales.Main");
+        String ap = rb.getString("actionPoints");
 
         ToggleGroup extraRange = new ToggleGroup();
         extraRange.getToggles().addAll(more, less);
 
         ObservableList<String> modList = FXCollections.observableList(
-                Arrays.asList("-3 AkP", "-2 AkP", "-1 AkP", "0 AkP", "+1 AkP", "+2 AkP", "+3 AkP"));
+                Arrays.asList("-3 "+ap, "-2 "+ap, "-1 "+ap, "0 "+ap, "+1 "+ap, "+2 "+ap, "+3 "+ap));
         mod.setItems(modList);
         mod.getSelectionModel().select(3);
 
@@ -104,6 +107,8 @@ public class ActionsController implements Initializable, ChangeListener {
 
         setDisableGroup(actionControls, true);
         setDisableGroup(reactionControls, true);
+
+        //selectedIndex.addListener(this);
     }
 
     @Override
@@ -134,7 +139,8 @@ public class ActionsController implements Initializable, ChangeListener {
      * Komponenten, die nicht in <code>initialize()</code> verfügbar sind.
      */
     public void setRelations() {
-        selectedIndex = this.selectionModel.selectedIndexProperty();
+        selectedIndex = this.controller.getListController().getSelectionModel().selectedIndexProperty();
+        //this.selectionModel.selectedIndexProperty();
         selectedIndex.addListener(this);
         fightersList = controller.fightersListProperty();
     }
@@ -144,53 +150,54 @@ public class ActionsController implements Initializable, ChangeListener {
      */
     private void setTooltips() {
 
-        attacke.setTooltip(new Tooltip("Eine einfache Attacke.\n" +
+        ResourceBundle rb = ResourceBundle.getBundle("locales.ActionTooltips");
+        attack.setTooltip(new Tooltip("Eine einfache Attacke.\n" +
                 "Dauer hängt von der Aktionsdauer,\n" +
                 "dem Modifikator des Kämpfers und\n" +
                 "dem eingestellten allgemeinen Modifikator ab."));
-        attacke2.setTooltip(new Tooltip("Eine komplexe Attacke.\n" +
+        attack2.setTooltip(new Tooltip("Eine komplexe Attacke.\n" +
                 "Dauer hängt von der Aktionsdauer,\n" +
                 "dem Modifikator des Kämpfers und\n" +
                 "dem eingestellten allgemeinen Modifikator ab."));
-        parade.setTooltip(new Tooltip("Eine einfache Parade mit 0 AkP Dauer."));
-        parade2.setTooltip(new Tooltip("Eine komplexe Parade mit 3 AkP Dauer.\n" +
+        parry.setTooltip(new Tooltip("Eine einfache Parade mit 0 AkP Dauer."));
+        parry2.setTooltip(new Tooltip("Eine komplexe Parade mit 3 AkP Dauer.\n" +
                 "Diese entspricht einer Kombination aus einfacher Parade\n" +
                 "und einer anderen Aktion."));
-        warten.setTooltip(new Tooltip("Der Kämpfer wartet 3 AkP ab."));
-        ausw.setTooltip(new Tooltip("Der Kämpfer weicht dem Gegner aus.\n" +
+        wait.setTooltip(new Tooltip("Der Kämpfer wartet 3 AkP ab."));
+        dodge.setTooltip(new Tooltip("Der Kämpfer weicht dem Gegner aus.\n" +
                 "Das entspricht einer komplexen Reaktion mit 3 AkP."));
-        beweg.setTooltip(new Tooltip("Eine Bewegung mit einer Dauer von 3 AkP."));
+        move.setTooltip(new Tooltip("Eine Bewegung mit einer Dauer von 3 AkP."));
         sprint.setTooltip(new Tooltip("Diese Aktion dauert 6 AkP."));
         position.setTooltip(new Tooltip("Diese Aktion dauert 6 AkP oder als komplexe\n" +
                 "Aktion Aufstehen 9 AkP. Zusätzlich gelten Modifikatoren durch den Kämpfer\n" +
                 "und der allgemeine Modifikator."));
-        orientieren.setTooltip(new Tooltip("Das Orientieren dauert 9 AkP, kann aber\n" +
+        orientate.setTooltip(new Tooltip("Das Orientieren dauert 9 AkP, kann aber\n" +
                 "auf 6 AkP gesenkt werden."));
-        ziehen.setTooltip(new Tooltip("Diese Aktion ist abhängig von der verwendeten\n" +
+        drawWeapon.setTooltip(new Tooltip("Diese Aktion ist abhängig von der verwendeten\n" +
                         "Waffe. Dazu wird ein Modifikator für den Kämpfer\n" +
                         "eingestellt sodass die einfache Dauer 6 bis 9 AkP beträgt.\n" +
                         "Das Anlegen eines Schildes dauert 12 AkP und sollte über 'Sonstiges'\n" +
                         "durchgeführt werden."));
-        laden.setTooltip(new Tooltip("Das Laden eines Bogens dauert 6, 9 oder 12 AkP.\n" +
+        loadBow.setTooltip(new Tooltip("Das Laden eines Bogens dauert 6, 9 oder 12 AkP.\n" +
                 "Dieser Wert wird durch einen Modifikator für den Kämpfer eingestellt."));
-        zaubern.setTooltip(new Tooltip("Eine Aktion entspricht 6 AkP."));
-        zielen.setTooltip(new Tooltip("Das Zielen dauert 8 AkP, kann aber um bis\n" +
+        useMagic.setTooltip(new Tooltip("Eine Aktion entspricht 6 AkP."));
+        aim.setTooltip(new Tooltip("Das Zielen dauert 8 AkP, kann aber um bis\n" +
                 "zu 4 AkP verkürzt oder verlängert werden."));
-        langfristiges.setTooltip(new Tooltip("Eine Aktion entspricht 6 AkP."));
-        sonstiges.setTooltip(new Tooltip("Eine Aktion entspricht 6 AkP."));
-        wahl.setTooltip(new Tooltip("Es wird der Wert im Textfeld verwendet.\n" +
+        longAction.setTooltip(new Tooltip("Eine Aktion entspricht 6 AkP."));
+        otherAction.setTooltip(new Tooltip("Eine Aktion entspricht 6 AkP."));
+        choice.setTooltip(new Tooltip("Es wird der Wert im Textfeld verwendet.\n" +
                 "Dieser sollte für AkP ganzzahlig und größer als 0 sein, für Aktionen\n" +
                 "auch halbzahlig als Vielfaches von 0,5."));
-        unbew.setTooltip(new Tooltip("Diese Funktion ermöglicht das einfache Setzen\n" +
+        unarmed.setTooltip(new Tooltip("Diese Funktion ermöglicht das einfache Setzen\n" +
                 "und Entfernen eines Modifikators von -2 AkP für Attacken ohne Waffe."));
         mod.setTooltip(new Tooltip("Ein allgemeiner Modifikator, der dazu benutzt\n" +
                 "werden kann eine Handlung mit einer abweichenden Dauer durchzuführen\n" +
                 "ohne Werte des Kämpfers zu ändern."));
-        wert.setTooltip(new Tooltip("Dieses Feld wird für das Wählen eines Wertes\n" +
+        value.setTooltip(new Tooltip("Dieses Feld wird für das Wählen eines Wertes\n" +
                 "für die ausgewählte Handlung verwendet."));
         incr.setTooltip(new Tooltip("Wert erhöhen."));
         decr.setTooltip(new Tooltip("Wert senken."));
-        frei.setTooltip(new Tooltip("Freie Aktion mit 0 AkP Dauer."));
+        freeAction.setTooltip(new Tooltip("Freie Aktion mit 0 AkP Dauer."));
         more.setTooltip(new Tooltip("Diese Funktion ist nicht für alle Handlungen\n" +
                 "verfügbar."));
         less.setTooltip(new Tooltip("Diese Funktion ist nicht für alle Handlungen\n" +
@@ -203,27 +210,27 @@ public class ActionsController implements Initializable, ChangeListener {
      * verfügbar sind.
      */
     private void setActionsGroup() {
-        actionControls.add(attacke);
-        actionControls.add(attacke2);
-        actionControls.add(warten);
-        actionControls.add(beweg);
+        actionControls.add(attack);
+        actionControls.add(attack2);
+        actionControls.add(wait);
+        actionControls.add(move);
         actionControls.add(sprint);
         actionControls.add(position);
-        actionControls.add(orientieren);
-        actionControls.add(ziehen);
-        actionControls.add(laden);
-        actionControls.add(zaubern);
-        actionControls.add(zielen);
-        actionControls.add(unbew);
+        actionControls.add(orientate);
+        actionControls.add(drawWeapon);
+        actionControls.add(loadBow);
+        actionControls.add(useMagic);
+        actionControls.add(aim);
+        actionControls.add(unarmed);
         actionControls.add(more);
         actionControls.add(less);
-        actionControls.add(wahl);
-        actionControls.add(wert);
-        actionControls.add(langfristiges);
+        actionControls.add(choice);
+        actionControls.add(value);
+        actionControls.add(longAction);
         actionControls.add(incr);
         actionControls.add(decr);
         actionControls.add(mod);
-        actionControls.add(frei);
+        actionControls.add(freeAction);
     }
 
     /**
@@ -231,18 +238,18 @@ public class ActionsController implements Initializable, ChangeListener {
      * Teilnehmer verfügbar sind.
      */
     private void setReactionsGroup() {
-        reactionControls.add(parade);
-        reactionControls.add(parade2);
-        reactionControls.add(ausw);
-        reactionControls.add(sonstiges);
-        reactionControls.add(unbew);
+        reactionControls.add(parry);
+        reactionControls.add(parry2);
+        reactionControls.add(dodge);
+        reactionControls.add(otherAction);
+        reactionControls.add(unarmed);
         reactionControls.add(more);
         reactionControls.add(less);
-        reactionControls.add(wahl);
-        reactionControls.add(wert);
+        reactionControls.add(choice);
+        reactionControls.add(value);
         reactionControls.add(incr);
         reactionControls.add(decr);
-        reactionControls.add(frei);
+        reactionControls.add(freeAction);
     }
 
     private void setDisableGroup(List<Control> group, boolean isDisabled) {
@@ -360,23 +367,23 @@ public class ActionsController implements Initializable, ChangeListener {
         action(range, "laden");
     }
     public void zaubernAction() {
-        wert.setText("0");
-        wahl.setText("Aktionen");
+        value.setText("0");
+        choice.setText("Aktionen");
     }
 
     public void zielenAction() {
-        wert.setText("8");
-        wahl.setText("AkP");
+        value.setText("8");
+        choice.setText("AkP");
     }
 
     public void langfristigesAction() {
-        wert.setText("2");
-        wahl.setText("Aktionen");
+        value.setText("2");
+        choice.setText("Aktionen");
     }
 
     public void sonstigesAction() {
-        wert.setText("2");
-        wahl.setText("AkP");
+        value.setText("2");
+        choice.setText("AkP");
     }
 
     private int validate() {
@@ -387,7 +394,7 @@ public class ActionsController implements Initializable, ChangeListener {
         float converted = -1;
 
         try {
-            input = new NumberStringConverter().fromString(wert.getText());
+            input = new NumberStringConverter().fromString(value.getText());
             converted = input.floatValue();
         } catch (Exception e) {
             wrongInput = true;
@@ -410,15 +417,15 @@ public class ActionsController implements Initializable, ChangeListener {
         }
         String actionPerformed = "";
 
-        if(zaubern.isSelected()) {
+        if(useMagic.isSelected()) {
             base = base * 6;
             actionPerformed = "zaubern";
-        } else if(zielen.isSelected()) {
+        } else if(aim.isSelected()) {
             actionPerformed = "zielen";
-        } else if(langfristiges.isSelected()) {
+        } else if(longAction.isSelected()) {
             base = base * 6;
             actionPerformed = "langfristiges";
-        } else if(sonstiges.isSelected()) {
+        } else if(otherAction.isSelected()) {
             actionPerformed = "sonstiges";
         }
         action(base, actionPerformed);
@@ -426,7 +433,7 @@ public class ActionsController implements Initializable, ChangeListener {
 
     public void unbewaffnetAction() {
         int mod;
-        if(unbew.isSelected()) {
+        if(unarmed.isSelected()) {
             mod = -2;
         } else {
             mod = 0;
@@ -440,13 +447,13 @@ public class ActionsController implements Initializable, ChangeListener {
 
     public void incrAction() {
         int current = validate();
-        wert.setText(Integer.toString(current + 1));
+        value.setText(Integer.toString(current + 1));
     }
 
     public void decrAction() {
         int current = validate();
         if(current > 0) {
-            wert.setText(Integer.toString(current - 1));
+            value.setText(Integer.toString(current - 1));
         }
     }
 
@@ -467,31 +474,31 @@ public class ActionsController implements Initializable, ChangeListener {
     private void setHandler(KeyEvent event) {
         if (event.isControlDown() && !event.isShiftDown()) {
             if (event.getCode().equals(KeyCode.A)) {
-                attacke.requestFocus();
+                attack.requestFocus();
             } else if (event.getCode().equals(KeyCode.P)) {
-                parade.requestFocus();
+                parry.requestFocus();
             } else if (event.getCode().equals(KeyCode.W)) {
-                warten.requestFocus();
+                wait.requestFocus();
             } else if (event.getCode().equals(KeyCode.U)) {
-                ausw.requestFocus();
+                dodge.requestFocus();
             } else if (event.getCode().equals(KeyCode.B)) {
-                beweg.requestFocus();
+                move.requestFocus();
             } else if (event.getCode().equals(KeyCode.S)) {
                 position.requestFocus();
             } else if (event.getCode().equals(KeyCode.O)) {
-                orientieren.requestFocus();
+                orientate.requestFocus();
             } else if (event.getCode().equals(KeyCode.I)) {
-                ziehen.requestFocus();
+                drawWeapon.requestFocus();
             } else if (event.getCode().equals(KeyCode.L)) {
-                laden.requestFocus();
+                loadBow.requestFocus();
             } else if (event.getCode().equals(KeyCode.Z)) {
-                zaubern.requestFocus();
+                useMagic.requestFocus();
             } else if (event.getCode().equals(KeyCode.M)) {
                 mod.requestFocus();
             } else if (event.getCode().equals(KeyCode.T)) {
-                wert.requestFocus();
+                value.requestFocus();
             } else if (event.getCode().equals(KeyCode.F)) {
-                frei.requestFocus();
+                freeAction.requestFocus();
             } else if (event.getCode().equals(KeyCode.UP)) {
                 incrModAction();
             } else if (event.getCode().equals(KeyCode.DOWN)) {
@@ -499,17 +506,17 @@ public class ActionsController implements Initializable, ChangeListener {
             }
         } else if (event.isControlDown()) {
             if (event.getCode().equals(KeyCode.A)) {
-                attacke2.requestFocus();
+                attack2.requestFocus();
             } else if (event.getCode().equals(KeyCode.P)) {
-                parade2.requestFocus();
+                parry2.requestFocus();
             } else if (event.getCode().equals(KeyCode.U)) {
-                unbew.requestFocus();
+                unarmed.requestFocus();
             } else if (event.getCode().equals(KeyCode.B)) {
                 sprint.requestFocus();
             } else if (event.getCode().equals(KeyCode.S)) {
-                sonstiges.requestFocus();
+                otherAction.requestFocus();
             } else if (event.getCode().equals(KeyCode.L)) {
-                langfristiges.requestFocus();
+                longAction.requestFocus();
             } else if (event.getCode().equals(KeyCode.UP)) {
                 incrAction();
             } else if (event.getCode().equals(KeyCode.DOWN)) {
@@ -553,32 +560,32 @@ public class ActionsController implements Initializable, ChangeListener {
         return selectionModel;
     }
 
-    public Button getAttacke() {
-        return attacke;
+    public Button getAttack() {
+        return attack;
     }
 
-    public Button getAttacke2() {
-        return attacke2;
+    public Button getAttack2() {
+        return attack2;
     }
 
-    public Button getParade() {
-        return parade;
+    public Button getParry() {
+        return parry;
     }
 
-    public Button getParade2() {
-        return parade2;
+    public Button getParry2() {
+        return parry2;
     }
 
-    public Button getWarten() {
-        return warten;
+    public Button getWait() {
+        return wait;
     }
 
-    public Button getAusw() {
-        return ausw;
+    public Button getDodge() {
+        return dodge;
     }
 
-    public Button getBeweg() {
-        return beweg;
+    public Button getMove() {
+        return move;
     }
 
     public Button getSprint() {
@@ -589,40 +596,40 @@ public class ActionsController implements Initializable, ChangeListener {
         return position;
     }
 
-    public Button getOrientieren() {
-        return orientieren;
+    public Button getOrientate() {
+        return orientate;
     }
 
-    public Button getZiehen() {
-        return ziehen;
+    public Button getDrawWeapon() {
+        return drawWeapon;
     }
 
-    public Button getLaden() {
-        return laden;
+    public Button getLoadBow() {
+        return loadBow;
     }
 
-    public RadioButton getZaubern() {
-        return zaubern;
+    public RadioButton getUseMagic() {
+        return useMagic;
     }
 
-    public RadioButton getZielen() {
-        return zielen;
+    public RadioButton getAim() {
+        return aim;
     }
 
-    public RadioButton getLangfristiges() {
-        return langfristiges;
+    public RadioButton getLongAction() {
+        return longAction;
     }
 
-    public RadioButton getSonstiges() {
-        return sonstiges;
+    public RadioButton getOtherAction() {
+        return otherAction;
     }
 
-    public Button getWahl() {
-        return wahl;
+    public Button getChoice() {
+        return choice;
     }
 
-    public ToggleButton getUnbew() {
-        return unbew;
+    public ToggleButton getUnarmed() {
+        return unarmed;
     }
 
     public ComboBox getMod() {
@@ -630,7 +637,7 @@ public class ActionsController implements Initializable, ChangeListener {
     }
 
     public TextField getWert() {
-        return wert;
+        return value;
     }
 
     public Button getIncr() {
@@ -641,7 +648,7 @@ public class ActionsController implements Initializable, ChangeListener {
         return decr;
     }
 
-    public Button getFrei() {
-        return frei;
+    public Button getFreeAction() {
+        return freeAction;
     }
 }

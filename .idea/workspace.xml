@@ -5,17 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a8b18af6-fbb2-4074-a7c7-ef8d2f399183" name="Default Changelist" comment="Updated language files and added function to create a random number for INI in the dialog panel.">
-      <change afterPath="$PROJECT_DIR$/src/locales/OtherDialog.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/locales/OtherDialog_de_DE.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/locales/OtherDialog_en_GB.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/resourceBundles.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/locales/ActionTooltips.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/locales/ActionTooltips_de_DE.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/locales/ActionTooltips_en_GB.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/locales/EditFighterDialog.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/locales/SelectionDialog.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/locales/EditFighterDialog_de_DE.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/locales/SelectionDialog_de_DE.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/locales/EditFighterDialog_en_GB.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/locales/SelectionDialog_en_GB.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mvc/ConfirmDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/ConfirmDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mvc/InfoDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/InfoDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mvc/ActionsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/ActionsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mvc/CircleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/CircleController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mvc/ConfigContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/ConfigContainer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mvc/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mvc/ListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/ListController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mvc/LogController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/LogController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mvc/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mvc/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/MenuController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/mvc/SelectionDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/SelectionDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mvc/Serializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/Serializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mvc/ViewOfActions.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/ViewOfActions.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +59,7 @@
       <recent name="D:\Eigene Dateien\Repositories\EAZI\src\mvc" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Userprop">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="mvc.Main" />
       <module name="EAZI" />
@@ -84,8 +88,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Userprop" />
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Userprop" />
       </list>
     </recent_temporary>
   </component>
@@ -133,18 +137,18 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="574" y="119" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1601375341850" />
-    <state x="545" y="142" width="447" height="388" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1601466707735">
+    <state x="545" y="142" width="447" height="388" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1601989910867">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="545" y="142" width="447" height="388" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1536.824@0.0.1536.824" timestamp="1601466707735" />
+    <state x="545" y="142" width="447" height="388" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1536.824@0.0.1536.824" timestamp="1601989910867" />
     <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1600350266634">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1600350266634" />
-    <state x="395" y="0" key="CommitChangelistDialog2" timestamp="1600701886680">
+    <state x="395" y="0" key="CommitChangelistDialog2" timestamp="1602064595469">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="395" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1600701886680" />
+    <state x="395" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1602064595469" />
     <state x="592" y="288" key="DetectedRootsChooserDialog" timestamp="1601042057777">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -153,22 +157,38 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="154" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1601042056530" />
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1600786579131">
+    <state width="1478" height="207" key="GridCell.Tab.0.bottom" timestamp="1602105057093">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1600786579131" />
-    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1600786579131">
+    <state width="1478" height="207" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1602105057093" />
+    <state width="1478" height="207" key="GridCell.Tab.0.center" timestamp="1602105057093">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1600786579131" />
-    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1600786579131">
+    <state width="1478" height="207" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1602105057093" />
+    <state width="1478" height="207" key="GridCell.Tab.0.left" timestamp="1602105057093">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1600786579131" />
-    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1600786579131">
+    <state width="1478" height="207" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1602105057093" />
+    <state width="1478" height="207" key="GridCell.Tab.0.right" timestamp="1602105057093">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1600786579131" />
+    <state width="1478" height="207" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1602105057093" />
+    <state width="1478" height="258" key="GridCell.Tab.1.bottom" timestamp="1602084067632">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1478" height="258" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1602084067632" />
+    <state width="1478" height="258" key="GridCell.Tab.1.center" timestamp="1602084067632">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1478" height="258" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1602084067632" />
+    <state width="1478" height="258" key="GridCell.Tab.1.left" timestamp="1602084067632">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1478" height="258" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1602084067632" />
+    <state width="1478" height="258" key="GridCell.Tab.1.right" timestamp="1602084067632">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1478" height="258" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1602084067632" />
     <state x="277" y="0" key="SettingsEditor" timestamp="1601043401876">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -177,10 +197,18 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1600701835851" />
-    <state x="425" y="187" key="run.anything.popup" timestamp="1601467585379">
+    <state x="209" y="73" key="new project wizard" timestamp="1602075006458">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1601467585379" />
+    <state x="209" y="73" key="new project wizard/0.0.1536.824@0.0.1536.824" timestamp="1602075006458" />
+    <state x="469" y="160" key="refactoring.ChangeSignatureDialog" timestamp="1602082690282">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="469" y="160" key="refactoring.ChangeSignatureDialog/0.0.1536.824@0.0.1536.824" timestamp="1602082690282" />
+    <state x="425" y="187" key="run.anything.popup" timestamp="1602088000850">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1602088000850" />
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1600785816311">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

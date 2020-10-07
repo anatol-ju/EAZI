@@ -25,7 +25,9 @@ public class Main extends Application {
 
         Controller controller = loader.getController();
         controller.setOnKeyPressed(scene);
-        controller.setRelations();
+        // controller.setRelations();
+        // TODO start here
+        // apply new method to connect controllers
 
         primaryStage.show();
     }
@@ -37,10 +39,10 @@ public class Main extends Application {
      */
     private ResourceBundle getResources() {
         Locale sysDefaultLocale = Locale.getDefault();
-        ResourceBundle rb = ResourceBundle.getBundle("locales.Languages", Locale.ENGLISH);
+        ResourceBundle rb = ResourceBundle.getBundle("locales.Main", Locale.ENGLISH);
 
         if(sysDefaultLocale.equals(Locale.GERMANY)) {
-            rb = ResourceBundle.getBundle("locales.Languages", Locale.GERMANY);
+            rb = ResourceBundle.getBundle("locales.Main", Locale.GERMANY);
         }
 
         return rb;

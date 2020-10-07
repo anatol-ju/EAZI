@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class MenuController implements Initializable, ListChangeListener {
+public class MenuController implements ListChangeListener {
 
     private Model model;
     private Controller controller;
@@ -34,8 +34,8 @@ public class MenuController implements Initializable, ListChangeListener {
     @FXML
     private CheckMenuItem useAssistant;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    private void initialize() {
 
         undoList = new LinkedList<>();
         undoPointer = -1;

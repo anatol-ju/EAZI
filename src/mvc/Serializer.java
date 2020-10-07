@@ -7,6 +7,8 @@ import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 /**
@@ -113,12 +115,15 @@ public class Serializer {
 
     /**
      * Write settings properties into a file.
-     * Directory is "user.home" followed by "\eazi\filename".
+     * Default directory is defined in <code>ConfigContainer.java</code>.
+     * @param properties the Properties object to write
+     * @param comment the comment to write
      */
-    public static void writeConfigFile(Properties properties) {
-        try(FileOutputStream output = new FileOutputStream(ConfigContainer.getSettingsFilePath())) {
+    public static void writeConfigFile(Properties properties, String comment) {
+        Path file = Paths.get(ConfigContainer.getSettingsFilePath().toString());
+        try(FileOutputStream output = new FileOutputStream(file.toFile())) {
             if (properties != null) {
-                properties.store(output, null);
+                properties.store(output, comment);
             }
         }
         catch (IOException e) {
@@ -132,13 +137,13 @@ public class Serializer {
      */
     public static Properties readConfigFile() {
         Properties prp = new Properties();
-        File file = new File(ConfigContainer.getSettingsFilePath());
+        Path file = Paths.get(ConfigContainer.getSettingsFilePath().toString());
 
-        if (file.exists() && !file.isDirectory()) {
-            try (FileInputStream input = new FileInputStream(file)) {
+        if (!file.toString().isEmpty() && !file.toFile().isDirectory()) {
+            try (FileInputStream input = new FileInputStream(file.toFile())) {
                 prp.load(input);
             } catch (IOException e) {
-                e.printStackTrace();
+                prp = ConfigContainer.makeDefaultConfigFile();
             }
         }
         return prp;
