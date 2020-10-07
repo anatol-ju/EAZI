@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class LogController implements Initializable {
+public class LogController {
 
     private Model model;
     private Controller controller;
@@ -21,8 +21,8 @@ public class LogController implements Initializable {
     @FXML
     private TextArea textPanel;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    private void initialize() {
 
         logMessageFactory = new LogMessageFactory();
 
