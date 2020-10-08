@@ -42,17 +42,18 @@ public class ListController implements ChangeListener {
     @FXML
     private void initialize() {
 
-        buttonNew.setTooltip(new Tooltip("Einen neuen Teilnehmer erstellen."));
-        buttonEdit.setTooltip(new Tooltip("Den ausgewählten Teilnehmer bearbeiten."));
+        ResourceBundle rb = ResourceBundle.getBundle("locales.ListController");
+        buttonNew.setTooltip(new Tooltip(rb.getString("buttonNewTooltip")));
+        buttonEdit.setTooltip(new Tooltip(rb.getString("buttonEditTooltip")));
         buttonEdit.setDisable(true);
-        buttonRemove.setTooltip(new Tooltip("Den ausgewählten Teilnehmer aus der Liste entfernen."));
+        buttonRemove.setTooltip(new Tooltip(rb.getString("buttonRemoveTooltip")));
         buttonRemove.setDisable(true);
 
         listEntries.setCellFactory(new FighterCellFactory());
         listEntries.setPlaceholder(makePlaceholder());
         listEntries.setItems(observableList);
 
-        selectionModel = listEntries.getSelectionModel();   // TODO error seems to be here
+        selectionModel = listEntries.getSelectionModel();
         selectedIndex = selectionModel.selectedIndexProperty();
         selectedIndex.addListener(this);
     }
@@ -88,13 +89,7 @@ public class ListController implements ChangeListener {
      */
     private Node makePlaceholder() {
         TextArea textArea = new TextArea();
-        textArea.setText("\n\nEinen neuen Teilnehmer durch drücken auf 'Neu' erstellen. \n\n" +
-                "Der obere (ausgewählte) Kämpfer kann Aktionen durchführen, " +
-                "alle anderen können durch Auswahl " +
-                "zwischen möglichen Reaktionen wählen.\n\n" +
-                "Die Reihenfolge wird nach Einfügen eines Teilnehmers aktualisiert " +
-                "solange keine Handlungen durchgeführt werden.\n\n" +
-                "Weitere Informationen zu der Bedienung finden sich in den Tooltips.");
+        textArea.setText(ResourceBundle.getBundle("locales.ListController").getString("placeholderText"));
         textArea.setWrapText(true);
 
         return textArea;
