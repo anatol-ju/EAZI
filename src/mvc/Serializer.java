@@ -9,7 +9,9 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 /**
  * Diese Klasse kann dazu verwendet werden Daten zu serialisieren und zu
@@ -19,6 +21,7 @@ import java.util.Properties;
 public class Serializer {
 
     private String location = null;
+    private static final ResourceBundle rb = ResourceBundle.getBundle("locales.Serializer", Locale.getDefault());
 
     public Serializer() {
         try {
@@ -30,10 +33,10 @@ public class Serializer {
 
     public void saveData(Object toSave) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Daten speichern");
+        fileChooser.setTitle(rb.getString("titleSave"));
         fileChooser.setInitialDirectory(new File(location));
         fileChooser.setSelectedExtensionFilter(
-                new FileChooser.ExtensionFilter("EAZI GUI Daten", "*.eazi.xml"));
+                new FileChooser.ExtensionFilter(rb.getString("extFilter"), "*.eazi.xml"));
         File selectedFile = fileChooser.showOpenDialog(new Stage());
         if (selectedFile != null) {
             System.out.println(selectedFile.toString());
@@ -44,10 +47,10 @@ public class Serializer {
     public DataContainer loadData() {
         DataContainer toLoad = null;
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Daten laden");
+        fileChooser.setTitle(rb.getString("titleLoad"));
         fileChooser.setInitialDirectory(new File(location));
         fileChooser.setSelectedExtensionFilter(
-                new FileChooser.ExtensionFilter("EAZI GUI Daten", "*.eazi.xml"));
+                new FileChooser.ExtensionFilter(rb.getString("extFilter"), "*.eazi.xml"));
         File selectedFile = fileChooser.showOpenDialog(new Stage());
         if (selectedFile != null) {
             System.out.println(selectedFile.toString());
@@ -58,10 +61,10 @@ public class Serializer {
 
     public void saveFighter(Fighter toSave) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Teilnehmer speichern");
+        fileChooser.setTitle(rb.getString("saveParticipant"));
         fileChooser.setInitialDirectory(new File(location));
         fileChooser.setSelectedExtensionFilter(
-                new FileChooser.ExtensionFilter("EAZI GUI Daten", "*.eazi.xml"));
+                new FileChooser.ExtensionFilter(rb.getString("extFilter"), "*.eazi.xml"));
         File selectedFile = fileChooser.showOpenDialog(new Stage());
         if (selectedFile != null) {
             System.out.println(selectedFile.toString());
@@ -72,10 +75,10 @@ public class Serializer {
     public Fighter loadFighter() {
         Fighter toLoad = null;
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Teilnehmer laden");
+        fileChooser.setTitle(rb.getString("loadParticipant"));
         fileChooser.setInitialDirectory(new File(location));
         fileChooser.setSelectedExtensionFilter(
-                new FileChooser.ExtensionFilter("EAZI GUI Daten", "*.eazi.xml"));
+                new FileChooser.ExtensionFilter(rb.getString("extFilter"), "*.eazi.xml"));
         File selectedFile = fileChooser.showOpenDialog(new Stage());
         if (selectedFile != null) {
             System.out.println(selectedFile.toString());
@@ -90,7 +93,7 @@ public class Serializer {
             encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)));
             encoder.writeObject(object);
         } catch(IOException e) {
-            new TextDialog("Speichern des Objektes fehlgeschlagen.").display();
+            new InfoDialog(rb.getString("errorSave")).showAndWait();
         } finally {
             if (encoder != null)
                 encoder.flush();
@@ -105,7 +108,7 @@ public class Serializer {
             decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)));
             loaded = decoder.readObject();
         } catch(IOException e) {
-            new TextDialog("Laden des Objektes fehlgeschlagen.").display();
+            new InfoDialog(rb.getString("errorLoad")).showAndWait();
         } finally {
             if (decoder != null)
                 decoder.close();
@@ -127,6 +130,7 @@ public class Serializer {
             }
         }
         catch (IOException e) {
+            new InfoDialog(rb.getString("errorConfigSave")).showAndWait();
             e.printStackTrace();
         }
     }
@@ -143,15 +147,23 @@ public class Serializer {
             try (FileInputStream input = new FileInputStream(file.toFile())) {
                 prp.load(input);
             } catch (IOException e) {
+                new InfoDialog(rb.getString("errorConfigLoad")).showAndWait();
                 prp = ConfigContainer.makeDefaultConfigFile();
             }
         }
         return prp;
     }
 
-    // TODO modify property utility function
-    public static void editConfig(Properties properties, String key, String value) {
-
+    /**
+     * Changes the value of a specified key in the configurations file.
+     * @param key parameter key to change.
+     * @param value corresponding value to the key.
+     * @param comment include a comment, use empty string if not required.
+     */
+    public static void editConfig(String key, String value, String comment) {
+        Properties prp = readConfigFile();
+        prp.setProperty(key, value);
+        writeConfigFile(prp, comment);
     }
 
 }
