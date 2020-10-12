@@ -24,6 +24,16 @@ Meanwhile it advanced to include features like:
 - custom dialogues
 - log window with random-generated text based on events
 
+### Current TODOs
+
+- release an alpha version
+- apply settings options
+- allow to change number of fields on the circle
+- overwork the serialization process
+- refactor classes
+- include Spring for IoC
+- make circle view interactive
+
 ## Description
 
 The famous german pen-and-paper roleplaying system "The Black Eye" got an upgrade!
