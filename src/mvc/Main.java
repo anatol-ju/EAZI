@@ -25,9 +25,6 @@ public class Main extends Application {
 
         Controller controller = loader.getController();
         controller.setOnKeyPressed(scene);
-        // controller.setRelations();
-        // TODO start here
-        // apply new method to connect controllers
 
         primaryStage.show();
     }

@@ -84,20 +84,7 @@ public class Controller implements ListChangeListener {
      * Wires all connections between sub-controllers and registers listeners
      */
     private void wire() {
-        /*
-        listController.setObservableList(observableList);
 
-        SelectionModel selectionModel = listController.getSelectionModel(); // TODO null here
-        actionsController.setSelectionModel(selectionModel);
-
-        observableList.addListener(circleController);
-        observableList.addListener(menuController);
-
-        listController.setRelations();
-        actionsController.setRelations();
-        circleController.setRelations();
-        menuController.setRelations();
-         */
         observableList = fightersList.getSortedList();
         observableList.addListener(this);
         observableList.addListener(circleController);

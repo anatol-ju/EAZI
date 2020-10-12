@@ -10,7 +10,7 @@ import java.util.Properties;
 public class ConfigContainer {
 
     private static final Path SETTINGS_FILE_PATH = Paths.get(
-            System.getProperty("user.home"), "eazi", "userSettings.properties");
+            System.getProperty("user.home"), ".eazi", "userSettings.properties");
 
     /**
      * Creates a new settings file in users home directory in case there is none.
@@ -43,6 +43,8 @@ public class ConfigContainer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        new InfoDialog("A new configurations file had been created for you!\n" +
+                SETTINGS_FILE_PATH).showAndWait();
         return prp;
     }
 
