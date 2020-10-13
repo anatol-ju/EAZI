@@ -24,6 +24,7 @@ public class Controller implements ListChangeListener {
 
     private ObservableList<Fighter> observableList;
     private FightersList fightersList;
+
     private Properties settings;
 
     @FXML
@@ -43,15 +44,17 @@ public class Controller implements ListChangeListener {
     @FXML
     private void initialize() {
 
-        // make a new model
-        model = new Model(this);
+        synchronized (new Object()) {
+            // make a new model
+            model = new Model(this);
 
-        // load once and pass to sub-controllers
-        this.settings = Serializer.readConfigFile();
+            // load once and pass to sub-controllers
+            settings = Serializer.readConfigFile();
 
-        fightersList = model.getFightersList();
+            fightersList = model.getFightersList();
 
-        wire();
+            wire();
+        }
     }
 
     /**
@@ -186,5 +189,9 @@ public class Controller implements ListChangeListener {
 
     public void setObservableList(ObservableList<Fighter> observableList) {
         this.observableList = observableList;
+    }
+
+    public Properties getSettings() {
+        return this.settings;
     }
 }

@@ -4,16 +4,13 @@ import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
-import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class MenuController implements ListChangeListener {
 
@@ -133,7 +130,7 @@ public class MenuController implements ListChangeListener {
                 System.out.println("Pointer ist bei " + undoPointer);
                 System.out.println("neue Liste: \n" + undoList.get(undoPointer));
             }
-            controller.getListController().getListEntries().refresh();
+            controller.getListController().getListView().refresh();
             controller.getCircleController().updateArcs();
             controller.getCircleController().placeTokens();
 
@@ -156,7 +153,7 @@ public class MenuController implements ListChangeListener {
                 System.out.println("Pointer ist bei " + undoPointer);
                 System.out.println("neue Liste: \n" + undoList.get(undoPointer));
             }
-            controller.getListController().getListEntries().refresh();
+            controller.getListController().getListView().refresh();
             controller.getCircleController().updateArcs();
             controller.getCircleController().placeTokens();
 

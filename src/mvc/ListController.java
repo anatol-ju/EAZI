@@ -6,7 +6,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,7 +14,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -24,20 +22,20 @@ public class ListController implements ChangeListener {
     private Model model;
     private Controller controller;
 
-    private ObservableList observableList;
-    private SelectionModel selectionModel;
+    private ObservableList<Fighter> observableList;
+    private SelectionModel<Fighter> selectionModel;
     private ReadOnlyIntegerProperty selectedIndex;
     private Fighter toReturn;
+    private FightersList fightersList;
 
     @FXML
-    private ListView<Fighter> listEntries;
+    private ListView<Fighter> listView;
     @FXML
     private Button buttonNew;
     @FXML
     private Button buttonEdit;
     @FXML
     private Button buttonRemove;
-    private FightersList fightersList;
 
     @FXML
     private void initialize() {
@@ -49,11 +47,11 @@ public class ListController implements ChangeListener {
         buttonRemove.setTooltip(new Tooltip(rb.getString("buttonRemoveTooltip")));
         buttonRemove.setDisable(true);
 
-        listEntries.setCellFactory(new FighterCellFactory());
-        listEntries.setPlaceholder(makePlaceholder());
-        listEntries.setItems(observableList);
+        listView.setCellFactory(new FighterCellFactory());
+        listView.setPlaceholder(makePlaceholder());
+        listView.setItems(observableList);
 
-        selectionModel = listEntries.getSelectionModel();
+        selectionModel = listView.getSelectionModel();
         selectedIndex = selectionModel.selectedIndexProperty();
         selectedIndex.addListener(this);
     }
@@ -79,7 +77,7 @@ public class ListController implements ChangeListener {
     public void setRelations() {
 
         fightersList = controller.fightersListProperty();
-        listEntries.setItems(observableList);
+        listView.setItems(observableList);
     }
 
     /**
@@ -96,7 +94,6 @@ public class ListController implements ChangeListener {
     }
 
     public void makeNewFighter(ActionEvent actionEvent) {
-        ObservableList<Fighter> observableList = model.getObservableList();
         try {
             /*
             EditFighterDialog efd = new EditFighterDialog();
@@ -116,13 +113,13 @@ public class ListController implements ChangeListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        listEntries.refresh();
+        listView.refresh();
 
     }
 
     public void editFighter(ActionEvent actionEvent) {
         try {
-            toReturn = listEntries.getSelectionModel().getSelectedItem();
+            toReturn = listView.getSelectionModel().getSelectedItem();
 
             SelectionDialog sd = new SelectionDialog(toReturn);
             Optional<Fighter> returned = sd.showAndWait();
@@ -134,7 +131,7 @@ public class ListController implements ChangeListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        listEntries.refresh();
+        listView.refresh();
         // kann ersetzt werden wenn Animationen funktionieren
         controller.getCircleController().updateArcs();
         controller.getCircleController().placeTokens();
@@ -142,9 +139,9 @@ public class ListController implements ChangeListener {
 
     public void removeFighter(ActionEvent actionEvent) {
         Fighter selectedFighter;
-        ObservableList observableList = model.getObservableList();
+        ObservableList<Fighter> observableList = model.getObservableList();
         try {
-            selectedFighter = listEntries.getSelectionModel().getSelectedItem();
+            selectedFighter = listView.getSelectionModel().getSelectedItem();
             if(selectedFighter != null) {
                 fightersList.removeFighter(selectedFighter);
                 controller.getMenuController().action();
@@ -157,7 +154,7 @@ public class ListController implements ChangeListener {
         buttonEdit.setDisable(observableList.isEmpty());
         buttonRemove.setDisable(observableList.isEmpty());
 
-        listEntries.refresh();
+        listView.refresh();
     }
 
     private Stage makeModalityStage() {
@@ -203,8 +200,8 @@ public class ListController implements ChangeListener {
         this.controller = controller;
     }
 
-    public ListView<Fighter> getListEntries() {
-        return listEntries;
+    public ListView<Fighter> getListView() {
+        return listView;
     }
 
     public void setFightersList(FightersList fightersList) {

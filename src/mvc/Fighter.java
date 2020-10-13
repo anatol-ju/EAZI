@@ -12,11 +12,11 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
     private int previousIni;
     private int modAT;
     private int modPosition;
-    private int modOrientieren;
-    private int modLaden;
-    private int modZiehen;
+    private int modOrientate;
+    private int modLoadBow;
+    private int modDrawWeapon;
     private boolean isSelected;
-    private static Color color; // default color
+    private final Color color = Color.LIMEGREEN; // default color
 
     /**
      * Basisklasse für Teilnehmer. Damit werden die Kämpfer beschrieben, die
@@ -31,11 +31,10 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
         previousIni = -1;
         modAT = 0;
         modPosition = 0;
-        modOrientieren = 0;
-        modLaden = 0;
-        modZiehen = 0;
+        modOrientate = 0;
+        modLoadBow = 0;
+        modDrawWeapon = 0;
         isSelected = false;
-        color = Color.LIMEGREEN;
     }
 
     /**
@@ -50,12 +49,11 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
         this.ini = fighter.getIni();
         this.modAT = fighter.getModAT();
         this.modPosition = fighter.getModPosition();
-        this.modOrientieren = fighter.getModOrientieren();
-        this.modLaden = fighter.getModLaden();
-        this.modZiehen = fighter.getModZiehen();
+        this.modOrientate = fighter.getModOrientate();
+        this.modLoadBow = fighter.getModLoadBow();
+        this.modDrawWeapon = fighter.getModDrawWeapon();
         this.previousIni = fighter.getPreviousIni();
         this.isSelected = fighter.isSelected();
-        this.color = fighter.getColor();
     }
 
     public String getName() {
@@ -90,28 +88,28 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
         this.modPosition = modPosition;
     }
 
-    public int getModOrientieren() {
-        return modOrientieren;
+    public int getModOrientate() {
+        return modOrientate;
     }
 
-    public void setModOrientieren(int modOrientieren) {
-        this.modOrientieren = modOrientieren;
+    public void setModOrientate(int modOrientate) {
+        this.modOrientate = modOrientate;
     }
 
-    public int getModLaden() {
-        return modLaden;
+    public int getModLoadBow() {
+        return modLoadBow;
     }
 
-    public void setModLaden(int modLaden) {
-        this.modLaden = modLaden;
+    public void setModLoadBow(int modLoadBow) {
+        this.modLoadBow = modLoadBow;
     }
 
-    public int getModZiehen() {
-        return modZiehen;
+    public int getModDrawWeapon() {
+        return modDrawWeapon;
     }
 
-    public void setModZiehen(int modZiehen) {
-        this.modZiehen = modZiehen;
+    public void setModDrawWeapon(int modDrawWeapon) {
+        this.modDrawWeapon = modDrawWeapon;
     }
 
     public boolean isSelected() {
@@ -122,8 +120,8 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
         isSelected = selected;
     }
 
-    public static Color getColor() {
-        return color;
+    public Color getColor() {
+        return this.color;
     }
 
     public int getPreviousIni() {
@@ -143,10 +141,9 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
         this.ini = fighter.getIni();
         this.modAT = fighter.getModAT();
         this.modPosition = fighter.getModPosition();
-        this.modOrientieren = fighter.getModOrientieren();
-        this.modLaden = fighter.getModLaden();
-        this.modZiehen = fighter.getModZiehen();
-        Fighter.color = Fighter.getColor();
+        this.modOrientate = fighter.getModOrientate();
+        this.modLoadBow = fighter.getModLoadBow();
+        this.modDrawWeapon = fighter.getModDrawWeapon();
     }
 
     @Override

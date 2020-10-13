@@ -6,14 +6,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.converter.NumberStringConverter;
 
-import java.net.URL;
 import java.util.*;
 
 public class ActionsController implements ChangeListener {
@@ -148,7 +146,7 @@ public class ActionsController implements ChangeListener {
     /**
      * Setzt die Tooltips für alle Controls.
      */
-    private void setTooltips() {
+    private void setTooltips() {    // TODO set locales
 
         ResourceBundle rb = ResourceBundle.getBundle("locales.ActionTooltips");
         attack.setTooltip(new Tooltip("Eine einfache Attacke.\n" +
@@ -276,7 +274,7 @@ public class ActionsController implements ChangeListener {
             fightersList.action(fighter, range);
             controller.getLogController().action(fighter, actionPerformed);
             controller.getMenuController().action();
-            controller.getListController().getListEntries().refresh();
+            controller.getListController().getListView().refresh();
         }
         if(range < 0) {
             new TextDialog("Die Werte müssen größer oder gleich 0 sein.").display();
@@ -357,12 +355,12 @@ public class ActionsController implements ChangeListener {
     }
 
     public void ziehenAction() {
-        int range = 6 + ((Fighter)selectionModel.getSelectedItem()).getModZiehen() +
+        int range = 6 + ((Fighter)selectionModel.getSelectedItem()).getModDrawWeapon() +
                 mod.getSelectionModel().getSelectedIndex() - 3;
         action(range, "ziehen");
     }
     public void ladenAction() {
-        int range = 6 + ((Fighter)selectionModel.getSelectedItem()).getModLaden() +
+        int range = 6 + ((Fighter)selectionModel.getSelectedItem()).getModLoadBow() +
                 mod.getSelectionModel().getSelectedIndex() - 3;
         action(range, "laden");
     }

@@ -67,9 +67,9 @@ public class EditFighterDialog {
             ini.setText(String.valueOf(fighter.getIni()));
             attacke.setText(String.valueOf(fighter.getModAT()));
             position.setText(String.valueOf(fighter.getModPosition()));
-            orientieren.setText(String.valueOf(fighter.getModOrientieren()));
-            waffeZiehen.setText(String.valueOf(fighter.getModZiehen()));
-            bogenLaden.setText(String.valueOf(fighter.getModLaden()));
+            orientieren.setText(String.valueOf(fighter.getModOrientate()));
+            waffeZiehen.setText(String.valueOf(fighter.getModDrawWeapon()));
+            bogenLaden.setText(String.valueOf(fighter.getModLoadBow()));
         }
 
         name.selectAll();
@@ -139,9 +139,9 @@ public class EditFighterDialog {
             this.fighter.setIni(Integer.parseInt(ini.getText()));
             this.fighter.setModAT(Integer.parseInt(attacke.getText()));
             this.fighter.setModPosition(Integer.parseInt(position.getText()));
-            this.fighter.setModOrientieren(Integer.parseInt(orientieren.getText()));
-            this.fighter.setModZiehen(Integer.parseInt(waffeZiehen.getText()));
-            this.fighter.setModLaden(Integer.parseInt(bogenLaden.getText()));
+            this.fighter.setModOrientate(Integer.parseInt(orientieren.getText()));
+            this.fighter.setModDrawWeapon(Integer.parseInt(waffeZiehen.getText()));
+            this.fighter.setModLoadBow(Integer.parseInt(bogenLaden.getText()));
         } catch (NumberFormatException e) {
             new TextDialog("Fehler bei der Eingabe. \n Für INI und Modifikatoren numerische Werte benutzen.").display();
         }

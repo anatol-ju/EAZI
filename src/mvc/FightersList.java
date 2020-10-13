@@ -5,9 +5,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import javax.annotation.Resource;
+import java.util.*;
 
 public class FightersList
         extends ArrayList<SimpleListProperty<Fighter>>
@@ -15,7 +14,9 @@ public class FightersList
 
     private boolean isPausedListListener = false;
     private boolean isInitializing = true;
-    private int fieldIndex = 11;
+    private int fieldIndex;
+    private int maxIni;
+    private Properties settings;
 
     private ObservableList<Fighter> sortedList;
 
@@ -23,8 +24,12 @@ public class FightersList
 
         super();
 
-        // Eine Unterliste für jedes INI-Feld anlegen.
-        for (int index = 0; index <= 11; index++) {
+        this.settings = Serializer.readConfigFile();
+        this.maxIni = Integer.parseInt(settings.getProperty("actionCircleFieldCount"));
+        this.fieldIndex = maxIni - 1;
+
+        // create a sublist for every INI value
+        for (int index = 0; index < maxIni; index++) {
             LinkedList<Fighter> baseList = new LinkedList<>();
             ObservableList<Fighter> subList = FXCollections.synchronizedObservableList(
                     FXCollections.observableList(baseList));
@@ -35,15 +40,21 @@ public class FightersList
         sortedList = FXCollections.synchronizedObservableList(FXCollections.observableList(new LinkedList<>()));
     }
 
+    /**
+     * Make a new instance using another FightersList object as base.
+     * @param fightersList A FightersList object containing the base values.
+     */
     public FightersList(FightersList fightersList) {
 
         if (fightersList == null) {
             return;
         }
 
+        this.settings = Serializer.readConfigFile();
+        this.maxIni = Integer.parseInt(settings.getProperty("actionCircleFieldCount"));
         this.fieldIndex = fightersList.getFieldIndex();
 
-        for (int index = 0; index <= 11; index++) {
+        for (int index = 0; index < maxIni; index++) {
             LinkedList<Fighter> baseList = new LinkedList<>();
             for (int ind = 0; ind < fightersList.get(index).size(); ind++) {
                 if (!fightersList.get(index).isEmpty()) {
@@ -56,8 +67,8 @@ public class FightersList
             this.add(new SimpleListProperty<>(subList));
         }
 
-        // Die sortedList sollte gleich bleiben mit gleicher Referenz.
-        // Das vereinfacht das Aktualisieren durch die Listener.
+        // This sortedList should be left as given.
+        // It makes updating by listeners easier.
         this.sortedList = fightersList.getSortedList();
     }
 
@@ -70,38 +81,38 @@ public class FightersList
     }
 
     /**
-     * Fügt einen neuen Teilnehmer ein. Die Position in der Liste wird vorher
-     * umgerechnet ohne dass die INI angepasst wird.
-     * @param fighter
-     * @return
+     * Includes a new participant. It's position in the list is
+     * calculated earlier without the INI being adjusted.
+     * @param fighter The Fighter object to include in the list.
+     * @return true if object was added, false if not.
      */
     public boolean addFighter(Fighter fighter) {
 
         if (fighter == null) {
-            System.out.println("Parameter is null.");
             return false;
         }
 
         synchronized (this) {
 
-            // Passende Liste finden mit 0 < INI < 11.
+            // get the appropriate list based on fighter's INI value
             int ini = evaluateIndex(fighter.getIni() - 1);
+            SimpleListProperty<Fighter> subList = this.get(ini);
 
-            // Einfügen je nach INI
+            // insert into list
             int listIndex;
-            if (this.get(ini).size() > 0) {         // Liste nicht leer
-                listIndex = this.get(ini).size() - 1;
-                // Position vor dem Teilnehmer der nächsten Runde suchen.
-                while (listIndex > 0 && fighter.getIni() < this.get(ini).get(listIndex).getIni()) {
+            if (subList.size() > 0) {         // sublist not empty
+                listIndex = subList.size() - 1;
+                // find position before the participant of the next round
+                while (listIndex > 0 && fighter.getIni() < subList.get(listIndex).getIni()) {
                     listIndex = listIndex - 1;
                 }
-                this.get(ini).add(listIndex + 1, fighter);
-            } else {                                // Liste ist leer
-                this.get(ini).add(fighter);
+                subList.add(listIndex + 1, fighter);
+            } else {                                // sublist is empty
+                subList.add(fighter);
             }
 
-            if (this.get(ini).contains(fighter)) {
-                // Aktualisierung nur wenn noch keine Handlung durchgeführt wurden
+            if (subList.contains(fighter)) {
+                // update only when no actions done so far
                 if (isInitializing) {
                     updateFieldIndex();
                 }
@@ -112,6 +123,11 @@ public class FightersList
         }
     }
 
+    /**
+     * Removes a given Fighter object from the list.
+     * @param fighter The Object to remove.
+     * @return The Fighter object that had been removed.
+     */
     public Fighter removeFighter(Fighter fighter) {
 
         if (fighter == null) {
@@ -132,9 +148,9 @@ public class FightersList
     }
 
     /**
-     * Diese Funktion verschiebt den Teilnehmer von einer Unterliste in
-     * eine andere. Der Index wird für einen Bereich 0 < INI < 11 umgerechnet.
-     * @param fighter
+     * Updates sublists by moving a given Fighter object from one to another.
+     * The INI value is being updated during this method's call.
+     * @param fighter The Object to be moved in between the lists.
      */
     public void updateSubLists(Fighter fighter) {
 
@@ -151,7 +167,7 @@ public class FightersList
 
             int ini = fighter.getIni();
             if (ini <= 0) {
-                ini = ini + 12;
+                ini = ini + maxIni;
             }
             fighter.setIni(ini);    // Vor dem Einfügen, damit INI > 0
 
@@ -162,12 +178,11 @@ public class FightersList
     }
 
     /**
-     * Diese Funktion stellt die eigentliche Handlung dar.
-     * Die INI des Teilnehmers wird um den angegebenen Betrag gesenkt und kann
-     * dabei auch kleiner als 0 werden. Wenn der Betrag 0 ist, wird nichts
-     * verändert.
-     * @param fighter
-     * @param range
+     * This method is responsible to make actions work.
+     * This is done by reducing the INI value of the given Fighter object
+     * by a given number and saves old INI value. INI can get less than zero.
+     * @param fighter The object that acts.
+     * @param range The value to 'move', also known as Action Points.
      */
     public void action(Fighter fighter, int range) {
         if (range > 0) {
@@ -176,7 +191,7 @@ public class FightersList
             ini = ini - range;
             fighter.setIni(ini);
             updateSubLists(fighter);
-            // Nach einer Handlung wird Reihenfolge nicht mehr angepasst.
+            // if an action happened, the order in the list is not changed
             isInitializing = false;
         }
     }
@@ -220,14 +235,18 @@ public class FightersList
         return -1;
     }
 
+    /**
+     * Updates the sortedList field, required to make the ListView work.
+     * Does not delete the list, since it has listeners, but clears it instead.
+     */
     public void updateSortedList() {
-
-        sortedList.clear();
 
         synchronized(this) {
 
+            sortedList.clear();
+
             for (int index = fieldIndex; index < this.size() + fieldIndex; index++) {
-                if (index > 11) {
+                if (index >= maxIni) {
                     sortedList.addAll(this.get(index - this.size()));
                 } else {
                     sortedList.addAll(this.get(index));
@@ -238,6 +257,9 @@ public class FightersList
 
     }
 
+    /**
+     * Updates the fieldIndex field to adjust it to changes due to actions.
+     */
     private void updateFieldIndex() {
 
         while (fieldIndex >= 0 && this.get(fieldIndex).isEmpty()) {
@@ -245,22 +267,21 @@ public class FightersList
         }
 
         if (fieldIndex < 0) {
-            fieldIndex = 11;
+            fieldIndex = maxIni - 1;
         }
     }
 
     /**
-     * Diese Funktion passt den aktuellen Wert so an, dass er zwischen 0 und 11
-     * liegt um ihn als Index für die Liste benutzen zu können.
-     * @param ini
-     * @return
+     * Evaluates the given number so it is guaranteed to be in the interval.
+     * @param ini The INI of the participant.
+     * @return The new evaluated value for INI.
      */
     private int evaluateIndex(int ini) {
         if (ini < 0) {
-            ini = ini + 12;
+            ini = ini + maxIni;
         } else {
-            while (ini > 11) {
-                ini = ini - 12;
+            while (ini >= maxIni) {
+                ini = ini - maxIni;
             }
         }
         return ini;

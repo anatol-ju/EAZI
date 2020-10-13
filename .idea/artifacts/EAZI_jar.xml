@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="EAZI:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/EAZI_jar</output-path>
+    <root id="archive" name="EAZI.jar">
+      <element id="module-output" name="EAZI" />
+    </root>
+  </artifact>
+</component>

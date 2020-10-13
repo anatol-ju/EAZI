@@ -32,6 +32,7 @@ public class ConfigContainer {
 
         try (FileOutputStream output = new FileOutputStream(SETTINGS_FILE_PATH.toFile())) {
             prp.setProperty("savePath", SETTINGS_FILE_PATH.toString());
+            prp.setProperty("actionCircleFieldCount", "12");
             prp.setProperty("autoSaveButton", "true");
             prp.setProperty("intervalBox", "false");
             prp.setProperty("autoSaveInterval", "2");   // don't forget to cast to int

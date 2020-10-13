@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -95,9 +94,9 @@ public class SettingsDialog extends Dialog<Boolean> {
 
         hideLogButton.setSelected(false);
 
-        colorPickerFighter.setValue(Fighter.getColor()); //LIMEGREEN
-        colorPickerAlly.setValue(AllyFighter.getColor()); //MEDIUMBLUE
-        colorPickerEnemy.setValue(EnemyFighter.getColor()); //RED
+        colorPickerFighter.setValue(new Fighter().getColor()); //LIMEGREEN
+        colorPickerAlly.setValue(new AllyFighter().getColor()); //MEDIUMBLUE
+        colorPickerEnemy.setValue(new EnemyFighter().getColor()); //RED
     }
 
     /**
@@ -130,7 +129,8 @@ public class SettingsDialog extends Dialog<Boolean> {
         return true;
     }
 
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    private void initialize() {
 
         savePath.setText(System.getProperty("user.home") + settings.getString("savePath"));
 

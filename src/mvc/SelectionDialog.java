@@ -1,22 +1,16 @@
 package mvc;
 
 import javafx.application.Platform;
-import javafx.beans.Observable;
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.util.*;
@@ -49,7 +43,6 @@ public class SelectionDialog extends Dialog<Fighter> {
     private Button randomIni;
 
     private Fighter fighter;
-    private List<String> levelString;
     private ButtonType reset, buttonOk;
     ResourceBundle rb = null;
 
@@ -77,7 +70,7 @@ public class SelectionDialog extends Dialog<Fighter> {
         // Liefert einen gültigen Rückgabewert (Fighter) oder Null wenn keine Änderungen erfolgt sind.
         this.setResultConverter(param -> {
             if (param == buttonOk) {
-                return parseData();
+                return mergeFighter();
             }
             return null;
         });
@@ -107,10 +100,10 @@ public class SelectionDialog extends Dialog<Fighter> {
     }
 
     /**
-     * Initialisiert die Felder des DialogPane.
-     * Wenn der Parameter fighter <code>null</code> ist, werden Standardwerte gesetzt.
-     * Wird ein gültiges Fighter-Objekt erkannt, werden dessen Werte ausgelesen und gesetzt.
-     * @param fighter
+     * Initialize fields in DialogPane.
+     * Use default values if parameter is <code>null</code>.
+     * Otherwise use the given values from Fighter object.
+     * @param fighter Object to use to initialize field's values.
      */
     public void initFields(Fighter fighter) {
 
@@ -128,9 +121,9 @@ public class SelectionDialog extends Dialog<Fighter> {
                 ini.setText(String.valueOf(fighter.getIni()));
                 attacke.setText(String.valueOf(fighter.getModAT()));
                 position.setText(String.valueOf(fighter.getModPosition()));
-                orientieren.setText(String.valueOf(fighter.getModOrientieren()));
-                waffeZiehen.setText(String.valueOf(fighter.getModZiehen()));
-                bogenLaden.setText(String.valueOf(fighter.getModLaden()));
+                orientieren.setText(String.valueOf(fighter.getModOrientate()));
+                waffeZiehen.setText(String.valueOf(fighter.getModDrawWeapon()));
+                bogenLaden.setText(String.valueOf(fighter.getModLoadBow()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -142,17 +135,17 @@ public class SelectionDialog extends Dialog<Fighter> {
     }
 
     /**
-     * Initialisiert eventuell verwendete Tooltips.
+     * Initializing tooltips.
      */
     private void initTooltips() {
         modText.setTooltip(new Tooltip(rb.getString("tooltipModText")));
     }
 
     /**
-     * Initialisiert und Ändert den Inhalt der ComboBoxes abhängig von der Auswahl der Art des Teilnehmers.
+     * Initialize and change values of ComboBox.
      */
     private void initBoxes(Fighter fighter) {
-        // Initialisierung
+        // init
         List<String> list = Arrays.asList(rb.getString("fighter"), rb.getString("enemy"), rb.getString("ally"));
         ObservableList<String> initList = FXCollections.observableList(list);
         fighterSelection.setItems(initList);
@@ -162,16 +155,15 @@ public class SelectionDialog extends Dialog<Fighter> {
         } else if (fighter instanceof AllyFighter) {
             fighterSelection.getSelectionModel().select(2);
         }
-        // Listener überwacht die Auswahl und ändert den Text der ComboBox
+        // use listener to switch items in the ComboBox.
         fighterSelection.getSelectionModel().selectedIndexProperty().addListener(
                 (observable, oldValue, newValue) -> updateLevelString(newValue));
         updateLevelString(0);
     }
 
     /**
-     * Listener für die Auswahl des Teilnehmers.
-     * Der angezeigte Text ist für die Orientierung, ändert aber nichts an der Mechanik.
-     * @param observable
+     * Listener for the list of items in ComboBox.
+     * @param observable The Number object to be observed to switch view.
      */
     private void updateLevelString(Number observable) {
         int obs = observable.intValue();
@@ -201,7 +193,9 @@ public class SelectionDialog extends Dialog<Fighter> {
     }
 
     /**
-     * Fängt ungültige Eingaben (INI < 0) ab und verhindert dass in solchen Fällen das Dialogfenster geschlossen wird.
+     * Filters invalid user data, especially INI < 0.
+     * Prevents dialog window to be closed if invalid data is provided.
+     * @param fighter Object to filter.
      */
     private void setButtonEventFilter(Fighter fighter) {
 
@@ -215,51 +209,51 @@ public class SelectionDialog extends Dialog<Fighter> {
         Button buttonOk = (Button) this.getDialogPane().lookupButton(this.buttonOk);
         buttonOk.addEventFilter(ActionEvent.ACTION, event -> {
             if (fighter.getIni() <= 0) {
-                new TextDialog(rb.getString("errorIni")).display();
+                new InfoDialog(rb.getString("errorIni")).showAndWait();
                 event.consume();
             }
         });
     }
 
     /**
-     * Setzt die Werte des Teilnehmers auf die im Fenster eingegebenen.
-     * @return Fighter
+     * Merge data from dialog fields into Fighter object, taking into account the participant's affiliation.
+     * @return Fighter object, can be <code>EnemyFighter</code> or <code>AllyFighter</code> and must be cast manually.
      */
-    public Fighter parseData() {
+    public Fighter mergeFighter() {
 
-        Fighter parsedFighter = this.fighter;
+        Fighter mergedFighter = this.fighter;
         int selectedIndex = fighterSelection.getSelectionModel().getSelectedIndex();
         if (selectedIndex == 1) {
-            parsedFighter = new EnemyFighter(this.fighter);
-            ((EnemyFighter)parsedFighter).setLevel(levelSelection.getSelectionModel().getSelectedIndex());
+            mergedFighter = new EnemyFighter(this.fighter);
+            ((EnemyFighter)mergedFighter).setLevel(levelSelection.getSelectionModel().getSelectedIndex());
         } else if (selectedIndex == 2) {
-            parsedFighter = new AllyFighter(this.fighter);
-            ((AllyFighter)parsedFighter).setLevel(levelSelection.getSelectionModel().getSelectedIndex());
+            mergedFighter = new AllyFighter(this.fighter);
+            ((AllyFighter)mergedFighter).setLevel(levelSelection.getSelectionModel().getSelectedIndex());
         }
 
         try {
-            parsedFighter.setPreviousIni(this.fighter.getIni());
+            mergedFighter.setPreviousIni(this.fighter.getIni());
 
-            parsedFighter.setName(name.getText());
-            parsedFighter.setIni(Integer.parseInt(ini.getText()));
-            parsedFighter.setModAT(Integer.parseInt(attacke.getText()));
-            parsedFighter.setModPosition(Integer.parseInt(position.getText()));
-            parsedFighter.setModOrientieren(Integer.parseInt(orientieren.getText()));
-            parsedFighter.setModZiehen(Integer.parseInt(waffeZiehen.getText()));
-            parsedFighter.setModLaden(Integer.parseInt(bogenLaden.getText()));
+            mergedFighter.setName(name.getText());
+            mergedFighter.setIni(Integer.parseInt(ini.getText()));
+            mergedFighter.setModAT(Integer.parseInt(attacke.getText()));
+            mergedFighter.setModPosition(Integer.parseInt(position.getText()));
+            mergedFighter.setModOrientate(Integer.parseInt(orientieren.getText()));
+            mergedFighter.setModDrawWeapon(Integer.parseInt(waffeZiehen.getText()));
+            mergedFighter.setModLoadBow(Integer.parseInt(bogenLaden.getText()));
         } catch (NumberFormatException e) {
             new TextDialog(rb.getString("errorNumber")).display();
         }
 
-        return parsedFighter;
+        return mergedFighter;
     }
 
     public void actionOk() {
 
-        fighter = parseData();
+        fighter = mergeFighter();
 
         if (fighter.getIni() <= 0) {
-            new TextDialog(rb.getString("errorIni")).display();
+            new InfoDialog(rb.getString("errorIni")).showAndWait();
         }
 
         this.close();
@@ -267,6 +261,7 @@ public class SelectionDialog extends Dialog<Fighter> {
 
     /**
      * Calculates a random number for INI as of rolling 2 6-sided dice.
+     * This produces a result between 2 and 12.
      */
     @FXML
     public void calcRandomIni() {

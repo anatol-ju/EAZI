@@ -14,7 +14,7 @@ public class InfoDialog extends Dialog {
     public InfoDialog(String infoMessage) {
 
         super();
-        ResourceBundle rb = ResourceBundle.getBundle("OtherDialog", Locale.getDefault());
+        ResourceBundle rb = ResourceBundle.getBundle("locales.OtherDialog", Locale.getDefault());
         this.setTitle(rb.getString("infoTitle"));
         this.getDialogPane().getButtonTypes().add(ButtonType.OK);
 

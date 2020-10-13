@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 public class AllyFighter extends Fighter {
 
     private int level;
-    private static Color color; // default color
+    private final Color color = Color.MEDIUMBLUE; // default color
 
     /**
      * Erstellt eine Klasse für Verbündete.
@@ -16,16 +16,14 @@ public class AllyFighter extends Fighter {
      */
     public AllyFighter() {
         super();
-        color = Color.MEDIUMBLUE;
     }
 
     public AllyFighter(Fighter fighter) {
         super(fighter);
-        color = Color.MEDIUMBLUE;
     }
 
-    public static Color getColor() {
-        return color;
+    public Color getColor() {
+        return this.color;
     }
 
     public int getLevel() {

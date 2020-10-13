@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 public class EnemyFighter extends Fighter {
 
     private int level;
-    private static Color color; // default color
+    private final Color color = Color.RED; // default color
 
     /**
      * Erstellt eine Klasse für Gegner.
@@ -16,16 +16,14 @@ public class EnemyFighter extends Fighter {
      */
     public EnemyFighter() {
         super();
-        color = Color.RED;
     }
 
     public EnemyFighter(Fighter fighter) {
         super(fighter);
-        color = Color.RED;
     }
 
-    public static Color getColor() {
-        return color;
+    public Color getColor() {
+        return this.color;
     }
 
     public int getLevel() {
