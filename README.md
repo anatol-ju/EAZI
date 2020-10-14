@@ -7,7 +7,8 @@ Echte Alternative zur Initiative (für DSA)
 
 Work in progress!
 
-This application is running and working. It can be used to play and covers all of the game's rules, but it lacks a few features. These will be implemented one by one. Follow the changelog and this README to be up to date.
+This application is running and working. Some bugs may still be around and will be worked on when noticed.
+The released version can be used to play and covers all of the game's rules, but it lacks a few features. These will be implemented one by one. Follow the changelog and this README to be up to date.
 
 ## Background
 
@@ -26,7 +27,6 @@ Meanwhile it advanced to include features like:
 
 ### Current TODOs
 
-- release an alpha version
 - apply settings options
 - allow to change number of fields on the circle
 - overwork the serialization process
