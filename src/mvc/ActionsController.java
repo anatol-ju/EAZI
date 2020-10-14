@@ -27,6 +27,7 @@ public class ActionsController implements ChangeListener {
     private FightersList fightersList;
 
     private int actionMod;
+    private ResourceBundle rb;
 
     @FXML
     private Button attack;
@@ -85,7 +86,7 @@ public class ActionsController implements ChangeListener {
         ToggleGroup toggleGroup = new ToggleGroup();
         toggleGroup.getToggles().addAll(useMagic, aim, longAction, otherAction);
 
-        ResourceBundle rb = ResourceBundle.getBundle("locales.Main");
+        rb = ResourceBundle.getBundle("locales.Main", Locale.getDefault());
         String ap = rb.getString("actionPoints");
 
         ToggleGroup extraRange = new ToggleGroup();
@@ -144,62 +145,36 @@ public class ActionsController implements ChangeListener {
     }
 
     /**
-     * Setzt die Tooltips für alle Controls.
+     * Set all tooltips for all controls.
      */
     private void setTooltips() {    // TODO set locales
 
-        ResourceBundle rb = ResourceBundle.getBundle("locales.ActionTooltips");
-        attack.setTooltip(new Tooltip("Eine einfache Attacke.\n" +
-                "Dauer hängt von der Aktionsdauer,\n" +
-                "dem Modifikator des Kämpfers und\n" +
-                "dem eingestellten allgemeinen Modifikator ab."));
-        attack2.setTooltip(new Tooltip("Eine komplexe Attacke.\n" +
-                "Dauer hängt von der Aktionsdauer,\n" +
-                "dem Modifikator des Kämpfers und\n" +
-                "dem eingestellten allgemeinen Modifikator ab."));
-        parry.setTooltip(new Tooltip("Eine einfache Parade mit 0 AkP Dauer."));
-        parry2.setTooltip(new Tooltip("Eine komplexe Parade mit 3 AkP Dauer.\n" +
-                "Diese entspricht einer Kombination aus einfacher Parade\n" +
-                "und einer anderen Aktion."));
-        wait.setTooltip(new Tooltip("Der Kämpfer wartet 3 AkP ab."));
-        dodge.setTooltip(new Tooltip("Der Kämpfer weicht dem Gegner aus.\n" +
-                "Das entspricht einer komplexen Reaktion mit 3 AkP."));
-        move.setTooltip(new Tooltip("Eine Bewegung mit einer Dauer von 3 AkP."));
-        sprint.setTooltip(new Tooltip("Diese Aktion dauert 6 AkP."));
-        position.setTooltip(new Tooltip("Diese Aktion dauert 6 AkP oder als komplexe\n" +
-                "Aktion Aufstehen 9 AkP. Zusätzlich gelten Modifikatoren durch den Kämpfer\n" +
-                "und der allgemeine Modifikator."));
-        orientate.setTooltip(new Tooltip("Das Orientieren dauert 9 AkP, kann aber\n" +
-                "auf 6 AkP gesenkt werden."));
-        drawWeapon.setTooltip(new Tooltip("Diese Aktion ist abhängig von der verwendeten\n" +
-                        "Waffe. Dazu wird ein Modifikator für den Kämpfer\n" +
-                        "eingestellt sodass die einfache Dauer 6 bis 9 AkP beträgt.\n" +
-                        "Das Anlegen eines Schildes dauert 12 AkP und sollte über 'Sonstiges'\n" +
-                        "durchgeführt werden."));
-        loadBow.setTooltip(new Tooltip("Das Laden eines Bogens dauert 6, 9 oder 12 AkP.\n" +
-                "Dieser Wert wird durch einen Modifikator für den Kämpfer eingestellt."));
-        useMagic.setTooltip(new Tooltip("Eine Aktion entspricht 6 AkP."));
-        aim.setTooltip(new Tooltip("Das Zielen dauert 8 AkP, kann aber um bis\n" +
-                "zu 4 AkP verkürzt oder verlängert werden."));
-        longAction.setTooltip(new Tooltip("Eine Aktion entspricht 6 AkP."));
-        otherAction.setTooltip(new Tooltip("Eine Aktion entspricht 6 AkP."));
-        choice.setTooltip(new Tooltip("Es wird der Wert im Textfeld verwendet.\n" +
-                "Dieser sollte für AkP ganzzahlig und größer als 0 sein, für Aktionen\n" +
-                "auch halbzahlig als Vielfaches von 0,5."));
-        unarmed.setTooltip(new Tooltip("Diese Funktion ermöglicht das einfache Setzen\n" +
-                "und Entfernen eines Modifikators von -2 AkP für Attacken ohne Waffe."));
-        mod.setTooltip(new Tooltip("Ein allgemeiner Modifikator, der dazu benutzt\n" +
-                "werden kann eine Handlung mit einer abweichenden Dauer durchzuführen\n" +
-                "ohne Werte des Kämpfers zu ändern."));
-        value.setTooltip(new Tooltip("Dieses Feld wird für das Wählen eines Wertes\n" +
-                "für die ausgewählte Handlung verwendet."));
-        incr.setTooltip(new Tooltip("Wert erhöhen."));
-        decr.setTooltip(new Tooltip("Wert senken."));
-        freeAction.setTooltip(new Tooltip("Freie Aktion mit 0 AkP Dauer."));
-        more.setTooltip(new Tooltip("Diese Funktion ist nicht für alle Handlungen\n" +
-                "verfügbar."));
-        less.setTooltip(new Tooltip("Diese Funktion ist nicht für alle Handlungen\n" +
-                "verfügbar."));
+        ResourceBundle rbt = ResourceBundle.getBundle("locales.ActionTooltips", Locale.getDefault());
+        attack.setTooltip(new Tooltip(rbt.getString("attack")));
+        attack2.setTooltip(new Tooltip(rbt.getString("attack2")));
+        parry.setTooltip(new Tooltip(rbt.getString("parry")));
+        parry2.setTooltip(new Tooltip(rbt.getString("parry2")));
+        wait.setTooltip(new Tooltip(rbt.getString("wait")));
+        dodge.setTooltip(new Tooltip(rbt.getString("dodge")));
+        move.setTooltip(new Tooltip(rbt.getString("move")));
+        sprint.setTooltip(new Tooltip(rbt.getString("sprint")));
+        position.setTooltip(new Tooltip(rbt.getString("position")));
+        orientate.setTooltip(new Tooltip(rbt.getString("orientate")));
+        drawWeapon.setTooltip(new Tooltip(rbt.getString("drawWeapon")));
+        loadBow.setTooltip(new Tooltip(rbt.getString("loadBow")));
+        useMagic.setTooltip(new Tooltip(rbt.getString("useMagic")));
+        aim.setTooltip(new Tooltip(rbt.getString("aim")));
+        longAction.setTooltip(new Tooltip(rbt.getString("longAction")));
+        otherAction.setTooltip(new Tooltip(rbt.getString("otherAction")));
+        choice.setTooltip(new Tooltip(rbt.getString("choice")));
+        unarmed.setTooltip(new Tooltip(rbt.getString("unarmed")));
+        mod.setTooltip(new Tooltip(rbt.getString("mod")));
+        value.setTooltip(new Tooltip(rbt.getString("value")));
+        incr.setTooltip(new Tooltip(rbt.getString("incr")));
+        decr.setTooltip(new Tooltip(rbt.getString("decr")));
+        freeAction.setTooltip(new Tooltip(rbt.getString("freeAction")));
+        more.setTooltip(new Tooltip(rbt.getString("more")));
+        less.setTooltip(new Tooltip(rbt.getString("less")));
 
     }
 
@@ -267,7 +242,6 @@ public class ActionsController implements ChangeListener {
      */
     private void action(int range, String actionPerformed) {
 
-        ObservableList list = model.getObservableList();
         Fighter fighter = (Fighter) selectionModel.getSelectedItem();
 
         if (fighter != null && range >= 0) {
@@ -277,7 +251,8 @@ public class ActionsController implements ChangeListener {
             controller.getListController().getListView().refresh();
         }
         if(range < 0) {
-            new TextDialog("Die Werte müssen größer oder gleich 0 sein.").display();
+            ResourceBundle rbd = ResourceBundle.getBundle("locales.OtherDialog", Locale.getDefault());
+            new InfoDialog(rbd.getString("infoValuesGreaterZero")).showAndWait();
         }
     }
 
@@ -304,38 +279,38 @@ public class ActionsController implements ChangeListener {
         return 0;
     }
 
-    public void attackeAction() {
+    public void attackAction() {
         int range = 6 + ((Fighter)selectionModel.getSelectedItem()).getModAT() +
                 mod.getSelectionModel().getSelectedIndex() - 3 +
                 actionMod;
-        action(range, "attacke");
+        action(range, "attack");
     }
 
-    public void attacke2Action() {
+    public void attack2Action() {
         int range = 9 + ((Fighter)selectionModel.getSelectedItem()).getModAT() +
                 mod.getSelectionModel().getSelectedIndex() - 3 +
                 actionMod;
-        action(range, "attacke2");
+        action(range, "attack2");
     }
 
-    public void paradeAction() {
-        action(0, "parade");
+    public void parryAction() {
+        action(0, "parry");
     }
 
-    public void parade2Action() {
-        action(3, "parade2");
+    public void parry2Action() {
+        action(3, "parry2");
     }
 
-    public void wartenAction() {
-        action(3, "warten");
+    public void waitAction() {
+        action(3, "wait");
     }
 
-    public void ausweichenAction() {
-        action(3, "ausweichen");
+    public void dodgeAction() {
+        action(3, "dodge");
     }
 
-    public void bewegungAction() {
-        action(3, "bewegung");
+    public void moveAction() {
+        action(3, "move");
     }
 
     public void sprintAction() {
@@ -348,40 +323,40 @@ public class ActionsController implements ChangeListener {
         action(range, "position");
     }
 
-    public void orientierenAction() {
+    public void orientateAction() {
         int range = 9 + ((Fighter)selectionModel.getSelectedItem()).getModPosition() +
                 mod.getSelectionModel().getSelectedIndex() - 3;
-        action(range, "orientieren");
+        action(range, "orientate");
     }
 
-    public void ziehenAction() {
+    public void drawWeaponAction() {
         int range = 6 + ((Fighter)selectionModel.getSelectedItem()).getModDrawWeapon() +
                 mod.getSelectionModel().getSelectedIndex() - 3;
-        action(range, "ziehen");
+        action(range, "drawWeapon");
     }
-    public void ladenAction() {
+    public void loadBowAction() {
         int range = 6 + ((Fighter)selectionModel.getSelectedItem()).getModLoadBow() +
                 mod.getSelectionModel().getSelectedIndex() - 3;
-        action(range, "laden");
+        action(range, "loadBow");
     }
-    public void zaubernAction() {
+    public void useMagicAction() {
         value.setText("0");
-        choice.setText("Aktionen");
+        choice.setText(rb.getString("actions"));
     }
 
-    public void zielenAction() {
+    public void aimAction() {
         value.setText("8");
-        choice.setText("AkP");
+        choice.setText(rb.getString("actionPoints"));
     }
 
-    public void langfristigesAction() {
+    public void longActionAction() {
         value.setText("2");
-        choice.setText("Aktionen");
+        choice.setText(rb.getString("actions"));
     }
 
-    public void sonstigesAction() {
+    public void otherActionAction() {
         value.setText("2");
-        choice.setText("AkP");
+        choice.setText(rb.getString("actionPoints"));
     }
 
     private int validate() {
@@ -401,13 +376,14 @@ public class ActionsController implements ChangeListener {
         System.out.println(base);
 
         if(wrongInput || base < 0) {
-            new TextDialog("Die Eingabe muss im Format 'd,d' erfolgen und größer als 0 sein.").display();
+            ResourceBundle rbd = ResourceBundle.getBundle("locales.OtherDialog", Locale.getDefault());
+            new InfoDialog(rbd.getString("infoInputFormat")).showAndWait();
         }
 
         return base;
     }
 
-    public void wahlAction() {
+    public void choiceAction() {
 
         int base = validate();
         if(base == -1) {
@@ -417,19 +393,19 @@ public class ActionsController implements ChangeListener {
 
         if(useMagic.isSelected()) {
             base = base * 6;
-            actionPerformed = "zaubern";
+            actionPerformed = "useMagic";
         } else if(aim.isSelected()) {
-            actionPerformed = "zielen";
+            actionPerformed = "aim";
         } else if(longAction.isSelected()) {
             base = base * 6;
-            actionPerformed = "langfristiges";
+            actionPerformed = "longAction";
         } else if(otherAction.isSelected()) {
-            actionPerformed = "sonstiges";
+            actionPerformed = "otherAction";
         }
         action(base, actionPerformed);
     }
 
-    public void unbewaffnetAction() {
+    public void unarmedAction() {
         int mod;
         if(unarmed.isSelected()) {
             mod = -2;
@@ -439,8 +415,8 @@ public class ActionsController implements ChangeListener {
         actionMod = mod;
     }
 
-    public void freiAction() {
-        action(0, "frei");
+    public void freeActionAction() {
+        action(0, "freeAction");
     }
 
     public void incrAction() {

@@ -29,7 +29,7 @@ public class CircleController implements ChangeListener, ListChangeListener {
     private GraphicsContext gcTokens;
     private GraphicsContext gcForeground;
 
-    private ObservableList observableList;
+    private ObservableList<Fighter> observableList;
     private HashMap<Fighter, Point2D> coordinateMap;
 
     private double arcRadius = 150;
@@ -66,6 +66,8 @@ public class CircleController implements ChangeListener, ListChangeListener {
 
     @FXML
     private void initialize() {
+
+        observableList = FightersList.sortedList;
 
         gcBackground = backgroundCanvas.getGraphicsContext2D();
         gcTokens = tokenCanvas.getGraphicsContext2D();

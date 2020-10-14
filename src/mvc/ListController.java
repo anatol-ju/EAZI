@@ -3,6 +3,7 @@ package mvc;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +15,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.util.LinkedList;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -29,6 +32,8 @@ public class ListController implements ChangeListener {
     private FightersList fightersList;
 
     @FXML
+    private TitledPane titledPane;
+    @FXML
     private ListView<Fighter> listView;
     @FXML
     private Button buttonNew;
@@ -40,7 +45,7 @@ public class ListController implements ChangeListener {
     @FXML
     private void initialize() {
 
-        ResourceBundle rb = ResourceBundle.getBundle("locales.ListController");
+        ResourceBundle rb = ResourceBundle.getBundle("locales.ListController", Locale.getDefault());
         buttonNew.setTooltip(new Tooltip(rb.getString("buttonNewTooltip")));
         buttonEdit.setTooltip(new Tooltip(rb.getString("buttonEditTooltip")));
         buttonEdit.setDisable(true);
@@ -49,11 +54,13 @@ public class ListController implements ChangeListener {
 
         listView.setCellFactory(new FighterCellFactory());
         listView.setPlaceholder(makePlaceholder());
-        listView.setItems(observableList);
+        listView.setItems(FightersList.sortedList);
 
         selectionModel = listView.getSelectionModel();
         selectedIndex = selectionModel.selectedIndexProperty();
         selectedIndex.addListener(this);
+
+        titledPane.setText(rb.getString("title"));
     }
 
     @Override
@@ -71,19 +78,10 @@ public class ListController implements ChangeListener {
     }
 
     /**
-     * Ermöglicht Kommunikation zwischen diesem Controller und anderen
-     * Komponenten, die nicht in <code>initialize()</code> verfügbar sind.
-     */
-    public void setRelations() {
-
-        fightersList = controller.fightersListProperty();
-        listView.setItems(observableList);
-    }
-
-    /**
-     * Definiert eine Anzeige für den Listenbereich, wenn dieser leer ist.
-     * Sie kann dazu verwendet werden Informationen zur Bedienung zu liefern.
-     * @return Node
+     * Defines a placeholder node to be shown on the View when the FightersList
+     * is empty. Can be used as a short manual.
+     * @return Node, in this case a <code>TextArea</code>. The text is taken
+     * directly from the locales.
      */
     private Node makePlaceholder() {
         TextArea textArea = new TextArea();
@@ -113,6 +111,7 @@ public class ListController implements ChangeListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println(listView.getItems());
         listView.refresh();
 
     }
@@ -139,7 +138,6 @@ public class ListController implements ChangeListener {
 
     public void removeFighter(ActionEvent actionEvent) {
         Fighter selectedFighter;
-        ObservableList<Fighter> observableList = model.getObservableList();
         try {
             selectedFighter = listView.getSelectionModel().getSelectedItem();
             if(selectedFighter != null) {
@@ -151,17 +149,10 @@ public class ListController implements ChangeListener {
             e.printStackTrace();
         }
 
-        buttonEdit.setDisable(observableList.isEmpty());
-        buttonRemove.setDisable(observableList.isEmpty());
+        buttonEdit.setDisable(FightersList.sortedList.isEmpty());
+        buttonRemove.setDisable(FightersList.sortedList.isEmpty());
 
         listView.refresh();
-    }
-
-    private Stage makeModalityStage() {
-        Stage stage = new Stage();
-        stage.initOwner(buttonNew.getScene().getWindow());
-        stage.initModality(Modality.WINDOW_MODAL);
-        return stage;
     }
 
     public void setKeyEventHandlers(Scene scene) {
@@ -184,10 +175,6 @@ public class ListController implements ChangeListener {
         this.model = model;
     }
 
-    public void setObservableList(ObservableList observableList) {
-        this.observableList = observableList;
-    }
-
     public SelectionModel getSelectionModel() {
         return selectionModel;
     }
@@ -206,13 +193,5 @@ public class ListController implements ChangeListener {
 
     public void setFightersList(FightersList fightersList) {
         this.fightersList = fightersList;
-    }
-
-    public void setToReturn(Fighter toReturn) {
-        this.toReturn = toReturn;
-    }
-
-    public Fighter getToReturn() {
-        return toReturn;
     }
 }

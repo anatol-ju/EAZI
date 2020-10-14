@@ -103,16 +103,11 @@ public class Serializer {
 
     private Object loadXML(String file) {
         Object loaded = new Object();
-        XMLDecoder decoder = null;
-        try {
-            decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)));
+        try (XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)))) {
             loaded = decoder.readObject();
-        } catch(IOException e) {
+        } catch (IOException e) {
             new InfoDialog(rb.getString("errorLoad")).showAndWait();
-        } finally {
-            if (decoder != null)
-                decoder.close();
-        } // end of try
+        }
         return loaded;
     }
 
@@ -122,7 +117,7 @@ public class Serializer {
      * @param properties the Properties object to write
      * @param comment the comment to write
      */
-    public static void writeConfigFile(Properties properties, String comment) {
+    public static synchronized void writeConfigFile(Properties properties, String comment) {
         Path file = Paths.get(ConfigContainer.getSettingsFilePath().toString());
         try(FileOutputStream output = new FileOutputStream(file.toFile())) {
             if (properties != null) {
@@ -139,7 +134,7 @@ public class Serializer {
      * Read properties file from directory.
      * @return Properties class containing data. If no file present returns null.
      */
-    public static Properties readConfigFile() {
+    public static synchronized Properties readConfigFile() {
         Properties prp = new Properties();
         Path file = Paths.get(ConfigContainer.getSettingsFilePath().toString());
 

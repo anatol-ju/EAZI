@@ -5,7 +5,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
-import javax.annotation.Resource;
 import java.util.*;
 
 public class FightersList
@@ -13,12 +12,13 @@ public class FightersList
         implements ListChangeListener {
 
     private boolean isPausedListListener = false;
-    private boolean isInitializing = true;
-    private int fieldIndex;
-    private int maxIni;
+    private boolean isInitializing = true;  //TODO try without
+    private int listIndex;  //indicates the current sublist
+    private int maxIni; // highest number for listIndex
     private Properties settings;
 
-    private ObservableList<Fighter> sortedList;
+    public static final ObservableList<Fighter> sortedList =
+            FXCollections.synchronizedObservableList(FXCollections.observableList(new LinkedList<>()));
 
     public FightersList() {
 
@@ -26,7 +26,7 @@ public class FightersList
 
         this.settings = Serializer.readConfigFile();
         this.maxIni = Integer.parseInt(settings.getProperty("actionCircleFieldCount"));
-        this.fieldIndex = maxIni - 1;
+        this.listIndex = maxIni - 1;
 
         // create a sublist for every INI value
         for (int index = 0; index < maxIni; index++) {
@@ -36,8 +36,6 @@ public class FightersList
             subList.addListener(this);
             this.add(new SimpleListProperty<>(subList));
         }
-
-        sortedList = FXCollections.synchronizedObservableList(FXCollections.observableList(new LinkedList<>()));
     }
 
     /**
@@ -52,7 +50,7 @@ public class FightersList
 
         this.settings = Serializer.readConfigFile();
         this.maxIni = Integer.parseInt(settings.getProperty("actionCircleFieldCount"));
-        this.fieldIndex = fightersList.getFieldIndex();
+        this.listIndex = fightersList.getListIndex();
 
         for (int index = 0; index < maxIni; index++) {
             LinkedList<Fighter> baseList = new LinkedList<>();
@@ -66,10 +64,6 @@ public class FightersList
             subList.addListener(this);
             this.add(new SimpleListProperty<>(subList));
         }
-
-        // This sortedList should be left as given.
-        // It makes updating by listeners easier.
-        this.sortedList = fightersList.getSortedList();
     }
 
     @Override
@@ -116,6 +110,7 @@ public class FightersList
                 if (isInitializing) {
                     updateFieldIndex();
                 }
+                updateSortedList();
                 return true;
             } else {
                 return false;
@@ -134,16 +129,18 @@ public class FightersList
             return null;
         }
 
+        Fighter removedFighter = null;
+
         synchronized (this) {
 
             int ini = evaluateIndex(fighter.getIni() - 1);
             this.get(ini).remove(fighter);
 
-            if (this.get(ini).contains(fighter)) {
-                return null;
-            } else {
-                return fighter;
+            if (!this.get(ini).contains(fighter)) {
+                removedFighter = fighter;
             }
+            updateSortedList();
+            return removedFighter;
         }
     }
 
@@ -193,6 +190,7 @@ public class FightersList
             updateSubLists(fighter);
             // if an action happened, the order in the list is not changed
             isInitializing = false;
+            updateSortedList();
         }
     }
 
@@ -236,38 +234,35 @@ public class FightersList
     }
 
     /**
-     * Updates the sortedList field, required to make the ListView work.
-     * Does not delete the list, since it has listeners, but clears it instead.
-     */
-    public void updateSortedList() {
-
-        synchronized(this) {
-
-            sortedList.clear();
-
-            for (int index = fieldIndex; index < this.size() + fieldIndex; index++) {
-                if (index >= maxIni) {
-                    sortedList.addAll(this.get(index - this.size()));
-                } else {
-                    sortedList.addAll(this.get(index));
-                }
-            }
-
-        }
-
-    }
-
-    /**
      * Updates the fieldIndex field to adjust it to changes due to actions.
      */
     private void updateFieldIndex() {
 
-        while (fieldIndex >= 0 && this.get(fieldIndex).isEmpty()) {
-            fieldIndex = fieldIndex - 1;
+        while (listIndex >= 0 && this.get(listIndex).isEmpty()) {
+            listIndex = listIndex - 1;
         }
 
-        if (fieldIndex < 0) {
-            fieldIndex = maxIni - 1;
+        if (listIndex < 0) {
+            listIndex = maxIni - 1;
+        }
+    }
+
+    /**
+     * Updates the sortedList field, required to make the ListView work.
+     * This field is used as base to an ObservedList, without it the ListView
+     * is not updated. Changes to sortedList do not affect the FightersList.
+     * Call this method after any change in the FightersList instance.
+     * Does not delete the list, since it has listeners, but clears it instead.
+     */
+    public synchronized void updateSortedList() {
+        sortedList.clear();
+
+        for (int index = listIndex; index < this.size() + listIndex; index++) {
+            if (index >= maxIni) {
+                sortedList.addAll(this.get(index - this.size()));
+            } else {
+                sortedList.addAll(this.get(index));
+            }
         }
     }
 
@@ -291,16 +286,12 @@ public class FightersList
         return this.get(ini - 1);
     }
 
-    public int getFieldIndex() {
-        return this.fieldIndex;
+    public int getListIndex() {
+        return this.listIndex;
     }
 
-    public void setFieldIndex(int fieldIndex) {
-        this.fieldIndex = fieldIndex;
-    }
-
-    public ObservableList<Fighter> getSortedList() {
-        return this.sortedList;
+    public void setListIndex(int listIndex) {
+        this.listIndex = listIndex;
     }
 
     /**

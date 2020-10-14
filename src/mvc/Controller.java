@@ -1,6 +1,7 @@
 package mvc;
 
 import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,17 +11,11 @@ import javafx.scene.control.SelectionModel;
 
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.List;
-import java.util.Properties;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class Controller implements ListChangeListener {
 
     private Model model;
-
-    private URL url;
-    private ResourceBundle resourceBundle;
-    private Scene scene;
 
     private ObservableList<Fighter> observableList;
     private FightersList fightersList;
@@ -88,7 +83,7 @@ public class Controller implements ListChangeListener {
      */
     private void wire() {
 
-        observableList = fightersList.getSortedList();
+        observableList = FightersList.sortedList;
         observableList.addListener(this);
         observableList.addListener(circleController);
         observableList.addListener(menuController);
@@ -98,7 +93,6 @@ public class Controller implements ListChangeListener {
         listController.setModel(model);
         listController.setController(this);
         listController.setFightersList(fightersList);
-        listController.setObservableList(observableList);
         listController.getSelectionModel().selectedIndexProperty().addListener(actionsController);
 
         actionsController.setModel(model);
@@ -109,7 +103,6 @@ public class Controller implements ListChangeListener {
 
         circleController.setModel(model);
         circleController.setController(this);
-        circleController.setObservableList(observableList);
         circleController.setFightersList(fightersList);
 
         logController.setModel(model);
@@ -125,15 +118,11 @@ public class Controller implements ListChangeListener {
         model.setLogController(logController);
     }
 
-    public void updateObservableList() {
-        fightersList.updateSortedList();
-        observableList.setAll(fightersList.getSortedList());
-    }
-
     /**
-     * Diese Funktion aktualisiert das Model indem es eine neue FightersList
-     * lädt und alle abgeleiteten Objekte anpasst.
-     * @param fightersList
+     * This method is required to implement undo and redo functionality.
+     * It updates the <code>FightersList</code> with another instance
+     * that had been saved previously in an undo-list.
+     * @param fightersList The instance to be used. Overwrites the current one.
      */
     public void updateModel(FightersList fightersList) {
         this.fightersList = fightersList;
