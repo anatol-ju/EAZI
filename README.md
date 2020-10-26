@@ -10,6 +10,10 @@ Work in progress!
 This application is running and working. Some bugs may still be around and will be worked on when noticed.
 The released version can be used to play and covers all of the game's rules, but it lacks a few features. These will be implemented one by one. Follow the changelog and this README to be up to date.
 
+## Update 26.10.
+
+Updated the release version (.jar file). Version stays the same since only manifest file was changed. This needs to be tested to run on different machines.
+
 ## Background
 
 This application is my first project to implement Java backend with JavaFX frontend.
