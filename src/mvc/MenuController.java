@@ -2,15 +2,26 @@ package mvc;
 
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.WritableImage;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class MenuController implements ListChangeListener {
 
@@ -21,6 +32,8 @@ public class MenuController implements ListChangeListener {
     private int undoPointer;
 
     private boolean blockListChange = false;
+
+    private static File lastSave = null;
 
     @FXML
     private MenuBar menuBar;
@@ -105,7 +118,36 @@ public class MenuController implements ListChangeListener {
     }
 
     public void saveWindowAction() {
+        Serializer serializer = new Serializer();
+        DataContainer data = new DataContainer();
+        FightersList fl = controller.getFightersList();
 
+        List<List<Fighter>> list = new ArrayList<>(fl.size());
+
+        for (int index = 0; index < list.size(); index++) {
+            List<Fighter> sublist = new ArrayList<>(list.get(index).size());
+            list.add(index, sublist);
+            for (int ind = 0; ind < sublist.size(); ind++) {
+                sublist.add(ind, fl.get(index).get(ind));
+            }
+        }
+
+        data.setFighterList(list);
+        data.setFieldIndex(fl.getSubListIndex());
+
+        File file = null;
+        FileChooser fc = new FileChooser();
+        file = fc.showSaveDialog(controller.getOwner());
+
+        if (file != null) {
+            try {
+                String canonicalPath;
+                canonicalPath = file.getCanonicalPath();
+                serializer.saveXML(data, canonicalPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void loadWindowAction() {
@@ -175,6 +217,30 @@ public class MenuController implements ListChangeListener {
     }
 
     public void saveImageAction() {
+        FileChooser fileChooser = new FileChooser();
+
+        //Set extension filter
+        FileChooser.ExtensionFilter extFilter =
+                new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // start FileChooser at last used directory
+        if (lastSave != null) {
+            fileChooser.setInitialDirectory(new File(lastSave.getParent()));
+        }
+
+        //Show save file dialog
+        lastSave = fileChooser.showSaveDialog(controller.getOwner());
+
+        if(lastSave != null){
+            try {
+                WritableImage writableImage = controller.getCircleController().getImage();
+                RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
+                ImageIO.write(renderedImage, "png", lastSave);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        }
     }
 
     public void clearLogAction() {

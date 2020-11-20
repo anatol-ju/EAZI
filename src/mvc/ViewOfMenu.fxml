@@ -20,7 +20,7 @@
     </Menu>
       <Menu mnemonicParsing="false" text="Einstellungen">
         <items>
-            <MenuItem fx:id="saveImage" disable="true" mnemonicParsing="false" onAction="#saveImageAction" text="Bild speichern" />
+            <MenuItem fx:id="saveImage" mnemonicParsing="false" onAction="#saveImageAction" text="Bild speichern" />
           <MenuItem fx:id="clearLog" mnemonicParsing="false" onAction="#clearLogAction" text="Log löschen" />
             <CheckMenuItem fx:id="useAssistant" disable="true" mnemonicParsing="false" text="Assistent verwenden" />
         </items>

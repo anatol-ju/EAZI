@@ -87,7 +87,7 @@ public class Serializer {
         return toLoad;
     }
 
-    private void saveXML(Object object, String file) {
+    public void saveXML(Object object, String file) {
         XMLEncoder encoder = null;
         try {
             encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)));
@@ -101,7 +101,7 @@ public class Serializer {
         } // end of try
     }
 
-    private Object loadXML(String file) {
+    public Object loadXML(String file) {
         Object loaded = new Object();
         try (XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)))) {
             loaded = decoder.readObject();

@@ -39,7 +39,7 @@ public class Model {
             List<Fighter> baseList = makeSerializable(fightersList.get(index));
             saveList.add(index, baseList);
         }
-        DataContainer dataContainer = new DataContainer(saveList, fightersList.getListIndex());
+        DataContainer dataContainer = new DataContainer(saveList, fightersList.getSubListIndex());
         Serializer serializer = new Serializer();
         serializer.saveData(dataContainer);
     }
@@ -48,12 +48,12 @@ public class Model {
         FightersList fightersList = new FightersList();
         Serializer serializer = new Serializer();
         DataContainer dataContainer = serializer.loadData();
-        List<List<Fighter>> loadList = dataContainer.getList();
+        List<List<Fighter>> loadList = dataContainer.getFighterList();
         for (int index = 0; index < loadList.size(); index++) {
             SimpleListProperty<Fighter> baseList = new SimpleListProperty<>(makeObservable(loadList.get(index)));
             fightersList.set(index, baseList);
         }
-        fightersList.setListIndex(dataContainer.getFieldIndex());
+        fightersList.setSubListIndex(dataContainer.getFieldIndex());
         //controller.updateModel(fightersList);
     }
 

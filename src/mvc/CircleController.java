@@ -7,10 +7,16 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -77,13 +83,12 @@ public class CircleController implements ChangeListener, ListChangeListener {
         windowSize.addListener(this);
 
         coordinateMap = new HashMap<>();
-        tokenLimit = calcTokenLimit();
 
         // use properties
         settings = Serializer.readConfigFile();
         fields = Integer.parseInt(settings.getProperty("actionCircleFieldCount"));
-
         arcAngle = 360.0/fields;
+        tokenLimit = calcTokenLimit();
 
         updateCanvasSize();
     }
@@ -321,14 +326,15 @@ public class CircleController implements ChangeListener, ListChangeListener {
         Text binText = new Text(Integer.toString(count));
         double width = binText.getBoundsInLocal().getWidth();
         double height = binText.getBoundsInLocal().getHeight();
+        double size = Math.max(width, height);
 
         double x = polar2cartesian(arcRadius / 4, angle).getX();
         double y = polar2cartesian(arcRadius / 4, angle).getY();
 
         gcTokens.setFont(new Font(numberFontSize * 0.8));
         gcTokens.setFill(BIN_FILL_COLOR);
-        gcTokens.strokeRect(x - width / 2, y - height / 2, width, height);
-        gcTokens.strokeText(Integer.toString(count), x - width / 2, y + height / 2);
+        gcTokens.strokeRect(x - size / 2, y - size / 2, size, size);
+        gcTokens.strokeText(Integer.toString(count), x - width / 2, y + height / 3);
     }
 
     /**
@@ -337,25 +343,25 @@ public class CircleController implements ChangeListener, ListChangeListener {
      * The saved coordinates are translated by their respective sizes.
      * If more tokens need to be drawn than space available, remaining tokens
      * are placed in a 'bin' using the <code>drawTokenBin()</code> method.
-     * @param index The index of the arc.
+     * @param arcIndex The index of the arc.
      */
-    private void calcTokenLocations(int index) {
+    private void calcTokenLocations(int arcIndex) {
 
-        List<Fighter> subList = fightersList.subListByIni(index + 1);
+        List<Fighter> subList = fightersList.subListByIni(arcIndex + 1);
 
-        int size = subList.size();
+        int subListSize = subList.size();
 
-        if(size == 0) {
+        if(subListSize == 0) {
             return;
         }
 
-        int count;                              // number of tokens in an arc per row
-        double angle = - index * arcAngle + 90; // starting angle
+        int count;  // number of tokens in an arc per row
+        double angle = - arcIndex * arcAngle + 90; // starting angle
         double tokenRadius = arcRadius * 0.46;
         int current = 0;
 
-        while(size > 0 && current < tokenLimit * 2 - 1) {   // draw only first 2 outer rows
-            count = Math.min(size, tokenLimit);
+        while(subListSize > 0 && current < tokenLimit * 2 - 1) {   // draw only first 2 outer rows
+            count = Math.min(subListSize, tokenLimit);
             for(int ind = 0; ind < count; ind++) {
 
                 double tokenAngle = angle - (arcAngle / (count + 1)) * (ind + 1);
@@ -366,12 +372,12 @@ public class CircleController implements ChangeListener, ListChangeListener {
 
                 current++;
             }
-            size = size - tokenLimit;
+            subListSize = subListSize - tokenLimit;
             tokenRadius = tokenRadius - tokenSize * 2;
         }
 
-        if(size > 0) {
-            drawTokenBin(size, angle - arcAngle / 2);
+        if(subListSize > 0) {
+            drawTokenBin(subListSize, angle - arcAngle / 2);
         }
     }
 
@@ -410,5 +416,11 @@ public class CircleController implements ChangeListener, ListChangeListener {
 
     public void setSettings(Properties settings) {
         this.settings = settings;
+    }
+
+    public WritableImage getImage() {
+        WritableImage img = new WritableImage((int)panel.getWidth(), (int)panel.getHeight());
+        panel.snapshot(null, img);
+        return img;
     }
 }

@@ -25,6 +25,7 @@ public class Main extends Application {
 
         Controller controller = loader.getController();
         controller.setOnKeyPressed(scene);
+        controller.setOwner(primaryStage.getOwner());
 
         primaryStage.show();
     }

@@ -12,9 +12,17 @@ public class FightersList
         implements ListChangeListener {
 
     private boolean isPausedListListener = false;
-    private boolean isInitializing = true;  //TODO try without
-    private int listIndex;  //indicates the current sublist
-    private int maxIni; // highest number for listIndex
+
+    // showing that no actions were done and the current max INI is not final
+    private boolean isInitializing = true;
+
+    // indicator for the currently used sublist and therefore the current INI
+    // of the acting fighter
+    private int subListIndex;
+
+    // the number of sublists (not an index)
+    private int maxIni;
+
     private Properties settings;
 
     public static final ObservableList<Fighter> sortedList =
@@ -26,7 +34,7 @@ public class FightersList
 
         this.settings = Serializer.readConfigFile();
         this.maxIni = Integer.parseInt(settings.getProperty("actionCircleFieldCount"));
-        this.listIndex = maxIni - 1;
+        this.subListIndex = maxIni - 1;
 
         // create a sublist for every INI value
         for (int index = 0; index < maxIni; index++) {
@@ -50,7 +58,7 @@ public class FightersList
 
         this.settings = Serializer.readConfigFile();
         this.maxIni = Integer.parseInt(settings.getProperty("actionCircleFieldCount"));
-        this.listIndex = fightersList.getListIndex();
+        this.subListIndex = fightersList.getSubListIndex();
 
         for (int index = 0; index < maxIni; index++) {
             LinkedList<Fighter> baseList = new LinkedList<>();
@@ -234,16 +242,32 @@ public class FightersList
     }
 
     /**
-     * Updates the fieldIndex field to adjust it to changes due to actions.
+     * Updates the subListIndex field to adjust it to changes due to actions.
+     * It represents the currently used sublist and therefore the current
+     * fighter that is acting.
      */
     private void updateFieldIndex() {
+        /*
+        If no actions were done yet, the whole list must be traversed to
+        include possible new entries with a higher INI than last ones.
+        This is required to make sure that fighters who are added during
+        the fight are last in the order.
+        */
+        if (isInitializing) {
+            for (int ind = maxIni - 1; ind >= 0; ind--) {
+                if (!this.get(ind).isEmpty()) {
+                    subListIndex = ind;
+                    return;
+                }
+            }
+        } else {
+            while (subListIndex >= 0 && this.get(subListIndex).isEmpty()) {
+                subListIndex = subListIndex - 1;
+            }
 
-        while (listIndex >= 0 && this.get(listIndex).isEmpty()) {
-            listIndex = listIndex - 1;
-        }
-
-        if (listIndex < 0) {
-            listIndex = maxIni - 1;
+            if (subListIndex < 0) {
+                subListIndex = maxIni - 1;
+            }
         }
     }
 
@@ -256,13 +280,9 @@ public class FightersList
      */
     public synchronized void updateSortedList() {
         sortedList.clear();
-
-        for (int index = listIndex; index < this.size() + listIndex; index++) {
-            if (index >= maxIni) {
-                sortedList.addAll(this.get(index - this.size()));
-            } else {
-                sortedList.addAll(this.get(index));
-            }
+        // start at current sublist index, make a full round
+        for (int index = 0; index < maxIni; index++) {
+            sortedList.addAll(this.get(evaluateIndex(subListIndex - index)));
         }
     }
 
@@ -273,7 +293,9 @@ public class FightersList
      */
     private int evaluateIndex(int ini) {
         if (ini < 0) {
-            ini = ini + maxIni;
+            while (ini < 0) {
+                ini = ini + maxIni;
+            }
         } else {
             while (ini >= maxIni) {
                 ini = ini - maxIni;
@@ -286,12 +308,12 @@ public class FightersList
         return this.get(ini - 1);
     }
 
-    public int getListIndex() {
-        return this.listIndex;
+    public int getSubListIndex() {
+        return this.subListIndex;
     }
 
-    public void setListIndex(int listIndex) {
-        this.listIndex = listIndex;
+    public void setSubListIndex(int subListIndex) {
+        this.subListIndex = subListIndex;
     }
 
     /**

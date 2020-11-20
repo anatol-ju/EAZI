@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.SelectionModel;
+import javafx.stage.Window;
 
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -21,6 +22,8 @@ public class Controller implements ListChangeListener {
     private FightersList fightersList;
 
     private Properties settings;
+
+    private Window owner;
 
     @FXML
     private ListController listController;
@@ -39,7 +42,7 @@ public class Controller implements ListChangeListener {
     @FXML
     private void initialize() {
 
-        synchronized (new Object()) {
+        synchronized (this) {
             // make a new model
             model = new Model(this);
 
@@ -164,7 +167,7 @@ public class Controller implements ListChangeListener {
         return this.menuController;
     }
 
-    public List<SimpleListProperty<Fighter>> getFightersList() {
+    public FightersList getFightersList() {
         return fightersList;
     }
 
@@ -182,5 +185,13 @@ public class Controller implements ListChangeListener {
 
     public Properties getSettings() {
         return this.settings;
+    }
+
+    public void setOwner(Window owner) {
+        this.owner = owner;
+    }
+
+    public Window getOwner() {
+        return this.owner;
     }
 }
