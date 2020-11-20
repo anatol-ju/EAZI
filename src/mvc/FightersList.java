@@ -46,6 +46,24 @@ public class FightersList
         }
     }
 
+    public FightersList(int size) {
+
+        super();
+
+        this.settings = Serializer.readConfigFile();
+        this.maxIni = size;
+        this.subListIndex = maxIni - 1;
+
+        // create a sublist for every INI value
+        for (int index = 0; index < maxIni; index++) {
+            LinkedList<Fighter> baseList = new LinkedList<>();
+            ObservableList<Fighter> subList = FXCollections.synchronizedObservableList(
+                    FXCollections.observableList(baseList));
+            subList.addListener(this);
+            this.add(new SimpleListProperty<>(subList));
+        }
+    }
+
     /**
      * Make a new instance using another FightersList object as base.
      * @param fightersList A FightersList object containing the base values.

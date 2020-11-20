@@ -122,12 +122,13 @@ public class MenuController implements ListChangeListener {
         DataContainer data = new DataContainer();
         FightersList fl = controller.getFightersList();
 
+        // copy the FightersList instance into common List
         List<List<Fighter>> list = new ArrayList<>(fl.size());
 
-        for (int index = 0; index < list.size(); index++) {
-            List<Fighter> sublist = new ArrayList<>(list.get(index).size());
+        for (int index = 0; index < fl.size(); index++) {
+            List<Fighter> sublist = new ArrayList<>(fl.get(index).size());
             list.add(index, sublist);
-            for (int ind = 0; ind < sublist.size(); ind++) {
+            for (int ind = 0; ind < fl.get(index).size(); ind++) {
                 sublist.add(ind, fl.get(index).get(ind));
             }
         }
@@ -151,7 +152,38 @@ public class MenuController implements ListChangeListener {
     }
 
     public void loadWindowAction() {
+        Serializer serializer = new Serializer();
+        DataContainer data = null;
 
+        File file = null;
+        FileChooser fc = new FileChooser();
+        file = fc.showOpenDialog(controller.getOwner());
+
+        if (file != null) {
+            try {
+                String canonicalPath;
+                canonicalPath = file.getCanonicalPath();
+                data = (DataContainer)serializer.loadXML(canonicalPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // copy data into new FightersList
+        if (data != null) {
+            List<List<Fighter>> list = data.getFighterList();
+            FightersList fl = new FightersList(list.size());
+
+            for (int index = 0; index < list.size(); index++) {
+                for (int ind = 0; ind < list.get(index).size(); ind++) {
+                    fl.get(index).add(ind, list.get(index).get(ind));
+                }
+            }
+
+            // update the model
+            fl.setSubListIndex(data.getFieldIndex());
+            controller.updateModel(fl);
+        }
     }
 
     public void closeAction() {
@@ -244,6 +276,7 @@ public class MenuController implements ListChangeListener {
     }
 
     public void clearLogAction() {
+        controller.getLogController().clearLog(0);
     }
 
     public void saveFighterAction() {

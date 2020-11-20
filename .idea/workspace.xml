@@ -11,15 +11,9 @@
   <component name="ChangeListManager">
     <list default="true" id="a8b18af6-fbb2-4074-a7c7-ef8d2f399183" name="Default Changelist" comment="Updated language files and added function to create a random number for INI in the dialog panel.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mvc/CircleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/CircleController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mvc/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mvc/DataContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/DataContainer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/mvc/FightersList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/FightersList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mvc/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mvc/LogController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/LogController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/mvc/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/MenuController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mvc/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/Model.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mvc/Serializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/Serializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mvc/ViewOfMenu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/mvc/ViewOfMenu.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,22 +177,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="154" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1602792109658" />
-    <state width="1478" height="207" key="GridCell.Tab.0.bottom" timestamp="1605812399840">
+    <state width="1478" height="207" key="GridCell.Tab.0.bottom" timestamp="1605884700632">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1478" height="207" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1605812399840" />
-    <state width="1478" height="207" key="GridCell.Tab.0.center" timestamp="1605812399840">
+    <state width="1478" height="207" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1605884700632" />
+    <state width="1478" height="207" key="GridCell.Tab.0.center" timestamp="1605884700632">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1478" height="207" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1605812399840" />
-    <state width="1478" height="207" key="GridCell.Tab.0.left" timestamp="1605812399840">
+    <state width="1478" height="207" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1605884700632" />
+    <state width="1478" height="207" key="GridCell.Tab.0.left" timestamp="1605884700632">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1478" height="207" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1605812399840" />
-    <state width="1478" height="207" key="GridCell.Tab.0.right" timestamp="1605812399840">
+    <state width="1478" height="207" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1605884700632" />
+    <state width="1478" height="207" key="GridCell.Tab.0.right" timestamp="1605884700632">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1478" height="207" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1605812399840" />
+    <state width="1478" height="207" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1605884700632" />
     <state width="1478" height="258" key="GridCell.Tab.1.bottom" timestamp="1605812399840">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -247,13 +241,13 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="469" y="160" key="refactoring.ChangeSignatureDialog/0.0.1536.824@0.0.1536.824" timestamp="1602082690282" />
-    <state x="425" y="187" key="run.anything.popup" timestamp="1605812291649">
+    <state x="425" y="187" key="run.anything.popup" timestamp="1605881351872">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1605812291649" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1602791626262">
+    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1605881351872" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1605881068350">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1602791626262" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1605881068350" />
   </component>
 </project>

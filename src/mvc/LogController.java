@@ -95,6 +95,32 @@ public class LogController {
 
     }
 
+    /**
+     * Deletes text from the log.
+     * @param linesToDelete Number of lines to be deleted, starting from last one.
+     *              Set to 0 to delete all text.
+     */
+    public void clearLog(int linesToDelete) {
+        if (linesToDelete < 0) return;
+        if (linesToDelete == 0) {
+            textPanel.clear();
+        } else {
+            // count lines by splitting at '\n'
+            String text = textPanel.getText();
+            String[] content = text.split("\n");
+            int lineCount = content.length;
+            // make sure there are enough lines
+            if (lineCount < linesToDelete) return;
+
+            int charCount = 0;
+            for (int line = lineCount - 1; line > linesToDelete; line--) {
+                charCount += content[line].length() + 2;    // includes '\n'
+            }
+
+            textPanel.setText(text.substring(0, text.length() - charCount - 1));
+        }
+    }
+
     public void setModel(Model model) {
         this.model = model;
     }
