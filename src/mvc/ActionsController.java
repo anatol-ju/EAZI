@@ -1,6 +1,10 @@
 package mvc;
 
+import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -10,6 +14,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 import javafx.util.converter.NumberStringConverter;
 
 import java.util.*;
@@ -27,8 +33,13 @@ public class ActionsController implements ChangeListener {
     private FightersList fightersList;
 
     private int actionMod;
+    private double fontSize;
     private ResourceBundle rb;
 
+    @FXML
+    private TitledPane actionTitledPane;
+    @FXML
+    private GridPane actionGridPane;
     @FXML
     private Button attack;
     @FXML
@@ -86,8 +97,10 @@ public class ActionsController implements ChangeListener {
         ToggleGroup toggleGroup = new ToggleGroup();
         toggleGroup.getToggles().addAll(useMagic, aim, longAction, otherAction);
 
-        rb = ResourceBundle.getBundle("locales.Main", Locale.getDefault());
+        rb = ResourceBundle.getBundle("locales.ActionController", Locale.getDefault());
         String ap = rb.getString("actionPoints");
+
+        actionTitledPane.setText(rb.getString("title"));
 
         ToggleGroup extraRange = new ToggleGroup();
         extraRange.getToggles().addAll(more, less);
@@ -106,6 +119,13 @@ public class ActionsController implements ChangeListener {
 
         setDisableGroup(actionControls, true);
         setDisableGroup(reactionControls, true);
+
+        actionGridPane.heightProperty().addListener((observable, oldValue, newValue) -> {
+            Platform.runLater(() -> {
+                fontSize = newValue.doubleValue() / 43;
+                resizeControlsText();
+            });
+        });
 
         //selectedIndex.addListener(this);
     }
@@ -146,8 +166,9 @@ public class ActionsController implements ChangeListener {
 
     /**
      * Set all tooltips for all controls.
+     * The actual text is found in <code>locales.ActionTooltips</code>.
      */
-    private void setTooltips() {    // TODO set locales
+    private void setTooltips() {
 
         ResourceBundle rbt = ResourceBundle.getBundle("locales.ActionTooltips", Locale.getDefault());
         attack.setTooltip(new Tooltip(rbt.getString("attack")));
@@ -179,8 +200,10 @@ public class ActionsController implements ChangeListener {
     }
 
     /**
-     * Definiert Controls, die nur für den agierenden Teilnehmer
-     * verfügbar sind.
+     * Defines controls, that are only available for the currently
+     * acting participant. The members of this group will be set to
+     * inactive for any selected participant, that is not the first
+     * in the list of fighters.
      */
     private void setActionsGroup() {
         actionControls.add(attack);
@@ -207,8 +230,9 @@ public class ActionsController implements ChangeListener {
     }
 
     /**
-     * Definiert Controls, die auch für nicht-agierende
-     * Teilnehmer verfügbar sind.
+     * Defines a group of controls that are available, if the selected
+     * participant is not the first in the list. Members of this group
+     * can only use reactive actions.
      */
     private void setReactionsGroup() {
         reactionControls.add(parry);
@@ -225,6 +249,13 @@ public class ActionsController implements ChangeListener {
         reactionControls.add(freeAction);
     }
 
+    /**
+     * Sets the disabled or enabled state for a group of controls.
+     * @param group A <code>List</code> of controls with the state to be changed.
+     * @param isDisabled Set to <code>true</code> if the controls in the
+     *                   group needs to be disabled ot <code>false</code> if
+     *                   they need to be enabled.
+     */
     private void setDisableGroup(List<Control> group, boolean isDisabled) {
         for (Control control : group) {
             control.setDisable(isDisabled);
@@ -234,11 +265,10 @@ public class ActionsController implements ChangeListener {
     // Action Events
 
     /**
-     * Führt die eigentliche Aktion durch. Dazu wird die Funktion der Liste
-     * mit den Parametern aufgerufen, die für die einzelnen Aktionen festgelegt
-     * wurden. Zusätzlich wird der LogController über die Handlung informiert.
-     * @param range
-     * @param actionPerformed
+     * This method is responsible for the action itself.
+     * It calls the responsible controllers and forwards information if needed.
+     * @param range The value to substract from the INI, aka Action Points.
+     * @param actionPerformed A string representation of the action.
      */
     private void action(int range, String actionPerformed) {
 
@@ -499,6 +529,34 @@ public class ActionsController implements ChangeListener {
         }
     }
 
+    private void resizeControlsText() {
+
+        for (Control control : actionControls) {
+            if (control instanceof Button) {
+                Button control1 = (Button) control;
+                control1.setFont(Font.font(fontSize));
+            } else if (control instanceof ToggleButton) {
+                ToggleButton control1 = (ToggleButton) control;
+                control1.setFont(Font.font(fontSize));
+            } else if (control instanceof TextField) {
+                TextField control1 = (TextField) control;
+                control1.setFont(Font.font(fontSize));
+            }
+        }
+        for (Control control : reactionControls) {
+            if (control instanceof Button) {
+                Button control1 = (Button) control;
+                control1.setFont(Font.font(fontSize));
+            } else if (control instanceof ToggleButton) {
+                ToggleButton control1 = (ToggleButton) control;
+                control1.setFont(Font.font(fontSize));
+            } else if (control instanceof TextField) {
+                TextField control1 = (TextField) control;
+                control1.setFont(Font.font(fontSize));
+            }
+        }
+    }
+
     // getter und setter
 
     public void setModel(Model model) {
@@ -507,10 +565,6 @@ public class ActionsController implements ChangeListener {
 
     public void setController(Controller controller) {
         this.controller = controller;
-    }
-
-    public void updateView(ListOfFighters list) {
-
     }
 
     public void setFightersList(FightersList fightersList) {

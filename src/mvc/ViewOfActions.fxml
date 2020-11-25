@@ -7,9 +7,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TitledPane animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="568.0" minWidth="200.0" prefHeight="550.0" prefWidth="250.0" text="Handlungen" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mvc.ActionsController">
+<TitledPane fx:id="actionTitledPane" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="568.0" minWidth="200.0" prefHeight="550.0" prefWidth="250.0" text="Handlungen" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mvc.ActionsController">
    <content>
-      <GridPane hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="20.0">
+      <GridPane fx:id="actionGridPane" hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="20.0">
         <columnConstraints>
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="50.0" prefWidth="100.0" />
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="50.0" prefWidth="100.0" />
@@ -52,7 +52,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </Button>
-            <Button fx:id="dodge" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#dodgeAction" text="%parry" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Button fx:id="dodge" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#dodgeAction" text="%dodge" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
@@ -98,11 +98,11 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <RadioButton fx:id="aim" mnemonicParsing="false" onAction="#aimAction" text="%aim" />
-                  <RadioButton fx:id="useMagic" mnemonicParsing="false" onAction="#useMagicAction" text="%useMagic" GridPane.rowIndex="1" />
-                  <RadioButton fx:id="longAction" mnemonicParsing="false" onAction="#longActionAction" text="%longAction" GridPane.rowIndex="2" />
+                   <RadioButton fx:id="aim" mnemonicParsing="false" onAction="#aimAction" text="%aim" GridPane.rowIndex="0"/>
+                   <RadioButton fx:id="useMagic" mnemonicParsing="false" onAction="#useMagicAction" text="%useMagic" GridPane.rowIndex="1" />
+                   <RadioButton fx:id="longAction" mnemonicParsing="false" onAction="#longActionAction" text="%longAction" GridPane.rowIndex="2" />
                    <RadioButton fx:id="otherAction" mnemonicParsing="false" onAction="#otherActionAction" text="%otherAction" GridPane.rowIndex="3" />
-               </children>
+                  </children>
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>

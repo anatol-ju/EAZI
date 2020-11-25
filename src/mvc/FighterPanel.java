@@ -25,8 +25,6 @@ public class FighterPanel extends ListCell<Fighter> {
     @FXML
     private Label iniLabel;
     @FXML
-    private Label statusLabel;
-    @FXML
     private Pane leftPane;
     @FXML
     private Pane upperPane;
@@ -35,6 +33,11 @@ public class FighterPanel extends ListCell<Fighter> {
     @FXML
     private Pane rightPane;
 
+    /**
+     * Manages the function of the customized area that represents the
+     * participant in the list of fighters.
+     * To modify the appearance edit the FXML file.
+     */
     public FighterPanel() {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FighterPanel.fxml"));
@@ -54,7 +57,6 @@ public class FighterPanel extends ListCell<Fighter> {
 
         if(item != null && !empty) {
             nameLabel.setText(item.getName());
-            statusLabel.setText("");
             iniLabel.setText("INI: " + String.valueOf(item.getIni()));
 
             Color color;

@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 public class MenuController implements ListChangeListener {
@@ -277,6 +278,24 @@ public class MenuController implements ListChangeListener {
 
     public void clearLogAction() {
         controller.getLogController().clearLog(0);
+    }
+
+    /**
+     * Used to delete the settings file and the folder that contains it.
+     */
+    public void deleteSettingsFileAction() {
+        ConfirmDialog cd = new ConfirmDialog("Are you sure to delete the configurations\n" +
+                "file from your computer?");
+        Optional<Boolean> b = cd.showAndWait();
+        if (b.isPresent() && b.get()) {
+            File file = ConfigContainer.getSettingsFilePath().toFile();
+            file.deleteOnExit();
+            file = file.getParentFile();
+            if (file.isDirectory()) {
+                file.deleteOnExit();
+            }
+            new InfoDialog("The file will be deleted after the application is closed.").showAndWait();
+        }
     }
 
     public void saveFighterAction() {

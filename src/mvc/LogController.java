@@ -1,8 +1,10 @@
 package mvc;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
+import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.util.LinkedList;
@@ -30,6 +32,13 @@ public class LogController {
 
         textPanel.setText(logMessageFactory.getRandomMessage("init") + "\n");
 
+        // adjust the font size according to panel size
+        textPanel.heightProperty().addListener((observable, oldValue, newValue) -> {
+            Platform.runLater(() -> {
+                textPanel.setFont(Font.font(newValue.doubleValue() / 12));
+            });
+        });
+
     }
 
     public void action(Fighter fighter, String actionPerformed) {
@@ -48,7 +57,6 @@ public class LogController {
             String message = " " + logMessageFactory.getRandomMessage(actionPerformed);
             String change = " [ INI " + fighter.getPreviousIni() + " -> " + fighter.getIni() + " ]\n";
 
-            String fullText = textPanel.getText();
             String actionText = name + message;
 
             if (actionPerformed.equals("join")) {
@@ -57,18 +65,12 @@ public class LogController {
                 actionText = actionText + change;
             }
 
-            fullText = fullText + actionText;
-
-            textPanel.setText(fullText);
-
-            textPanel.layout();
-            textPanel.setScrollTop(textPanel.getHeight());
+            textPanel.appendText(actionText);
 
             undoPointer = undoPointer + 1;
             undoList.subList(undoPointer, undoList.size()).clear();
             undoList.add(undoPointer, actionText);
         }
-
     }
 
     public void undoAction() {
@@ -127,9 +129,5 @@ public class LogController {
 
     public void setController(Controller controller) {
         this.controller = controller;
-    }
-
-    public void updateView(ListOfFighters list) {
-
     }
 }

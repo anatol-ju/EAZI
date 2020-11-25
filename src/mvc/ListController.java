@@ -1,5 +1,6 @@
 package mvc;
 
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -12,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -61,6 +63,18 @@ public class ListController implements ChangeListener {
         selectedIndex.addListener(this);
 
         titledPane.setText(rb.getString("title"));
+        buttonNew.setText(rb.getString("buttonNew"));
+        buttonEdit.setText(rb.getString("buttonEdit"));
+        buttonRemove.setText(rb.getString("buttonRemove"));
+
+        // adjust the font size according to panel size
+        titledPane.heightProperty().addListener((observable, oldValue, newValue) -> {
+            Platform.runLater(() -> {
+                buttonNew.setFont(Font.font(newValue.doubleValue() / 48));
+                buttonEdit.setFont(Font.font(newValue.doubleValue() / 48));
+                buttonRemove.setFont(Font.font(newValue.doubleValue() / 48));
+            });
+        });
     }
 
     @Override
@@ -91,17 +105,12 @@ public class ListController implements ChangeListener {
         return textArea;
     }
 
+    /**
+     * Creates a new Fighter object using the <code>SelectionDialog</code> dialog.
+     * @param actionEvent Not used.
+     */
     public void makeNewFighter(ActionEvent actionEvent) {
         try {
-            /*
-            EditFighterDialog efd = new EditFighterDialog();
-            efd.display(null);
-            if (fightersList.addFighter(efd.getFighter())) {
-                controller.getMenuController().action();
-                controller.getLogController().action(efd.getFighter(), "join");
-            }
-
-             */
             SelectionDialog sd = new SelectionDialog();
             Optional<Fighter> returned = sd.showAndWait();
             if (returned.isPresent() && fightersList.addFighter(returned.get())) {
@@ -113,9 +122,13 @@ public class ListController implements ChangeListener {
         }
         System.out.println(listView.getItems());
         listView.refresh();
-
     }
 
+    /**
+     * Edit data from a Fighter object using the given instance.
+     * If the fighters affiliation changes, the returned object is a new instance.
+     * @param actionEvent Not used.
+     */
     public void editFighter(ActionEvent actionEvent) {
         try {
             toReturn = listView.getSelectionModel().getSelectedItem();
@@ -123,6 +136,9 @@ public class ListController implements ChangeListener {
             SelectionDialog sd = new SelectionDialog(toReturn);
             Optional<Fighter> returned = sd.showAndWait();
             if (returned.isPresent()) {
+                if (returned.get() != toReturn) {
+                    fightersList.removeFighter(toReturn);
+                }
                 fightersList.updateSubLists(returned.get());
                 controller.getMenuController().action();
                 controller.getLogController().action(returned.get(), "bearbeitet");
@@ -136,6 +152,10 @@ public class ListController implements ChangeListener {
         controller.getCircleController().placeTokens();
     }
 
+    /**
+     * Remove the Fighter object from the list.
+     * @param actionEvent Not used.
+     */
     public void removeFighter(ActionEvent actionEvent) {
         Fighter selectedFighter;
         try {
@@ -155,6 +175,10 @@ public class ListController implements ChangeListener {
         listView.refresh();
     }
 
+    /**
+     * Use this function to register any key event handlers to the given scene.
+     * @param scene Scene that listens to the assigned keys.
+     */
     public void setKeyEventHandlers(Scene scene) {
         scene.addEventHandler(KeyEvent.KEY_PRESSED, this::setHandler);
     }

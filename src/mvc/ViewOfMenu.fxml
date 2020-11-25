@@ -22,6 +22,7 @@
         <items>
             <MenuItem fx:id="saveImage" mnemonicParsing="false" onAction="#saveImageAction" text="Bild speichern" />
           <MenuItem fx:id="clearLog" mnemonicParsing="false" onAction="#clearLogAction" text="Log löschen" />
+            <MenuItem mnemonicParsing="false" onAction="#deleteSettingsFileAction" text="Config Datei löschen" />
             <CheckMenuItem fx:id="useAssistant" disable="true" mnemonicParsing="false" text="Assistent verwenden" />
         </items>
       </Menu>

@@ -173,7 +173,7 @@ public class FightersList
     /**
      * Updates sublists by moving a given Fighter object from one to another.
      * The INI value is being updated during this method's call.
-     * @param fighter The Object to be moved in between the lists.
+     * @param fighter The object to be moved in between the lists.
      */
     public void updateSubLists(Fighter fighter) {
 
@@ -204,12 +204,14 @@ public class FightersList
      * This method is responsible to make actions work.
      * This is done by reducing the INI value of the given Fighter object
      * by a given number and saves old INI value. INI can get less than zero.
-     * @param fighter The object that acts.
+     * @param fighter The participant that acts.
      * @param range The value to 'move', also known as Action Points.
      */
     public void action(Fighter fighter, int range) {
-        if (range > 0) {
-            int ini = fighter.getIni();
+        int ini = fighter.getIni();
+        if (range == 0) {
+            fighter.setPreviousIni(ini);
+        } else if (range > 0) {
             fighter.setPreviousIni(ini);
             ini = ini - range;
             fighter.setIni(ini);

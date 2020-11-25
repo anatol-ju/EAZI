@@ -21,10 +21,8 @@ public class LogMessageFactory {
     }
 
     public String getRandomMessage(String identifier) {
-        List<String> list = Arrays.asList(data.get(identifier));    // TODO NPE when action
+        List<String> list = Arrays.asList(data.get(identifier));
         Collections.shuffle(list);
-
         return list.get(0);
     }
-
 }

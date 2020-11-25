@@ -14,9 +14,9 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
- * Diese Klasse kann dazu verwendet werden Daten zu serialisieren und zu
- * deserialisieren. Dabei übernehmen die Methoden alle Funktionen, wie zum
- * Beispiel das Öffnen von Dialogen zum Auswählen der Speicherorte.
+ * This class contains methods to serialize objects.
+ * It includes support for <code>Fighter</code>, <code>DataContainer</code> and
+ * any <code>Object</code>.
  */
 public class Serializer {
 
@@ -59,6 +59,10 @@ public class Serializer {
         return toLoad;
     }
 
+    /**
+     * Save the Fighter object in a XML file.
+     * @param toSave The Fighter object to be saved.
+     */
     public void saveFighter(Fighter toSave) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(rb.getString("saveParticipant"));
@@ -72,6 +76,10 @@ public class Serializer {
         }
     }
 
+    /**
+     * Loading saved Fighter object using XML files.
+     * @return The Fighter Object contained in the saved file.
+     */
     public Fighter loadFighter() {
         Fighter toLoad = null;
         FileChooser fileChooser = new FileChooser();
@@ -87,7 +95,12 @@ public class Serializer {
         return toLoad;
     }
 
-    public void saveXML(Object object, String file) {
+    /**
+     * Function to save any object into a XML file. FileChooser not included.
+     * @param object The serializable object to save.
+     * @param file The string representation of the file path, including file name.
+     */
+    public synchronized void saveXML(Object object, String file) {
         XMLEncoder encoder = null;
         try {
             encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)));
@@ -95,13 +108,19 @@ public class Serializer {
         } catch(IOException e) {
             new InfoDialog(rb.getString("errorSave")).showAndWait();
         } finally {
-            if (encoder != null)
+            if (encoder != null) {
                 encoder.flush();
-            encoder.close();
+                encoder.close();
+            }
         } // end of try
     }
 
-    public Object loadXML(String file) {
+    /**
+     * Function to load a XML file data into an object. FileChooser not included.
+     * @param file The path to the file, including the file name.
+     * @return Object containing the data from the XML file. Must be casted to the required object.
+     */
+    public synchronized Object loadXML(String file) {
         Object loaded = new Object();
         try (XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)))) {
             loaded = decoder.readObject();
@@ -114,8 +133,8 @@ public class Serializer {
     /**
      * Write settings properties into a file.
      * Default directory is defined in <code>ConfigContainer.java</code>.
-     * @param properties the Properties object to write
-     * @param comment the comment to write
+     * @param properties The Properties object to write.
+     * @param comment The comment to write.
      */
     public static synchronized void writeConfigFile(Properties properties, String comment) {
         Path file = Paths.get(ConfigContainer.getSettingsFilePath().toString());
@@ -151,9 +170,9 @@ public class Serializer {
 
     /**
      * Changes the value of a specified key in the configurations file.
-     * @param key parameter key to change.
-     * @param value corresponding value to the key.
-     * @param comment include a comment, use empty string if not required.
+     * @param key Parameter key to change.
+     * @param value Corresponding value to the key.
+     * @param comment Include a comment, use empty string if not required.
      */
     public static void editConfig(String key, String value, String comment) {
         Properties prp = readConfigFile();
