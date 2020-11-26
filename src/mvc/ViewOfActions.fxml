@@ -98,7 +98,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                   <RadioButton fx:id="aim" mnemonicParsing="false" onAction="#aimAction" text="%aim" GridPane.rowIndex="0"/>
+                   <RadioButton fx:id="aim" mnemonicParsing="false" onAction="#aimAction" text="%aim" GridPane.rowIndex="0" />
                    <RadioButton fx:id="useMagic" mnemonicParsing="false" onAction="#useMagicAction" text="%useMagic" GridPane.rowIndex="1" />
                    <RadioButton fx:id="longAction" mnemonicParsing="false" onAction="#longActionAction" text="%longAction" GridPane.rowIndex="2" />
                    <RadioButton fx:id="otherAction" mnemonicParsing="false" onAction="#otherActionAction" text="%otherAction" GridPane.rowIndex="3" />
@@ -151,12 +151,12 @@
                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                  </GridPane.margin>
              </Button>
-            <ToggleButton fx:id="more" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="+ 3 AkP" GridPane.rowIndex="9">
+            <ToggleButton fx:id="more" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#moreAction" text="+ 3 AkP" GridPane.rowIndex="9">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </ToggleButton>
-            <ToggleButton fx:id="less" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="- 3 AkP" GridPane.columnIndex="1" GridPane.rowIndex="9">
+            <ToggleButton fx:id="less" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#lessAction" text="- 3 AkP" GridPane.columnIndex="1" GridPane.rowIndex="9">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>

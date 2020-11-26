@@ -1,4 +1,2 @@
 TODO model, view, controller sortieren in mvc.model etc.
 TODO Action-Buttons abhängig von Auswahl anzeigen/auslenden
-TODO scale button text with button size
-TODO build function for +-3 buttons

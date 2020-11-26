@@ -1,10 +1,7 @@
 package mvc;
 
 import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -32,6 +29,7 @@ public class ActionsController implements ChangeListener {
     private SelectionModel selectionModel;
     private FightersList fightersList;
 
+    private int unarmedMod;
     private int actionMod;
     private double fontSize;
     private ResourceBundle rb;
@@ -105,10 +103,13 @@ public class ActionsController implements ChangeListener {
         ToggleGroup extraRange = new ToggleGroup();
         extraRange.getToggles().addAll(more, less);
 
-        ObservableList<String> modList = FXCollections.observableList(
-                Arrays.asList("-3 "+ap, "-2 "+ap, "-1 "+ap, "0 "+ap, "+1 "+ap, "+2 "+ap, "+3 "+ap));
+        ObservableList<String> modList = FXCollections.observableList(Arrays.asList(makeComboBoxList()));
         mod.setItems(modList);
         mod.getSelectionModel().select(3);
+
+        int modValue = Integer.parseInt(Serializer.readConfigFile().getProperty("actionCircleFieldCount")) / 4;
+        more.setText("+ " + modValue);
+        less.setText("- " + modValue);
 
         setTooltips();
 
@@ -275,14 +276,25 @@ public class ActionsController implements ChangeListener {
         Fighter fighter = (Fighter) selectionModel.getSelectedItem();
 
         if (fighter != null && range >= 0) {
-            fightersList.action(fighter, range);
-            controller.getLogController().action(fighter, actionPerformed);
-            controller.getMenuController().action();
-            controller.getListController().getListView().refresh();
+            int effRange = range + actionMod;
+            if (effRange > 0 && effRange < Integer.parseInt(controller.getSettings().getProperty("actionCircleFieldCount"))) {
+                fightersList.action(fighter, range + actionMod);
+                controller.getLogController().action(fighter, actionPerformed);
+                controller.getMenuController().action();
+                controller.getListController().getListView().refresh();
+            } else {
+                new InfoDialog(rb.getString("errorRange")).showAndWait();
+            }
         }
         if(range < 0) {
             ResourceBundle rbd = ResourceBundle.getBundle("locales.OtherDialog", Locale.getDefault());
             new InfoDialog(rbd.getString("infoValuesGreaterZero")).showAndWait();
+        }
+        if (more.isSelected()) {
+            more.setSelected(false);
+        }
+        if (less.isSelected()) {
+            less.setSelected(false);
         }
     }
 
@@ -309,17 +321,30 @@ public class ActionsController implements ChangeListener {
         return 0;
     }
 
+    private String[] makeComboBoxList() {
+        // one quarter of the max INI for +mod and -mod, also count 0
+        // gives MAX / 4 * 2 + 1 = list size
+        int maxIniQuarter = Integer.parseInt(Serializer.readConfigFile().getProperty("actionCircleFieldCount")) / 4;
+
+        // fill string array with values [- max, ..., 0, max]
+        String[] list = new String[maxIniQuarter * 2 + 1];
+        for (int index = 0; index < list.length; index++) {
+            list[index] = String.valueOf(index - maxIniQuarter);
+        }
+        return list;
+    }
+
     public void attackAction() {
         int range = 6 + ((Fighter)selectionModel.getSelectedItem()).getModAT() +
                 mod.getSelectionModel().getSelectedIndex() - 3 +
-                actionMod;
+                unarmedMod;
         action(range, "attack");
     }
 
     public void attack2Action() {
         int range = 9 + ((Fighter)selectionModel.getSelectedItem()).getModAT() +
                 mod.getSelectionModel().getSelectedIndex() - 3 +
-                actionMod;
+                unarmedMod;
         action(range, "attack2");
     }
 
@@ -442,7 +467,7 @@ public class ActionsController implements ChangeListener {
         } else {
             mod = 0;
         }
-        actionMod = mod;
+        unarmedMod = mod;
     }
 
     public void freeActionAction() {
@@ -472,6 +497,24 @@ public class ActionsController implements ChangeListener {
         int current = mod.getSelectionModel().getSelectedIndex();
         if (current > 0) {
             mod.getSelectionModel().select(current - 1);
+        }
+    }
+
+    public void moreAction() {
+        if (more.isSelected()) {
+            less.setSelected(false);
+            actionMod = Integer.parseInt(controller.getSettings().getProperty("actionCircleFieldCount")) / 4;
+        } else {
+            actionMod = 0;
+        }
+    }
+
+    public void lessAction() {
+        if (less.isSelected()) {
+            more.setSelected(false);
+            actionMod = - Integer.parseInt(controller.getSettings().getProperty("actionCircleFieldCount")) / 4;
+        } else {
+            actionMod = 0;
         }
     }
 

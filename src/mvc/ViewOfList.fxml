@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
@@ -8,7 +9,7 @@
 
 <TitledPane fx:id="titledPane" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="568.0" minWidth="200.0" prefHeight="718.0" prefWidth="273.0" text="Teilnehmer" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mvc.ListController">
    <content>
-      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+      <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
          <children>
             <ListView fx:id="listView" VBox.vgrow="ALWAYS" />
             <GridPane alignment="CENTER" hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="5.0" VBox.vgrow="SOMETIMES">
@@ -25,6 +26,9 @@
                   <Button fx:id="buttonEdit" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editFighter" text="Bearbeiten" textAlignment="CENTER" GridPane.columnIndex="1" />
                   <Button fx:id="buttonRemove" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#removeFighter" text="Löschen" textAlignment="CENTER" GridPane.columnIndex="2" />
                </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </GridPane>
          </children>
       </VBox>

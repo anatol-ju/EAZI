@@ -73,6 +73,7 @@ public class ListController implements ChangeListener {
                 buttonNew.setFont(Font.font(newValue.doubleValue() / 48));
                 buttonEdit.setFont(Font.font(newValue.doubleValue() / 48));
                 buttonRemove.setFont(Font.font(newValue.doubleValue() / 48));
+                ((TextArea)listView.getPlaceholder()).setFont(Font.font(newValue.doubleValue() / 48));
             });
         });
     }
