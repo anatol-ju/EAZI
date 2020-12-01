@@ -55,14 +55,16 @@ public class LogController {
 
             String name = fighter.getName();
             String message = " " + logMessageFactory.getRandomMessage(actionPerformed);
-            String change = " [ INI " + fighter.getPreviousIni() + " -> " + fighter.getIni() + " ]\n";
+            String changeOpen = " [ INI ";
+            String changeSeparator = " -> ";
+            String changeClose = " ]\n";
 
             String actionText = name + message;
 
-            if (actionPerformed.equals("join")) {
-                actionText = actionText + " [ INI: " + fighter.getIni() + " ]\n";
-            } else if (!actionPerformed.equals("leave")) {
-                actionText = actionText + change;
+            if (actionPerformed.equals("join") || actionPerformed.equals("leave")) {
+                actionText += changeOpen + fighter.getIni() + changeClose;
+            } else {
+                actionText += changeOpen + fighter.getPreviousIni() + changeSeparator + fighter.getIni() + changeClose;
             }
 
             textPanel.appendText(actionText);
