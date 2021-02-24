@@ -26,7 +26,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
-         <children>
+
             <Button fx:id="attack" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#attackAction" text="%attack" GridPane.hgrow="SOMETIMES" GridPane.vgrow="SOMETIMES">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -97,12 +97,12 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
-               <children>
+
                    <RadioButton fx:id="aim" mnemonicParsing="false" onAction="#aimAction" text="%aim" GridPane.rowIndex="0" />
                    <RadioButton fx:id="useMagic" mnemonicParsing="false" onAction="#useMagicAction" text="%useMagic" GridPane.rowIndex="1" />
                    <RadioButton fx:id="longAction" mnemonicParsing="false" onAction="#longActionAction" text="%longAction" GridPane.rowIndex="2" />
                    <RadioButton fx:id="otherAction" mnemonicParsing="false" onAction="#otherActionAction" text="%otherAction" GridPane.rowIndex="3" />
-                  </children>
+
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
@@ -161,7 +161,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </ToggleButton>
-         </children>
+
       </GridPane>
    </content>
 </TitledPane>

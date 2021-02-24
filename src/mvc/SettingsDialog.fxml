@@ -7,8 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<BorderPane fx:id="settingsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="settingsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
       <VBox alignment="CENTER" prefHeight="25.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -22,107 +21,124 @@
       </VBox>
    </bottom>
    <center>
-      <VBox BorderPane.alignment="CENTER">
-         <children>
-            <HBox>
-               <children>
-                  <VBox alignment="CENTER" prefWidth="200.0" spacing="10.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label text="Allgemeine Einstellungen">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Separator prefWidth="200.0">
-                           <VBox.margin>
-                              <Insets bottom="10.0" />
-                           </VBox.margin>
-                        </Separator>
-                        <HBox alignment="CENTER" spacing="10.0">
+      <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab text="Allgemein">
+               <content>
+                  <BorderPane>
+                     <left>
+                        <VBox prefWidth="400.0" spacing="20.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Label text="Felder im Aktionskreis" />
-                              <Pane HBox.hgrow="ALWAYS" />
-                              <ChoiceBox fx:id="actionCircleFieldCount" prefWidth="100.0" />
+                              <Label prefHeight="30.0" text="Automatisches Speichern" />
+                              <Label prefHeight="30.0" text="Intervall (Runden)" />
                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </VBox>
+                     </left>
+                     <right>
+                        <VBox prefWidth="150.0" spacing="20.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Label text="Automatisches Speichern" />
-                              <Pane HBox.hgrow="ALWAYS" />
-                              <ToggleButton fx:id="autoSaveButton" mnemonicParsing="false" prefWidth="100.0" text="An/Aus" />
+                              <ToggleButton fx:id="autoSaveButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" text="An/Aus" />
+                              <TextField fx:id="autoSaveIntervalField" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="150.0" promptText="2" />
                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER" spacing="10.0">
+                           <padding>
+                              <Insets right="20.0" />
+                           </padding>
+                        </VBox>
+                     </right>
+                     <top>
+                        <Pane prefHeight="20.0" BorderPane.alignment="CENTER" />
+                     </top>
+                     <bottom>
+                        <Pane prefHeight="20.0" BorderPane.alignment="CENTER" />
+                     </bottom>
+                  </BorderPane>
+               </content>
+          </Tab>
+          <Tab text="Darstellung">
+               <content>
+                  <BorderPane>
+                     <left>
+                        <VBox prefWidth="400.0" spacing="20.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Label text="Intervall (Runden)" />
-                              <Pane HBox.hgrow="ALWAYS" />
-                              <TextField fx:id="autoSaveIntervalField" alignment="CENTER_RIGHT" prefWidth="100.0" promptText="2" />
+                              <Label prefHeight="30.0" text="Felder im Aktionskreis" />
+                              <Label prefHeight="30.0" text="Log verbergen" />
+                              <Label prefHeight="30.0" text="Farbe Helden" />
+                              <Label prefHeight="30.0" text="Farbe Verbündete" />
+                              <Label prefHeight="30.0" text="Farbe Gegner" />
                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER" spacing="10.0">
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </VBox>
+                     </left>
+                     <right>
+                        <VBox prefWidth="150.0" spacing="20.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Label text="Log verbergen" />
-                              <Pane HBox.hgrow="ALWAYS" />
-                              <ToggleButton fx:id="hideLogButton" mnemonicParsing="false" prefWidth="100.0" text="An/Aus" />
+                              <ChoiceBox fx:id="actionCircleFieldCount" prefHeight="30.0" prefWidth="150.0" />
+                              <ToggleButton fx:id="hideLogButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" text="An/Aus" />
+                              <ColorPicker fx:id="colorPickerFighter" prefHeight="30.0" prefWidth="150.0" />
+                              <ColorPicker fx:id="colorPickerAlly" prefHeight="30.0" prefWidth="150.0" />
+                              <ColorPicker fx:id="colorPickerEnemy" prefHeight="30.0" prefWidth="150.0" />
                            </children>
-                        </HBox>
-                     </children>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </VBox>
-                  <Separator orientation="VERTICAL" HBox.hgrow="ALWAYS">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Separator>
-                  <VBox alignment="TOP_CENTER" prefWidth="200.0" spacing="10.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label text="Darstellung">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Separator prefWidth="200.0">
-                           <VBox.margin>
-                              <Insets bottom="10.0" />
-                           </VBox.margin>
-                        </Separator>
-                        <HBox alignment="CENTER" spacing="10.0">
+                           <BorderPane.margin>
+                              <Insets />
+                           </BorderPane.margin>
+                           <padding>
+                              <Insets right="20.0" />
+                           </padding>
+                        </VBox>
+                     </right>
+                     <top>
+                        <Pane prefHeight="20.0" BorderPane.alignment="CENTER" />
+                     </top>
+                     <bottom>
+                        <Pane prefHeight="20.0" BorderPane.alignment="CENTER" />
+                     </bottom>
+                  </BorderPane>
+               </content>
+          </Tab>
+            <Tab text="Regeln">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <right>
+                        <VBox prefWidth="150.0" spacing="20.0" BorderPane.alignment="CENTER">
+                           <padding>
+                              <Insets right="20.0" />
+                           </padding>
                            <children>
-                              <Label text="Farbe Helden" />
-                              <Pane HBox.hgrow="ALWAYS" />
-                              <ColorPicker fx:id="colorPickerFighter" prefWidth="100.0" />
+                              <TextField fx:id="durationSimpleActionField" prefHeight="30.0" prefWidth="150.0" />
+                              <TextField fx:id="durationComplexActionField" prefHeight="30.0" prefWidth="150.0" />
+                              <TextField fx:id="durationSimpleReactionField" prefHeight="30.0" prefWidth="150.0" />
+                              <TextField fx:id="durationComplexReactionField" layoutX="10.0" layoutY="61.0" prefHeight="30.0" prefWidth="150.0" />
                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER" spacing="10.0">
+                        </VBox>
+                     </right>
+                     <top>
+                        <Pane prefHeight="20.0" BorderPane.alignment="CENTER" />
+                     </top>
+                     <bottom>
+                        <Pane prefHeight="20.0" BorderPane.alignment="CENTER" />
+                     </bottom>
+                     <center>
+                        <VBox prefWidth="400.0" spacing="20.0" BorderPane.alignment="CENTER">
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
                            <children>
-                              <Label text="Farbe Verbündete" />
-                              <Pane HBox.hgrow="ALWAYS" />
-                              <ColorPicker fx:id="colorPickerAlly" prefWidth="100.0" />
+                              <Label prefHeight="30.0" text="Dauer Einfache Aktion" />
+                              <Label prefHeight="30.0" text="Aufschlag für komplexe Aktionen" />
+                              <Label prefHeight="30.0" text="Dauer Einfache Reaktion" />
+                              <Label layoutX="30.0" layoutY="60.0" prefHeight="30.0" text="Aufschlag für komplexe Reaktionen" />
                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER" spacing="10.0">
-                           <children>
-                              <Label text="Farbe Gegner" />
-                              <Pane HBox.hgrow="ALWAYS" />
-                              <ColorPicker fx:id="colorPickerEnemy" prefWidth="100.0" />
-                           </children>
-                        </HBox>
-                     </children>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </VBox>
-               </children>
-               <VBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </VBox.margin>
-            </HBox>
-         </children>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
-      </VBox>
+                        </VBox>
+                     </center>
+                  </BorderPane>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
    </center>
 </BorderPane>

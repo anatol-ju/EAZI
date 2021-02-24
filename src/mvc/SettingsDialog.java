@@ -29,13 +29,19 @@ public class SettingsDialog extends Dialog<Boolean> {
     @FXML
     private TextField autoSaveIntervalField;
     @FXML
+    private TextField durationSimpleActionField;
+    @FXML
+    private TextField durationSimpleReactionField;
+    @FXML
+    private TextField durationComplexActionField;
+    @FXML
+    private TextField durationComplexReactionField;
+    @FXML
     private ColorPicker colorPickerFighter;
     @FXML
     private ColorPicker colorPickerAlly;
     @FXML
     private ColorPicker colorPickerEnemy;
-    @FXML
-    private HBox intervalBox;
 
     private ButtonType reset, buttonOk;
 
@@ -89,7 +95,6 @@ public class SettingsDialog extends Dialog<Boolean> {
         actionCircleFieldCount.setValue(12);
 
         autoSaveButton.setSelected(true);
-        intervalBox.setDisable(false);
         autoSaveIntervalField.setText("2");
 
         hideLogButton.setSelected(false);
@@ -138,7 +143,6 @@ public class SettingsDialog extends Dialog<Boolean> {
         actionCircleFieldCount.setValue(Integer.valueOf(settings.getString("actionCircleFieldCount")));    // default
 
         autoSaveButton.setSelected(Boolean.parseBoolean(settings.getString("autoSaveButton")));
-        intervalBox.setDisable(Boolean.parseBoolean(settings.getString("intervalBox")));
         autoSaveIntervalField.setText(settings.getString("autoSaveInterval"));
 
         hideLogButton.setSelected(Boolean.parseBoolean(settings.getString("hideLogButton")));
