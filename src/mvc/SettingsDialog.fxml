@@ -113,6 +113,7 @@
                               <TextField fx:id="durationComplexActionField" prefHeight="30.0" prefWidth="150.0" />
                               <TextField fx:id="durationSimpleReactionField" prefHeight="30.0" prefWidth="150.0" />
                               <TextField fx:id="durationComplexReactionField" layoutX="10.0" layoutY="61.0" prefHeight="30.0" prefWidth="150.0" />
+                              <TextField prefHeight="30.0" prefWidth="150.0" />
                            </children>
                         </VBox>
                      </right>
@@ -132,6 +133,7 @@
                               <Label prefHeight="30.0" text="Aufschlag für komplexe Aktionen" />
                               <Label prefHeight="30.0" text="Dauer Einfache Reaktion" />
                               <Label layoutX="30.0" layoutY="60.0" prefHeight="30.0" text="Aufschlag für komplexe Reaktionen" />
+                              <Label prefHeight="30.0" text="Dauer freie Aktionen" />
                            </children>
                         </VBox>
                      </center>

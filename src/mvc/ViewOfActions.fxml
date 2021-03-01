@@ -22,145 +22,136 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="180.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
-
-            <Button fx:id="attack" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#attackAction" text="%attack" GridPane.hgrow="SOMETIMES" GridPane.vgrow="SOMETIMES">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </Button>
-            <Button fx:id="attack2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#attack2Action" text="%attack2" GridPane.columnIndex="1">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </Button>
-            <Button fx:id="parry" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#parryAction" text="%parry" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </Button>
-            <Button fx:id="parry2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#parry2Action" text="%parry2" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </Button>
-            <Button fx:id="wait" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#waitAction" text="%wait" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </Button>
-            <Button fx:id="dodge" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#dodgeAction" text="%dodge" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </Button>
-            <Button fx:id="move" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#moveAction" text="%move" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </Button>
-             <Button fx:id="sprint" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#sprintAction" text="%sprint" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                 <GridPane.margin>
+         <children>
+   
+               <Button fx:id="attack" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#attackAction" text="%attack" GridPane.hgrow="SOMETIMES" GridPane.vgrow="SOMETIMES">
+                  <GridPane.margin>
                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                 </GridPane.margin>
-             </Button>
-            <Button fx:id="position" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#positionAction" text="%position" GridPane.rowIndex="4">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </Button>
-            <Button fx:id="orientate" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#orientateAction" text="%orientate" GridPane.columnIndex="1" GridPane.rowIndex="4">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </Button>
-            <Button fx:id="drawWeapon" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#drawWeaponAction" text="%drawWeapon" GridPane.rowIndex="5">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </Button>
-            <Button fx:id="loadBow" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#loadBowAction" text="%loadBow" GridPane.columnIndex="1" GridPane.rowIndex="5">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </Button>
-            <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.rowIndex="6" GridPane.rowSpan="2">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-
-                   <RadioButton fx:id="aim" mnemonicParsing="false" onAction="#aimAction" text="%aim" GridPane.rowIndex="0" />
-                   <RadioButton fx:id="useMagic" mnemonicParsing="false" onAction="#useMagicAction" text="%useMagic" GridPane.rowIndex="1" />
-                   <RadioButton fx:id="longAction" mnemonicParsing="false" onAction="#longActionAction" text="%longAction" GridPane.rowIndex="2" />
-                   <RadioButton fx:id="otherAction" mnemonicParsing="false" onAction="#otherActionAction" text="%otherAction" GridPane.rowIndex="3" />
-
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </GridPane>
-            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.rowSpan="2">
-              <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <ComboBox fx:id="mod" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" promptText="%modification" GridPane.columnSpan="3">
-                     <GridPane.margin>
-                        <Insets bottom="20.0" />
-                     </GridPane.margin>
-                  </ComboBox>
-                  <Button fx:id="decr" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#decrAction" text="˅" GridPane.rowIndex="1">
-                     <GridPane.margin>
+                  </GridPane.margin>
+               </Button>
+               <Button fx:id="attack2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#attack2Action" text="%attack2" GridPane.columnIndex="1">
+                  <GridPane.margin>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </GridPane.margin>
+               </Button>
+               <Button fx:id="parry" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#parryAction" text="%parry" GridPane.rowIndex="1">
+                  <GridPane.margin>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </GridPane.margin>
+               </Button>
+               <Button fx:id="parry2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#parry2Action" text="%parry2" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <GridPane.margin>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </GridPane.margin>
+               </Button>
+               <Button fx:id="wait" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#waitAction" text="%wait" GridPane.rowIndex="2">
+                  <GridPane.margin>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </GridPane.margin>
+               </Button>
+               <Button fx:id="dodge" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#dodgeAction" text="%dodge" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <GridPane.margin>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </GridPane.margin>
+               </Button>
+               <Button fx:id="move" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#moveAction" text="%move" GridPane.rowIndex="3">
+                  <GridPane.margin>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </GridPane.margin>
+               </Button>
+                <Button fx:id="sprint" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#sprintAction" text="%sprint" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </GridPane.margin>
+                </Button>
+               <Button fx:id="position" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#positionAction" text="%position" GridPane.rowIndex="4">
+                  <GridPane.margin>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </GridPane.margin>
+               </Button>
+               <Button fx:id="orientate" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#orientateAction" text="%orientate" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  <GridPane.margin>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </GridPane.margin>
+               </Button>
+               <Button fx:id="drawWeapon" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#drawWeaponAction" text="%drawWeapon" GridPane.rowIndex="5">
+                  <GridPane.margin>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </GridPane.margin>
+               </Button>
+            <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnSpan="2" GridPane.rowIndex="7">
+               <top>
+                  <Label fx:id="specialActionLabel" text="Aktion wählen" BorderPane.alignment="CENTER">
+                     <padding>
+                        <Insets bottom="5.0" />
+                     </padding></Label>
+               </top>
+               <center>
+                  <GridPane BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <ToggleButton fx:id="aim" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#aimAction" text="%aim" />
+                        <ToggleButton fx:id="useMagic" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#useMagicAction" text="%useMagic" GridPane.columnIndex="1" />
+                        <ToggleButton fx:id="longAction" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#longActionAction" text="%longAction" GridPane.rowIndex="1" />
+                        <ToggleButton fx:id="otherAction" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#otherActionAction" text="%otherAction" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <HBox alignment="CENTER" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                           <children>
+                              <TextField fx:id="value" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="70.0" promptText="0" />
+                              <Label fx:id="actionPoints" prefHeight="30.0" prefWidth="70.0" text="AkP">
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                     <BorderPane.margin>
                         <Insets />
-                     </GridPane.margin>
-                  </Button>
-                  <Button fx:id="incr" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#incrAction" text="˄" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <TextField fx:id="value" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                   <Button fx:id="choice" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#choiceAction" text="%actionPoints" GridPane.columnSpan="3" GridPane.rowIndex="2">
-                       <GridPane.margin>
-                           <Insets />
-                       </GridPane.margin>
-                   </Button>
-               </children>
-               <GridPane.margin>
+                     </BorderPane.margin>
+                  </GridPane>
+               </center>
+               <bottom>
+                  <Button fx:id="choice" mnemonicParsing="false" onAction="#choiceAction" prefHeight="30.0" prefWidth="100.0" text="OK" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </BorderPane.margin></Button>
+               </bottom>
+               <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </GridPane>
-            <ToggleButton fx:id="unarmed" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#unarmedAction" text="%unarmed" GridPane.rowIndex="8">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </ToggleButton>
-             <Button fx:id="freeAction" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#freeActionAction" text="%freeAction" GridPane.columnIndex="1" GridPane.rowIndex="8">
-                 <GridPane.margin>
+               </padding>
+            </BorderPane>
+               <Button fx:id="loadBow" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#loadBowAction" text="%loadBow" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                  <GridPane.margin>
                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                 </GridPane.margin>
-             </Button>
-            <ToggleButton fx:id="more" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#moreAction" text="+ 3 AkP" GridPane.rowIndex="9">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </ToggleButton>
-            <ToggleButton fx:id="less" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#lessAction" text="- 3 AkP" GridPane.columnIndex="1" GridPane.rowIndex="9">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </ToggleButton>
+                  </GridPane.margin>
+               </Button>
+               <ToggleButton fx:id="unarmed" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#unarmedAction" text="%unarmed" GridPane.rowIndex="6">
+                  <GridPane.margin>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </GridPane.margin>
+               </ToggleButton>
+                <Button fx:id="freeAction" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#freeActionAction" text="%freeAction" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                    <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </GridPane.margin>
+                </Button>
+            <Label fx:id="modLabel" text="Global Mod" GridPane.rowIndex="8" />
+            <ComboBox fx:id="mod" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" promptText="%modification" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+         </children>
 
       </GridPane>
    </content>

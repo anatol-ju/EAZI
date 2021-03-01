@@ -63,13 +63,19 @@ public class ActionsController implements ChangeListener {
     @FXML
     private Button loadBow;
     @FXML
-    private RadioButton useMagic;
+    private Label actionPoints;
     @FXML
-    private RadioButton aim;
+    private Label specialActionLabel;
     @FXML
-    private RadioButton longAction;
+    private Label modLabel;
     @FXML
-    private RadioButton otherAction;
+    private ToggleButton useMagic;
+    @FXML
+    private ToggleButton aim;
+    @FXML
+    private ToggleButton longAction;
+    @FXML
+    private ToggleButton otherAction;
     @FXML
     private Button choice;
     @FXML
@@ -79,15 +85,7 @@ public class ActionsController implements ChangeListener {
     @FXML
     private TextField value;
     @FXML
-    private Button incr;
-    @FXML
-    private Button decr;
-    @FXML
     private Button freeAction;
-    @FXML
-    private ToggleButton more;
-    @FXML
-    private ToggleButton less;
 
     @FXML
     private void initialize() {
@@ -100,16 +98,14 @@ public class ActionsController implements ChangeListener {
 
         actionTitledPane.setText(rb.getString("title"));
 
-        ToggleGroup extraRange = new ToggleGroup();
-        extraRange.getToggles().addAll(more, less);
+        specialActionLabel.setText(rb.getString("specialActionLabel"));
+        modLabel.setText(rb.getString("globalModLabel"));
 
         ObservableList<String> modList = FXCollections.observableList(Arrays.asList(makeComboBoxList()));
         mod.setItems(modList);
         mod.getSelectionModel().select(3);
 
         int modValue = Integer.parseInt(Serializer.readConfigFile().getProperty("actionCircleFieldCount")) / 4;
-        more.setText("+ " + modValue);
-        less.setText("- " + modValue);
 
         setTooltips();
 
@@ -123,7 +119,7 @@ public class ActionsController implements ChangeListener {
 
         actionGridPane.heightProperty().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
-                fontSize = newValue.doubleValue() / 43;
+                fontSize = newValue.doubleValue() / 50;
                 resizeControlsText();
             });
         });
@@ -192,11 +188,7 @@ public class ActionsController implements ChangeListener {
         unarmed.setTooltip(new Tooltip(rbt.getString("unarmed")));
         mod.setTooltip(new Tooltip(rbt.getString("mod")));
         value.setTooltip(new Tooltip(rbt.getString("value")));
-        incr.setTooltip(new Tooltip(rbt.getString("incr")));
-        decr.setTooltip(new Tooltip(rbt.getString("decr")));
         freeAction.setTooltip(new Tooltip(rbt.getString("freeAction")));
-        more.setTooltip(new Tooltip(rbt.getString("more")));
-        less.setTooltip(new Tooltip(rbt.getString("less")));
 
     }
 
@@ -219,13 +211,8 @@ public class ActionsController implements ChangeListener {
         actionControls.add(useMagic);
         actionControls.add(aim);
         actionControls.add(unarmed);
-        actionControls.add(more);
-        actionControls.add(less);
         actionControls.add(choice);
-        actionControls.add(value);
         actionControls.add(longAction);
-        actionControls.add(incr);
-        actionControls.add(decr);
         actionControls.add(mod);
         actionControls.add(freeAction);
     }
@@ -241,13 +228,14 @@ public class ActionsController implements ChangeListener {
         reactionControls.add(dodge);
         reactionControls.add(otherAction);
         reactionControls.add(unarmed);
-        reactionControls.add(more);
-        reactionControls.add(less);
         reactionControls.add(choice);
         reactionControls.add(value);
-        reactionControls.add(incr);
-        reactionControls.add(decr);
         reactionControls.add(freeAction);
+        reactionControls.add(actionPoints);
+        reactionControls.add(specialActionLabel);
+        reactionControls.add(modLabel);
+        reactionControls.add(value);
+        reactionControls.add(mod);
     }
 
     /**
@@ -290,14 +278,9 @@ public class ActionsController implements ChangeListener {
             ResourceBundle rbd = ResourceBundle.getBundle("locales.OtherDialog", Locale.getDefault());
             new InfoDialog(rbd.getString("infoValuesGreaterZero")).showAndWait();
         }
-        if (more.isSelected()) {
-            more.setSelected(false);
-        }
-        if (less.isSelected()) {
-            less.setSelected(false);
-        }
     }
 
+    /**
     private int actionMod(int modMore, int modLess) {
         int range = 0;
         if(more.isSelected()) {
@@ -309,7 +292,9 @@ public class ActionsController implements ChangeListener {
         }
         return range;
     }
+     **/
 
+    /**
     private int reactionMod() {
         if(more.isSelected()) {
             more.setSelected(false);
@@ -320,6 +305,7 @@ public class ActionsController implements ChangeListener {
         }
         return 0;
     }
+     **/
 
     private String[] makeComboBoxList() {
         // one quarter of the max INI for +mod and -mod, also count 0
@@ -396,22 +382,22 @@ public class ActionsController implements ChangeListener {
     }
     public void useMagicAction() {
         value.setText("0");
-        choice.setText(rb.getString("actions"));
+        actionPoints.setText(rb.getString("actions"));
     }
 
     public void aimAction() {
         value.setText("8");
-        choice.setText(rb.getString("actionPoints"));
+        actionPoints.setText(rb.getString("actionPoints"));
     }
 
     public void longActionAction() {
         value.setText("2");
-        choice.setText(rb.getString("actions"));
+        actionPoints.setText(rb.getString("actions"));
     }
 
     public void otherActionAction() {
         value.setText("2");
-        choice.setText(rb.getString("actionPoints"));
+        actionPoints.setText(rb.getString("actionPoints"));
     }
 
     private int validate() {
@@ -500,6 +486,7 @@ public class ActionsController implements ChangeListener {
         }
     }
 
+    /**
     public void moreAction() {
         if (more.isSelected()) {
             less.setSelected(false);
@@ -508,7 +495,9 @@ public class ActionsController implements ChangeListener {
             actionMod = 0;
         }
     }
+     **/
 
+    /**
     public void lessAction() {
         if (less.isSelected()) {
             more.setSelected(false);
@@ -517,6 +506,7 @@ public class ActionsController implements ChangeListener {
             actionMod = 0;
         }
     }
+     **/
 
     private void setHandler(KeyEvent event) {
         if (event.isControlDown() && !event.isShiftDown()) {
@@ -584,6 +574,9 @@ public class ActionsController implements ChangeListener {
             } else if (control instanceof TextField) {
                 TextField control1 = (TextField) control;
                 control1.setFont(Font.font(fontSize));
+            } else if (control instanceof Label) {
+                Label control1 = (Label) control;
+                control1.setFont(Font.font(fontSize));
             }
         }
         for (Control control : reactionControls) {
@@ -595,6 +588,9 @@ public class ActionsController implements ChangeListener {
                 control1.setFont(Font.font(fontSize));
             } else if (control instanceof TextField) {
                 TextField control1 = (TextField) control;
+                control1.setFont(Font.font(fontSize));
+            } else if (control instanceof Label) {
+                Label control1 = (Label) control;
                 control1.setFont(Font.font(fontSize));
             }
         }
@@ -679,19 +675,19 @@ public class ActionsController implements ChangeListener {
         return loadBow;
     }
 
-    public RadioButton getUseMagic() {
+    public ToggleButton getUseMagic() {
         return useMagic;
     }
 
-    public RadioButton getAim() {
+    public ToggleButton getAim() {
         return aim;
     }
 
-    public RadioButton getLongAction() {
+    public ToggleButton getLongAction() {
         return longAction;
     }
 
-    public RadioButton getOtherAction() {
+    public ToggleButton getOtherAction() {
         return otherAction;
     }
 
@@ -709,14 +705,6 @@ public class ActionsController implements ChangeListener {
 
     public TextField getWert() {
         return value;
-    }
-
-    public Button getIncr() {
-        return incr;
-    }
-
-    public Button getDecr() {
-        return decr;
     }
 
     public Button getFreeAction() {
