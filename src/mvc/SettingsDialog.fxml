@@ -12,6 +12,7 @@
       <VBox alignment="CENTER" prefHeight="25.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
             <Separator prefWidth="200.0" />
+            <Label text="Speicherpfad für Einstellungen" />
             <Label fx:id="savePath" alignment="CENTER" contentDisplay="CENTER" text="user.home">
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -27,7 +28,7 @@
                <content>
                   <BorderPane>
                      <left>
-                        <VBox prefWidth="400.0" spacing="20.0" BorderPane.alignment="CENTER">
+                        <VBox alignment="CENTER_LEFT" prefWidth="400.0" spacing="20.0" BorderPane.alignment="CENTER">
                            <children>
                               <Label prefHeight="30.0" text="Automatisches Speichern" />
                               <Label prefHeight="30.0" text="Intervall (Runden)" />
@@ -38,7 +39,7 @@
                         </VBox>
                      </left>
                      <right>
-                        <VBox prefWidth="150.0" spacing="20.0" BorderPane.alignment="CENTER">
+                        <VBox alignment="CENTER_RIGHT" prefWidth="150.0" spacing="20.0" BorderPane.alignment="CENTER">
                            <children>
                               <ToggleButton fx:id="autoSaveButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" text="An/Aus" />
                               <TextField fx:id="autoSaveIntervalField" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="150.0" promptText="2" />
@@ -61,9 +62,8 @@
                <content>
                   <BorderPane>
                      <left>
-                        <VBox prefWidth="400.0" spacing="20.0" BorderPane.alignment="CENTER">
+                        <VBox alignment="CENTER_LEFT" prefWidth="400.0" spacing="20.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Label prefHeight="30.0" text="Felder im Aktionskreis" />
                               <Label prefHeight="30.0" text="Log verbergen" />
                               <Label prefHeight="30.0" text="Farbe Helden" />
                               <Label prefHeight="30.0" text="Farbe Verbündete" />
@@ -75,9 +75,8 @@
                         </VBox>
                      </left>
                      <right>
-                        <VBox prefWidth="150.0" spacing="20.0" BorderPane.alignment="CENTER">
+                        <VBox alignment="CENTER_RIGHT" prefWidth="150.0" spacing="20.0" BorderPane.alignment="CENTER">
                            <children>
-                              <ChoiceBox fx:id="actionCircleFieldCount" prefHeight="30.0" prefWidth="150.0" />
                               <ToggleButton fx:id="hideLogButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" text="An/Aus" />
                               <ColorPicker fx:id="colorPickerFighter" prefHeight="30.0" prefWidth="150.0" />
                               <ColorPicker fx:id="colorPickerAlly" prefHeight="30.0" prefWidth="150.0" />
@@ -104,16 +103,17 @@
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <right>
-                        <VBox prefWidth="150.0" spacing="20.0" BorderPane.alignment="CENTER">
+                        <VBox alignment="CENTER_RIGHT" prefWidth="150.0" spacing="20.0" BorderPane.alignment="CENTER">
                            <padding>
                               <Insets right="20.0" />
                            </padding>
                            <children>
+                              <ChoiceBox fx:id="actionCircleFieldCount" prefHeight="30.0" prefWidth="150.0" />
                               <TextField fx:id="durationSimpleActionField" prefHeight="30.0" prefWidth="150.0" />
                               <TextField fx:id="durationComplexActionField" prefHeight="30.0" prefWidth="150.0" />
                               <TextField fx:id="durationSimpleReactionField" prefHeight="30.0" prefWidth="150.0" />
                               <TextField fx:id="durationComplexReactionField" layoutX="10.0" layoutY="61.0" prefHeight="30.0" prefWidth="150.0" />
-                              <TextField prefHeight="30.0" prefWidth="150.0" />
+                              <TextField fx:id="durationFreeActionField" prefHeight="30.0" prefWidth="150.0" />
                            </children>
                         </VBox>
                      </right>
@@ -124,11 +124,12 @@
                         <Pane prefHeight="20.0" BorderPane.alignment="CENTER" />
                      </bottom>
                      <center>
-                        <VBox prefWidth="400.0" spacing="20.0" BorderPane.alignment="CENTER">
+                        <VBox alignment="CENTER_LEFT" prefWidth="400.0" spacing="20.0" BorderPane.alignment="CENTER">
                            <padding>
                               <Insets left="20.0" />
                            </padding>
                            <children>
+                              <Label prefHeight="30.0" text="Felder im Aktionskreis" />
                               <Label prefHeight="30.0" text="Dauer Einfache Aktion" />
                               <Label prefHeight="30.0" text="Aufschlag für komplexe Aktionen" />
                               <Label prefHeight="30.0" text="Dauer Einfache Reaktion" />

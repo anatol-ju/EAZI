@@ -30,9 +30,15 @@ public class ActionsController implements ChangeListener {
     private FightersList fightersList;
 
     private int unarmedMod;
-    private int actionMod;
     private double fontSize;
     private ResourceBundle rb;
+    private Properties config;
+
+    private int freeActionDuration;
+    private int simpleAction;
+    private int simpleActionSurcharge;
+    private int simpleReaction;
+    private int simpleReactionSurcharge;
 
     @FXML
     private TitledPane actionTitledPane;
@@ -90,9 +96,16 @@ public class ActionsController implements ChangeListener {
     @FXML
     private void initialize() {
 
-        ToggleGroup toggleGroup = new ToggleGroup();
-        toggleGroup.getToggles().addAll(useMagic, aim, longAction, otherAction);
+        // set config file and frequently used data
+        config = Serializer.readConfigFile();
 
+        freeActionDuration = Integer.parseInt(config.getProperty("freeActions"));
+        simpleAction = Integer.parseInt(config.getProperty("simpleActions"));
+        simpleActionSurcharge = Integer.parseInt(config.getProperty("simpleActionsSurcharge"));
+        simpleReaction = Integer.parseInt(config.getProperty("simpleReactions"));
+        simpleReactionSurcharge = Integer.parseInt(config.getProperty("simpleReactionsSurcharge"));
+
+        // define locales
         rb = ResourceBundle.getBundle("locales.ActionController", Locale.getDefault());
         String ap = rb.getString("actionPoints");
 
@@ -101,13 +114,12 @@ public class ActionsController implements ChangeListener {
         specialActionLabel.setText(rb.getString("specialActionLabel"));
         modLabel.setText(rb.getString("globalModLabel"));
 
-        ObservableList<String> modList = FXCollections.observableList(Arrays.asList(makeComboBoxList()));
-        mod.setItems(modList);
-        mod.getSelectionModel().select(3);
-
-        int modValue = Integer.parseInt(Serializer.readConfigFile().getProperty("actionCircleFieldCount")) / 4;
-
+        // make tooltips
         setTooltips();
+
+        // create groups
+        ToggleGroup toggleGroup = new ToggleGroup();
+        toggleGroup.getToggles().addAll(useMagic, aim, longAction, otherAction);
 
         actionControls = new ArrayList<>();
         reactionControls = new ArrayList<>();
@@ -117,6 +129,14 @@ public class ActionsController implements ChangeListener {
         setDisableGroup(actionControls, true);
         setDisableGroup(reactionControls, true);
 
+        // create selections for combo elements
+        ObservableList<String> modList = FXCollections.observableList(Arrays.asList(makeComboBoxList()));
+        mod.setItems(modList);
+        mod.getSelectionModel().select(3);
+
+        int modValue = Integer.parseInt(config.getProperty("actionCircleFieldCount")) / 4;
+
+        // allow scaling of text
         actionGridPane.heightProperty().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 fontSize = newValue.doubleValue() / 50;
@@ -264,9 +284,8 @@ public class ActionsController implements ChangeListener {
         Fighter fighter = (Fighter) selectionModel.getSelectedItem();
 
         if (fighter != null && range >= 0) {
-            int effRange = range + actionMod;
-            if (effRange > 0 && effRange < Integer.parseInt(controller.getSettings().getProperty("actionCircleFieldCount"))) {
-                fightersList.action(fighter, range + actionMod);
+            if (range > 0 && range < Integer.parseInt(config.getProperty("actionCircleFieldCount"))) {
+                fightersList.action(fighter, range);
                 controller.getLogController().action(fighter, actionPerformed);
                 controller.getMenuController().action();
                 controller.getListController().getListView().refresh();
@@ -307,12 +326,18 @@ public class ActionsController implements ChangeListener {
     }
      **/
 
+    /**
+     * Create entries for the ComboBox control based on the number of fields
+     * in the action circle. The entries are in range of <c>[-MAX/4, MAX/4]</c>
+     * with steps of <c>1</c>.
+     * @return a <code>String[]</code> array containing elements of the <c>ComboBox</c>.
+     */
     private String[] makeComboBoxList() {
         // one quarter of the max INI for +mod and -mod, also count 0
         // gives MAX / 4 * 2 + 1 = list size
-        int maxIniQuarter = Integer.parseInt(Serializer.readConfigFile().getProperty("actionCircleFieldCount")) / 4;
+        int maxIniQuarter = Integer.parseInt(config.getProperty("actionCircleFieldCount")) / 4;
 
-        // fill string array with values [- max, ..., 0, max]
+        // fill string array with values [- max ... 0 ... max]
         String[] list = new String[maxIniQuarter * 2 + 1];
         for (int index = 0; index < list.length; index++) {
             list[index] = String.valueOf(index - maxIniQuarter);
@@ -321,62 +346,62 @@ public class ActionsController implements ChangeListener {
     }
 
     public void attackAction() {
-        int range = 6 + ((Fighter)selectionModel.getSelectedItem()).getModAT() +
+        int range = simpleAction + ((Fighter)selectionModel.getSelectedItem()).getModAT() +
                 mod.getSelectionModel().getSelectedIndex() - 3 +
                 unarmedMod;
         action(range, "attack");
     }
 
     public void attack2Action() {
-        int range = 9 + ((Fighter)selectionModel.getSelectedItem()).getModAT() +
+        int range = simpleAction + simpleActionSurcharge + ((Fighter)selectionModel.getSelectedItem()).getModAT() +
                 mod.getSelectionModel().getSelectedIndex() - 3 +
                 unarmedMod;
         action(range, "attack2");
     }
 
     public void parryAction() {
-        action(0, "parry");
+        action(simpleReaction, "parry");
     }
 
     public void parry2Action() {
-        action(3, "parry2");
+        action(simpleReaction + simpleReactionSurcharge, "parry2");
     }
 
     public void waitAction() {
-        action(3, "wait");
+        action(simpleActionSurcharge, "wait");
     }
 
     public void dodgeAction() {
-        action(3, "dodge");
+        action(simpleReaction + simpleReactionSurcharge, "dodge");
     }
 
     public void moveAction() {
-        action(3, "move");
+        action(simpleActionSurcharge, "move");
     }
 
     public void sprintAction() {
-        action(6, "sprint");
+        action(simpleAction, "sprint");
     }
 
     public void positionAction() {
-        int range = 6 + ((Fighter)selectionModel.getSelectedItem()).getModPosition() +
+        int range = simpleAction + ((Fighter)selectionModel.getSelectedItem()).getModPosition() +
                 mod.getSelectionModel().getSelectedIndex() - 3;
         action(range, "position");
     }
 
     public void orientateAction() {
-        int range = 9 + ((Fighter)selectionModel.getSelectedItem()).getModPosition() +
+        int range = simpleAction + simpleActionSurcharge + ((Fighter)selectionModel.getSelectedItem()).getModPosition() +
                 mod.getSelectionModel().getSelectedIndex() - 3;
         action(range, "orientate");
     }
 
     public void drawWeaponAction() {
-        int range = 6 + ((Fighter)selectionModel.getSelectedItem()).getModDrawWeapon() +
+        int range = simpleAction + ((Fighter)selectionModel.getSelectedItem()).getModDrawWeapon() +
                 mod.getSelectionModel().getSelectedIndex() - 3;
         action(range, "drawWeapon");
     }
     public void loadBowAction() {
-        int range = 6 + ((Fighter)selectionModel.getSelectedItem()).getModLoadBow() +
+        int range = simpleAction + ((Fighter)selectionModel.getSelectedItem()).getModLoadBow() +
                 mod.getSelectionModel().getSelectedIndex() - 3;
         action(range, "loadBow");
     }
@@ -386,7 +411,7 @@ public class ActionsController implements ChangeListener {
     }
 
     public void aimAction() {
-        value.setText("8");
+        value.setText(String.valueOf(Integer.parseInt(config.getProperty("actionCircleFieldCount"))/3*2));
         actionPoints.setText(rb.getString("actionPoints"));
     }
 
@@ -433,23 +458,29 @@ public class ActionsController implements ChangeListener {
         String actionPerformed = "";
 
         if(useMagic.isSelected()) {
-            base = base * 6;
+            base = base * simpleAction;
             actionPerformed = "useMagic";
         } else if(aim.isSelected()) {
             actionPerformed = "aim";
         } else if(longAction.isSelected()) {
-            base = base * 6;
+            base = base * simpleAction;
             actionPerformed = "longAction";
         } else if(otherAction.isSelected()) {
             actionPerformed = "otherAction";
         }
         action(base, actionPerformed);
+
+        // unselect togglebuttons
+        aim.setSelected(false);
+        useMagic.setSelected(false);
+        longAction.setSelected(false);
+        otherAction.setSelected(false);
     }
 
     public void unarmedAction() {
         int mod;
         if(unarmed.isSelected()) {
-            mod = -2;
+            mod = -simpleAction/3;
         } else {
             mod = 0;
         }
@@ -457,7 +488,7 @@ public class ActionsController implements ChangeListener {
     }
 
     public void freeActionAction() {
-        action(0, "freeAction");
+        action(freeActionDuration, "freeAction");
     }
 
     public void incrAction() {
@@ -508,7 +539,11 @@ public class ActionsController implements ChangeListener {
     }
      **/
 
-    private void setHandler(KeyEvent event) {
+    /**
+     * Defines the actions performed when using key combinations.
+     * @param event the <c>KeyEvent</c> to be processed.
+     */
+    private void processKeyEvents(KeyEvent event) {
         if (event.isControlDown() && !event.isShiftDown()) {
             if (event.getCode().equals(KeyCode.A)) {
                 attack.requestFocus();
@@ -562,6 +597,9 @@ public class ActionsController implements ChangeListener {
         }
     }
 
+    /**
+     * Used to resize font of controls.
+     */
     private void resizeControlsText() {
 
         for (Control control : actionControls) {
@@ -616,7 +654,7 @@ public class ActionsController implements ChangeListener {
     }
 
     public void setKeyEventHandlers(Scene scene) {
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, this::setHandler);
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, this::processKeyEvents);
     }
 
     public void setSelectionModel(SelectionModel selectionModel) {

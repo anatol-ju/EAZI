@@ -1,5 +1,6 @@
 package mvc;
 
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -166,6 +167,15 @@ public class Serializer {
             }
         }
         return prp;
+    }
+
+    public static String color2string(Color c) {
+        return (int)c.getRed()*255 + " " + (int)c.getGreen()*255 + " " + (int)c.getBlue()*255;
+    }
+
+    public static Color string2color(String s) {
+        String[] str = s.split(" ");
+        return Color.color(Integer.parseInt(str[0]), Integer.parseInt(str[1]), Integer.parseInt(str[2]));
     }
 
     /**
