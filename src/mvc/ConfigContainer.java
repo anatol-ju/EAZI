@@ -30,16 +30,22 @@ public class ConfigContainer {
             e.printStackTrace();
         }
 
+        prp.setProperty("savePath", SETTINGS_FILE_PATH.toString());
+        prp.setProperty("actionCircleFieldCount", "12");
+        prp.setProperty("autoSaveButton", "true");
+        prp.setProperty("intervalBox", "false");
+        prp.setProperty("autoSaveInterval", "2");   // don't forget to cast to int
+        prp.setProperty("hideLogButton", "false");
+        prp.setProperty("colorFighter", "50,205,50");   // red,green,blue
+        prp.setProperty("colorAlly", "30,144,255");
+        prp.setProperty("colorEnemy", "255,0,0");
+        prp.setProperty("simpleActions", "6");
+        prp.setProperty("simpleActionsSurcharge", "3");
+        prp.setProperty("simpleReactions", "0");
+        prp.setProperty("simpleReactionsSurcharge", "3");
+        prp.setProperty("freeActions", "0");
+
         try (FileOutputStream output = new FileOutputStream(SETTINGS_FILE_PATH.toFile())) {
-            prp.setProperty("savePath", SETTINGS_FILE_PATH.toString());
-            prp.setProperty("actionCircleFieldCount", "12");
-            prp.setProperty("autoSaveButton", "true");
-            prp.setProperty("intervalBox", "false");
-            prp.setProperty("autoSaveInterval", "2");   // don't forget to cast to int
-            prp.setProperty("hideLogButton", "false");
-            prp.setProperty("colorFighter", "#32CD32");
-            prp.setProperty("colorAlly", "#0000CD");
-            prp.setProperty("colorEnemy", "#FF0000");
             prp.store(output, null);
         } catch (IOException e) {
             e.printStackTrace();

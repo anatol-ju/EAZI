@@ -169,13 +169,25 @@ public class Serializer {
         return prp;
     }
 
+    /**
+     * Converts a <c>Color</c> object into it's string representation using RGB values.
+     * @param c the <c>Color</c> defined by it's red, green and blue values.
+     * @return a string in the format <c>r,g,b</c> representing the color
+     * values of red, green and blue with values 0-255.
+     */
     public static String color2string(Color c) {
-        return (int)c.getRed()*255 + " " + (int)c.getGreen()*255 + " " + (int)c.getBlue()*255;
+        return (int)c.getRed()*255 + "," + (int)c.getGreen()*255 + "," + (int)c.getBlue()*255;
     }
 
+    /**
+     * Converts a string into a <c>Color</c> object.
+     * @param s a string in the format <c>r,g,b</c> including red, green and
+     *          blue values from 0 to 255.
+     * @return the <c>Color</c> object constructed from RGB values.
+     */
     public static Color string2color(String s) {
-        String[] str = s.split(" ");
-        return Color.color(Integer.parseInt(str[0]), Integer.parseInt(str[1]), Integer.parseInt(str[2]));
+        String[] str = s.split(",");
+        return Color.rgb(Integer.parseInt(str[0]), Integer.parseInt(str[1]), Integer.parseInt(str[2]));
     }
 
     /**

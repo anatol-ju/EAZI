@@ -46,12 +46,14 @@ public class SettingsDialog extends Dialog<Boolean> {
     private ColorPicker colorPickerAlly;
     @FXML
     private ColorPicker colorPickerEnemy;
+    @FXML
+    private Label textFieldInfoLabel;
 
-    private ButtonType reset, buttonOk;
+    private final ButtonType reset, buttonOk;
 
-    private HashMap<String, Boolean> validatedFields = new HashMap<>();
+    private final HashMap<String, Boolean> validatedFields = new HashMap<>();
 
-    private final ResourceBundle settings = ResourceBundle.getBundle("settings.settings");
+    private final Properties settings = Serializer.readConfigFile();
     private final ResourceBundle locale = ResourceBundle.getBundle("locales.SettingsDialog", Locale.getDefault());
 
     public SettingsDialog() {
@@ -77,7 +79,8 @@ public class SettingsDialog extends Dialog<Boolean> {
             event.consume();
         });
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("SettingsDialog.fxml"));
+        ResourceBundle res = ResourceBundle.getBundle("locales.SettingsDialog", Locale.getDefault());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("SettingsDialog.fxml"), res);
         loader.setController(this);
 
         try {
@@ -89,7 +92,7 @@ public class SettingsDialog extends Dialog<Boolean> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setTitle(ResourceBundle.getBundle("locales.Languages").getString("settings"));
+        setTitle(res.getString("settings"));
 
         // Platform.runLater(() -> { });
     }
@@ -99,21 +102,21 @@ public class SettingsDialog extends Dialog<Boolean> {
      */
     private void resetForm() {
 
-        actionCircleFieldCount.setValue(Integer.valueOf(settings.getString("actionCircleFieldCount")));    // default
+        actionCircleFieldCount.setValue(Integer.valueOf(settings.getProperty("actionCircleFieldCount")));    // default
 
-        autoSaveButton.setSelected(Boolean.parseBoolean(settings.getString("autoSaveButton")));
-        autoSaveIntervalField.setText(settings.getString("autoSaveInterval"));
+        autoSaveButton.setSelected(Boolean.parseBoolean(settings.getProperty("autoSaveButton")));
+        autoSaveIntervalField.setText(settings.getProperty("autoSaveInterval"));
 
-        hideLogButton.setSelected(Boolean.parseBoolean(settings.getString("hideLogButton")));
+        hideLogButton.setSelected(Boolean.parseBoolean(settings.getProperty("hideLogButton")));
 
-        colorPickerFighter.setValue(Color.web(settings.getString("colorFighter"))); //LIMEGREEN
-        colorPickerAlly.setValue(Color.web(settings.getString("colorAlly"))); //MEDIUMBLUE
-        colorPickerEnemy.setValue(Color.web(settings.getString("colorEnemy"))); //RED
+        colorPickerFighter.setValue(Serializer.string2color(settings.getProperty("colorFighter")));
+        colorPickerAlly.setValue(Serializer.string2color(settings.getProperty("colorAlly")));
+        colorPickerEnemy.setValue(Serializer.string2color(settings.getProperty("colorEnemy")));
 
-        durationSimpleActionField.setText(settings.getString("simpleActions"));
-        durationComplexActionField.setText(settings.getString("simpleActionsSurcharge"));
-        durationSimpleReactionField.setText(settings.getString("simpleReactions"));
-        durationComplexReactionField.setText(settings.getString("simpleReactionsSurcharge"));
+        durationSimpleActionField.setText(settings.getProperty("simpleActions"));
+        durationComplexActionField.setText(settings.getProperty("simpleActionsSurcharge"));
+        durationSimpleReactionField.setText(settings.getProperty("simpleReactions"));
+        durationComplexReactionField.setText(settings.getProperty("simpleReactionsSurcharge"));
     }
 
     /**
@@ -121,27 +124,23 @@ public class SettingsDialog extends Dialog<Boolean> {
      * A confirmation dialog is raised before applying all changes.
      */
     private void resetToDefault() {
+        // general
+        autoSaveButton.setSelected(true);
+        autoSaveIntervalField.setText("2");
 
-        ConfirmDialog cfd = new ConfirmDialog(locale.getString("confirmMessage"));
-        if(cfd.getResult()) {
-            // general
-            autoSaveButton.setSelected(true);
-            autoSaveIntervalField.setText("2");
+        // appearance
+        hideLogButton.setSelected(false);
 
-            // appearance
-            hideLogButton.setSelected(false);
+        colorPickerFighter.setValue(Color.LIMEGREEN);
+        colorPickerAlly.setValue(Color.DODGERBLUE);
+        colorPickerEnemy.setValue(Color.RED);
 
-            colorPickerFighter.setValue(Color.LIMEGREEN);
-            colorPickerAlly.setValue(Color.DODGERBLUE);
-            colorPickerEnemy.setValue(Color.RED);
-
-            // rules
-            actionCircleFieldCount.setValue(12);
-            durationSimpleActionField.setText("6");
-            durationComplexActionField.setText("3");
-            durationSimpleReactionField.setText("0");
-            durationComplexReactionField.setText("3");
-        }
+        // rules
+        actionCircleFieldCount.setValue(12);
+        durationSimpleActionField.setText("6");
+        durationComplexActionField.setText("3");
+        durationSimpleReactionField.setText("0");
+        durationComplexReactionField.setText("3");
     }
 
     /**
@@ -209,7 +208,7 @@ public class SettingsDialog extends Dialog<Boolean> {
         }
 
         String defaultStyle = obs.getStyle();
-        if(obs.isFocused() && (value < 1 || value > actionCircleFieldCount.getValue())) {
+        if(value < 1 || value > actionCircleFieldCount.getValue()) {
             // change border color
             obs.setStyle("-fx-text-box-border: red;");
             // show tooltip with info
@@ -227,9 +226,11 @@ public class SettingsDialog extends Dialog<Boolean> {
     @FXML
     private void initialize() {
 
-        savePath.setText(System.getProperty("user.home") + settings.getString("savePath"));
+        savePath.setText(System.getProperty("user.home") + settings.getProperty("savePath"));
 
         actionCircleFieldCount.getItems().addAll(12,16,20,24);
+
+        // use defined functions to init
         resetForm();
 
         durationSimpleActionField.focusedProperty().addListener(this::validateTextField);
@@ -237,5 +238,32 @@ public class SettingsDialog extends Dialog<Boolean> {
         durationSimpleReactionField.focusedProperty().addListener(this::validateTextField);
         durationComplexReactionField.focusedProperty().addListener(this::validateTextField);
         durationFreeActionField.focusedProperty().addListener(this::validateTextField);
+    }
+
+    @FXML
+    private void autosaveToggleButtonAction() {
+        if(autoSaveButton.isSelected()) {
+            autoSaveButton.setText(locale.getString("toggleOn"));
+        } else {
+            autoSaveButton.setText(locale.getString("toggleOff"));
+        }
+    }
+
+    @FXML
+    private void resetToDefaultAction() {
+        ConfirmDialog cfd = new ConfirmDialog(locale.getString("confirmMessage"));
+        Optional<Boolean> b = cfd.showAndWait();
+        if(b.isPresent() && b.get()) {
+            resetToDefault();
+        }
+    }
+
+    @FXML
+    private void hideLogToggleButtonAction() {
+        if(hideLogButton.isSelected()) {
+            hideLogButton.setText(locale.getString("toggleOn"));
+        } else {
+            hideLogButton.setText(locale.getString("toggleOff"));
+        }
     }
 }

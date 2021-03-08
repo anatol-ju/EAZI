@@ -8,30 +8,19 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane fx:id="settingsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <bottom>
-      <VBox alignment="CENTER" prefHeight="25.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <children>
-            <Separator prefWidth="200.0" />
-            <Label text="Speicherpfad für Einstellungen" />
-            <Label fx:id="savePath" alignment="CENTER" contentDisplay="CENTER" text="user.home">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </VBox.margin>
-            </Label>
-         </children>
-      </VBox>
-   </bottom>
    <center>
       <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab text="Allgemein">
+          <Tab text="%generalTab">
                <content>
                   <BorderPane>
                      <left>
                         <VBox alignment="CENTER_LEFT" prefWidth="400.0" spacing="20.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Label prefHeight="30.0" text="Automatisches Speichern" />
-                              <Label prefHeight="30.0" text="Intervall (Runden)" />
+                              <Label prefHeight="30.0" text="%autosaveLabel" />
+                              <Label prefHeight="30.0" text="%intervalLabel" />
+                              <Separator prefHeight="5.0" />
+                              <Label fx:id="resetToDefaultLabel" prefHeight="30.0" text="%resetToDefault" />
                            </children>
                            <padding>
                               <Insets left="20.0" />
@@ -41,8 +30,10 @@
                      <right>
                         <VBox alignment="CENTER_RIGHT" prefWidth="150.0" spacing="20.0" BorderPane.alignment="CENTER">
                            <children>
-                              <ToggleButton fx:id="autoSaveButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" text="An/Aus" />
+                              <ToggleButton fx:id="autoSaveButton" mnemonicParsing="false" onAction="#autosaveToggleButtonAction" prefHeight="30.0" prefWidth="150.0" text="An/Aus" />
                               <TextField fx:id="autoSaveIntervalField" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="150.0" promptText="2" />
+                              <Separator prefHeight="5.0" />
+                              <Button fx:id="resetToDefaultButton" mnemonicParsing="false" onAction="#resetToDefaultAction" prefHeight="30.0" prefWidth="150.0" text="Reset" />
                            </children>
                            <padding>
                               <Insets right="20.0" />
@@ -53,21 +44,34 @@
                         <Pane prefHeight="20.0" BorderPane.alignment="CENTER" />
                      </top>
                      <bottom>
-                        <Pane prefHeight="20.0" BorderPane.alignment="CENTER" />
+                        <HBox alignment="CENTER" prefHeight="50.0" spacing="10.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Label prefHeight="30.0" text="%savePathLabel">
+                                 <padding>
+                                    <Insets left="10.0" right="5.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="savePath" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" text="user.home">
+                                 <padding>
+                                    <Insets left="5.0" right="10.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </HBox>
                      </bottom>
                   </BorderPane>
                </content>
           </Tab>
-          <Tab text="Darstellung">
+          <Tab text="%appearanceTab">
                <content>
                   <BorderPane>
                      <left>
                         <VBox alignment="CENTER_LEFT" prefWidth="400.0" spacing="20.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Label prefHeight="30.0" text="Log verbergen" />
-                              <Label prefHeight="30.0" text="Farbe Helden" />
-                              <Label prefHeight="30.0" text="Farbe Verbündete" />
-                              <Label prefHeight="30.0" text="Farbe Gegner" />
+                              <Label prefHeight="30.0" text="%hideLogLabel" />
+                              <Label prefHeight="30.0" text="%colorLabelHeroes" />
+                              <Label prefHeight="30.0" text="%colorLabelAllies" />
+                              <Label prefHeight="30.0" text="%colorLabelEnemies" />
                            </children>
                            <padding>
                               <Insets left="20.0" />
@@ -77,7 +81,7 @@
                      <right>
                         <VBox alignment="CENTER_RIGHT" prefWidth="150.0" spacing="20.0" BorderPane.alignment="CENTER">
                            <children>
-                              <ToggleButton fx:id="hideLogButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" text="An/Aus" />
+                              <ToggleButton fx:id="hideLogButton" mnemonicParsing="false" onAction="#hideLogToggleButtonAction" prefHeight="30.0" prefWidth="150.0" text="An/Aus" />
                               <ColorPicker fx:id="colorPickerFighter" prefHeight="30.0" prefWidth="150.0" />
                               <ColorPicker fx:id="colorPickerAlly" prefHeight="30.0" prefWidth="150.0" />
                               <ColorPicker fx:id="colorPickerEnemy" prefHeight="30.0" prefWidth="150.0" />
@@ -99,7 +103,7 @@
                   </BorderPane>
                </content>
           </Tab>
-            <Tab text="Regeln">
+            <Tab text="%rulesTab">
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <right>
@@ -120,24 +124,37 @@
                      <top>
                         <Pane prefHeight="20.0" BorderPane.alignment="CENTER" />
                      </top>
-                     <bottom>
-                        <Pane prefHeight="20.0" BorderPane.alignment="CENTER" />
-                     </bottom>
                      <center>
                         <VBox alignment="CENTER_LEFT" prefWidth="400.0" spacing="20.0" BorderPane.alignment="CENTER">
                            <padding>
                               <Insets left="20.0" />
                            </padding>
                            <children>
-                              <Label prefHeight="30.0" text="Felder im Aktionskreis" />
-                              <Label prefHeight="30.0" text="Dauer Einfache Aktion" />
-                              <Label prefHeight="30.0" text="Aufschlag für komplexe Aktionen" />
-                              <Label prefHeight="30.0" text="Dauer Einfache Reaktion" />
-                              <Label layoutX="30.0" layoutY="60.0" prefHeight="30.0" text="Aufschlag für komplexe Reaktionen" />
-                              <Label prefHeight="30.0" text="Dauer freie Aktionen" />
+                              <Label prefHeight="30.0" text="%actionFieldArcsLabel" />
+                              <Label prefHeight="30.0" text="%simpleActionLabel" />
+                              <Label prefHeight="30.0" text="%complexActionLabel" />
+                              <Label prefHeight="30.0" text="%simpleReactionLabel" />
+                              <Label layoutX="30.0" layoutY="60.0" prefHeight="30.0" text="%complexReactionLabel" />
+                              <Label prefHeight="30.0" text="%freeActionLabel" />
                            </children>
                         </VBox>
                      </center>
+                     <bottom>
+                        <VBox alignment="CENTER" prefHeight="50.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Separator prefWidth="200.0">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                                 </VBox.margin>
+                              </Separator>
+                              <Label fx:id="textFieldInfoLabel" prefHeight="30.0" text="%textFieldInfoLabel">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </bottom>
                   </BorderPane>
                </content>
             </Tab>

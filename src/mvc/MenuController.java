@@ -1,5 +1,6 @@
 package mvc;
 
+import com.sun.scenario.Settings;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.embed.swing.SwingFXUtils;
@@ -324,6 +325,11 @@ public class MenuController implements ListChangeListener {
     }
 
     public void setRelations() {
+    }
+
+    public void showSettingsDialogAction() {
+        SettingsDialog sd = new SettingsDialog();
+        Optional<Boolean> booleanOptional = sd.showAndWait();
     }
 
     public void setModel(Model model) {

@@ -182,17 +182,17 @@ public class CircleController implements ChangeListener, ListChangeListener {
 
             // differentiation according to participants affiliation
             if (entry.getKey() instanceof AllyFighter) {
-                color = Color.web(settings.getProperty("colorAlly"));
+                color = Serializer.string2color(settings.getProperty("colorAlly"));
                 gcTokens.setFill(color);
                 gcTokens.fillRoundRect(x, y, size, size, size/2, size/2);
                 gcTokens.strokeRoundRect(x, y, size, size, size/2, size/2);
             } else if (entry.getKey() instanceof EnemyFighter) {
-                color = Color.web(settings.getProperty("colorEnemy"));
+                color = Serializer.string2color(settings.getProperty("colorEnemy"));
                 gcTokens.setFill(color);
                 gcTokens.fillRect(x, y, size, size);
                 gcTokens.strokeRect(x, y, size, size);
             } else {
-                color = Color.web(settings.getProperty("colorFighter"));
+                color = Serializer.string2color(settings.getProperty("colorFighter"));
                 gcTokens.setFill(color);
                 gcTokens.fillOval(x, y, size, size);
                 gcTokens.strokeOval(x, y, size, size);
@@ -242,7 +242,7 @@ public class CircleController implements ChangeListener, ListChangeListener {
     public void updateArcs() {
         int fields = Integer.parseInt(settings.getProperty("actionCircleFieldCount"));
         if (!observableList.isEmpty()) {
-            actionIndex = fields - ((Fighter)observableList.get(0)).getIni();
+            actionIndex = fields - (observableList.get(0)).getIni();
             while (actionIndex < 0) {
                 actionIndex = actionIndex + fields;
             }
@@ -410,7 +410,7 @@ public class CircleController implements ChangeListener, ListChangeListener {
         this.fightersList = fightersList;
     }
 
-    public void setObservableList(ObservableList observableList) {
+    public void setObservableList(ObservableList<Fighter> observableList) {
         this.observableList = observableList;
     }
 

@@ -26,7 +26,7 @@ public class ActionsController implements ChangeListener {
     private List<Control> reactionControls;
 
     private ReadOnlyIntegerProperty selectedIndex;
-    private SelectionModel selectionModel;
+    private SelectionModel<Fighter> selectionModel;
     private FightersList fightersList;
 
     private int unarmedMod;
@@ -87,7 +87,7 @@ public class ActionsController implements ChangeListener {
     @FXML
     private ToggleButton unarmed;
     @FXML
-    private ComboBox mod;
+    private ComboBox<String> mod;
     @FXML
     private TextField value;
     @FXML
@@ -98,16 +98,10 @@ public class ActionsController implements ChangeListener {
 
         // set config file and frequently used data
         config = Serializer.readConfigFile();
-
-        freeActionDuration = Integer.parseInt(config.getProperty("freeActions"));
-        simpleAction = Integer.parseInt(config.getProperty("simpleActions"));
-        simpleActionSurcharge = Integer.parseInt(config.getProperty("simpleActionsSurcharge"));
-        simpleReaction = Integer.parseInt(config.getProperty("simpleReactions"));
-        simpleReactionSurcharge = Integer.parseInt(config.getProperty("simpleReactionsSurcharge"));
+        loadDurationValues();
 
         // define locales
         rb = ResourceBundle.getBundle("locales.ActionController", Locale.getDefault());
-        String ap = rb.getString("actionPoints");
 
         actionTitledPane.setText(rb.getString("title"));
 
@@ -133,8 +127,6 @@ public class ActionsController implements ChangeListener {
         ObservableList<String> modList = FXCollections.observableList(Arrays.asList(makeComboBoxList()));
         mod.setItems(modList);
         mod.getSelectionModel().select(3);
-
-        int modValue = Integer.parseInt(config.getProperty("actionCircleFieldCount")) / 4;
 
         // allow scaling of text
         actionGridPane.heightProperty().addListener((observable, oldValue, newValue) -> {
@@ -167,6 +159,21 @@ public class ActionsController implements ChangeListener {
         } else {
             setDisableGroup(actionControls, true);
             setDisableGroup(reactionControls, false);
+        }
+    }
+
+    /**
+     * Use settings file to define duration values for actions.
+     */
+    private void loadDurationValues() {
+        try {
+            freeActionDuration = Integer.parseInt(config.getProperty("freeActions"));
+            simpleAction = Integer.parseInt(config.getProperty("simpleActions"));
+            simpleActionSurcharge = Integer.parseInt(config.getProperty("simpleActionsSurcharge"));
+            simpleReaction = Integer.parseInt(config.getProperty("simpleReactions"));
+            simpleReactionSurcharge = Integer.parseInt(config.getProperty("simpleReactionsSurcharge"));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
     }
 
@@ -281,10 +288,10 @@ public class ActionsController implements ChangeListener {
      */
     private void action(int range, String actionPerformed) {
 
-        Fighter fighter = (Fighter) selectionModel.getSelectedItem();
+        Fighter fighter = selectionModel.getSelectedItem();
 
         if (fighter != null && range >= 0) {
-            if (range > 0 && range < Integer.parseInt(config.getProperty("actionCircleFieldCount"))) {
+            if (range < Integer.parseInt(config.getProperty("actionCircleFieldCount"))) {
                 fightersList.action(fighter, range);
                 controller.getLogController().action(fighter, actionPerformed);
                 controller.getMenuController().action();
@@ -299,7 +306,7 @@ public class ActionsController implements ChangeListener {
         }
     }
 
-    /**
+    /*
     private int actionMod(int modMore, int modLess) {
         int range = 0;
         if(more.isSelected()) {
@@ -313,7 +320,7 @@ public class ActionsController implements ChangeListener {
     }
      **/
 
-    /**
+    /*
     private int reactionMod() {
         if(more.isSelected()) {
             more.setSelected(false);
@@ -346,14 +353,14 @@ public class ActionsController implements ChangeListener {
     }
 
     public void attackAction() {
-        int range = simpleAction + ((Fighter)selectionModel.getSelectedItem()).getModAT() +
+        int range = simpleAction + (selectionModel.getSelectedItem()).getModAT() +
                 mod.getSelectionModel().getSelectedIndex() - 3 +
                 unarmedMod;
         action(range, "attack");
     }
 
     public void attack2Action() {
-        int range = simpleAction + simpleActionSurcharge + ((Fighter)selectionModel.getSelectedItem()).getModAT() +
+        int range = simpleAction + simpleActionSurcharge + (selectionModel.getSelectedItem()).getModAT() +
                 mod.getSelectionModel().getSelectedIndex() - 3 +
                 unarmedMod;
         action(range, "attack2");
@@ -384,24 +391,24 @@ public class ActionsController implements ChangeListener {
     }
 
     public void positionAction() {
-        int range = simpleAction + ((Fighter)selectionModel.getSelectedItem()).getModPosition() +
+        int range = simpleAction + (selectionModel.getSelectedItem()).getModPosition() +
                 mod.getSelectionModel().getSelectedIndex() - 3;
         action(range, "position");
     }
 
     public void orientateAction() {
-        int range = simpleAction + simpleActionSurcharge + ((Fighter)selectionModel.getSelectedItem()).getModPosition() +
+        int range = simpleAction + simpleActionSurcharge + (selectionModel.getSelectedItem()).getModPosition() +
                 mod.getSelectionModel().getSelectedIndex() - 3;
         action(range, "orientate");
     }
 
     public void drawWeaponAction() {
-        int range = simpleAction + ((Fighter)selectionModel.getSelectedItem()).getModDrawWeapon() +
+        int range = simpleAction + (selectionModel.getSelectedItem()).getModDrawWeapon() +
                 mod.getSelectionModel().getSelectedIndex() - 3;
         action(range, "drawWeapon");
     }
     public void loadBowAction() {
-        int range = simpleAction + ((Fighter)selectionModel.getSelectedItem()).getModLoadBow() +
+        int range = simpleAction + (selectionModel.getSelectedItem()).getModLoadBow() +
                 mod.getSelectionModel().getSelectedIndex() - 3;
         action(range, "loadBow");
     }
@@ -427,8 +434,8 @@ public class ActionsController implements ChangeListener {
 
     private int validate() {
 
-        int base = -1;
-        Number input = null;
+        int base;
+        Number input;
         boolean wrongInput = false;
         float converted = -1;
 
@@ -517,7 +524,7 @@ public class ActionsController implements ChangeListener {
         }
     }
 
-    /**
+    /*
     public void moreAction() {
         if (more.isSelected()) {
             less.setSelected(false);
@@ -528,7 +535,7 @@ public class ActionsController implements ChangeListener {
     }
      **/
 
-    /**
+    /*
     public void lessAction() {
         if (less.isSelected()) {
             more.setSelected(false);
@@ -657,12 +664,12 @@ public class ActionsController implements ChangeListener {
         scene.addEventHandler(KeyEvent.KEY_PRESSED, this::processKeyEvents);
     }
 
-    public void setSelectionModel(SelectionModel selectionModel) {
+    public void setSelectionModel(SelectionModel<Fighter> selectionModel) {
         this.selectionModel = selectionModel;
     }
 
-    public SelectionModel getSelectionModel() {
-        return selectionModel;
+    public SelectionModel<Fighter> getSelectionModel() {
+        return this.selectionModel;
     }
 
     public Button getAttack() {
@@ -737,7 +744,7 @@ public class ActionsController implements ChangeListener {
         return unarmed;
     }
 
-    public ComboBox getMod() {
+    public ComboBox<String> getMod() {
         return mod;
     }
 
