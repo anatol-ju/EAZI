@@ -7,17 +7,17 @@
 
 <AnchorPane fx:id="MainView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" minWidth="800.0" prefHeight="750.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mvc.Controller">
    <children>
-      <BorderPane prefHeight="750.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane minHeight="600.0" minWidth="800.0" prefHeight="750.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
-            <GridPane BorderPane.alignment="CENTER">
+            <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="568.0" minWidth="800.0" prefHeight="718.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="240.0" percentWidth="30.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="240.0" percentWidth="30.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="400.0" percentWidth="50.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="350.0" minWidth="200.0" prefWidth="270.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="350.0" minWidth="200.0" prefWidth="270.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="400.0" prefWidth="460.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints minHeight="400.0" percentHeight="66.7" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="168.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="400.0" prefHeight="460.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="250.0" minHeight="200.0" prefHeight="250.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <BorderPane GridPane.rowSpan="2">

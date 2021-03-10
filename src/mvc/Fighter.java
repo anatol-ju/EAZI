@@ -15,6 +15,7 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
     private int modOrientate;
     private int modLoadBow;
     private int modDrawWeapon;
+    private int maxIni;     // for compatibility checks
     private boolean isSelected;
     private final Color color = Color.LIMEGREEN; // default color
 
@@ -34,6 +35,7 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
         modOrientate = 0;
         modLoadBow = 0;
         modDrawWeapon = 0;
+        maxIni = Integer.parseInt(Serializer.readConfigFile().getProperty("actionCircleFieldCount"));
         isSelected = false;
     }
 
@@ -52,6 +54,7 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
         this.modOrientate = fighter.getModOrientate();
         this.modLoadBow = fighter.getModLoadBow();
         this.modDrawWeapon = fighter.getModDrawWeapon();
+        this.maxIni = fighter.getMaxIni();
         this.previousIni = fighter.getPreviousIni();
         this.isSelected = fighter.isSelected();
     }
@@ -132,6 +135,14 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
         this.previousIni = previousIni;
     }
 
+    public int getMaxIni() {
+        return maxIni;
+    }
+
+    public void setMaxIni(int maxIni) {
+        this.maxIni = maxIni;
+    }
+
     /**
      * Setzt die Attribute des Parameters und kopiert die Werte.
      * @param fighter Objekt dessen Werte übernommen werden sollen.
@@ -144,6 +155,7 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
         this.modOrientate = fighter.getModOrientate();
         this.modLoadBow = fighter.getModLoadBow();
         this.modDrawWeapon = fighter.getModDrawWeapon();
+        this.maxIni = fighter.getMaxIni();
     }
 
     @Override

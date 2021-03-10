@@ -3,6 +3,3 @@ TODO Action-Buttons abhängig von Auswahl anzeigen/auslenden
 TODO Zauber tokens
 TODO adjust FighterCellFactory size
 TODO scale factors for views
-TODO saves with different actioncircle sizes
-TODO FightersList color
-TODO FightersList button text scale

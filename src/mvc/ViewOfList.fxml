@@ -7,24 +7,24 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TitledPane fx:id="titledPane" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="568.0" minWidth="200.0" prefHeight="718.0" prefWidth="273.0" text="Teilnehmer" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mvc.ListController">
+<TitledPane fx:id="titledPane" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="568.0" minWidth="270.0" prefHeight="568.0" prefWidth="270.0" text="Teilnehmer" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mvc.ListController">
    <content>
       <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
          <children>
             <ListView fx:id="listView" VBox.vgrow="ALWAYS" />
-            <GridPane alignment="CENTER" hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="5.0" VBox.vgrow="SOMETIMES">
+            <GridPane fx:id="listButtonsPane" alignment="CENTER" hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" vgap="5.0" VBox.vgrow="SOMETIMES">
               <columnConstraints>
                 <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" percentWidth="25.0" />
                   <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" percentWidth="40.0" />
                 <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" percentWidth="35.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="buttonNew" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#makeNewFighter" text="Neu" textAlignment="CENTER" />
-                  <Button fx:id="buttonEdit" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editFighter" text="Bearbeiten" textAlignment="CENTER" GridPane.columnIndex="1" />
-                  <Button fx:id="buttonRemove" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#removeFighter" text="Löschen" textAlignment="CENTER" GridPane.columnIndex="2" />
+                  <Button fx:id="buttonNew" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#makeNewFighter" prefHeight="30.0" text="Neu" textAlignment="CENTER" />
+                  <Button fx:id="buttonEdit" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editFighter" prefHeight="30.0" text="Bearbeiten" textAlignment="CENTER" GridPane.columnIndex="1" />
+                  <Button fx:id="buttonRemove" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#removeFighter" prefHeight="30.0" text="Löschen" textAlignment="CENTER" GridPane.columnIndex="2" />
                </children>
                <opaqueInsets>
                   <Insets />

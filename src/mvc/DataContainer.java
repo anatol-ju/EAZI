@@ -3,12 +3,14 @@ package mvc;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class DataContainer implements Serializable {
 
     // input data
     private List<List<Fighter>> list;
     private int fieldIndex;
+    private int maxIni;
 
     /**
      * Der Kontainer enthält die Daten, die für das Speichern und Laden
@@ -20,9 +22,10 @@ public class DataContainer implements Serializable {
     public DataContainer() {
     }
 
-    public DataContainer(List<List<Fighter>> list, int fieldIndex) {
+    public DataContainer(List<List<Fighter>> list, int fieldIndex, int maxIni) {
         this.list = list;
-        this. fieldIndex = fieldIndex;
+        this.fieldIndex = fieldIndex;
+        this.maxIni = maxIni;
     }
 
     public List<List<Fighter>> getFighterList() {
@@ -39,5 +42,13 @@ public class DataContainer implements Serializable {
 
     public void setFieldIndex(int fieldIndex) {
         this.fieldIndex = fieldIndex;
+    }
+
+    public int getMaxIni() {
+        return maxIni;
+    }
+
+    public void setMaxIni(int maxIni) {
+        this.maxIni = maxIni;
     }
 }

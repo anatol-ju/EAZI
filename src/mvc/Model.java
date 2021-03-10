@@ -39,7 +39,7 @@ public class Model {
             List<Fighter> baseList = makeSerializable(fightersList.get(index));
             saveList.add(index, baseList);
         }
-        DataContainer dataContainer = new DataContainer(saveList, fightersList.getSubListIndex());
+        DataContainer dataContainer = new DataContainer(saveList, fightersList.getSubListIndex(), fightersList.getMaxIni());
         Serializer serializer = new Serializer();
         serializer.saveData(dataContainer);
     }
@@ -54,6 +54,7 @@ public class Model {
             fightersList.set(index, baseList);
         }
         fightersList.setSubListIndex(dataContainer.getFieldIndex());
+        fightersList.setMaxIni(dataContainer.getMaxIni());
         //controller.updateModel(fightersList);
     }
 

@@ -336,6 +336,14 @@ public class FightersList
         this.subListIndex = subListIndex;
     }
 
+    public int getMaxIni() {
+        return this.maxIni;
+    }
+
+    public void setMaxIni(int maxIni) {
+        this.maxIni = maxIni;
+    }
+
     /**
      * Erstellt eine Kopie der Liste.
      * Dabei werden alle Elemente in der Reihenfolge kopiert, also neue Objekte

@@ -106,8 +106,10 @@ public class SettingsDialog extends Dialog<Boolean> {
 
         autoSaveButton.setSelected(Boolean.parseBoolean(settings.getProperty("autoSaveButton")));
         autoSaveIntervalField.setText(settings.getProperty("autoSaveInterval"));
+        autosaveToggleButtonAction();
 
         hideLogButton.setSelected(Boolean.parseBoolean(settings.getProperty("hideLogButton")));
+        hideLogToggleButtonAction();
 
         colorPickerFighter.setValue(Serializer.string2color(settings.getProperty("colorFighter")));
         colorPickerAlly.setValue(Serializer.string2color(settings.getProperty("colorAlly")));
@@ -117,6 +119,7 @@ public class SettingsDialog extends Dialog<Boolean> {
         durationComplexActionField.setText(settings.getProperty("simpleActionsSurcharge"));
         durationSimpleReactionField.setText(settings.getProperty("simpleReactions"));
         durationComplexReactionField.setText(settings.getProperty("simpleReactionsSurcharge"));
+        durationFreeActionField.setText(settings.getProperty("freeActions"));
     }
 
     /**
@@ -141,6 +144,7 @@ public class SettingsDialog extends Dialog<Boolean> {
         durationComplexActionField.setText("3");
         durationSimpleReactionField.setText("0");
         durationComplexReactionField.setText("3");
+        durationFreeActionField.setText("0");
     }
 
     /**
@@ -156,88 +160,78 @@ public class SettingsDialog extends Dialog<Boolean> {
                 return false;
             }
         }
-        Properties prop = new Properties();
-        try {
-            prop.load(new FileInputStream("settings.settings.properties"));
-            prop.setProperty("autoSaveInterval", autoSaveIntervalField.getText());
-            prop.setProperty("autoSaveButton", String.valueOf(autoSaveButton.isSelected()));
-            prop.setProperty("hideLogButton", String.valueOf(hideLogButton.isSelected()));
-            prop.setProperty("colorFighter", Serializer.color2string(colorPickerFighter.getValue()));
-            prop.setProperty("colorAlly", Serializer.color2string(colorPickerAlly.getValue()));
-            prop.setProperty("colorEnemy", Serializer.color2string(colorPickerEnemy.getValue()));
-            prop.setProperty("actionCircleFieldCount", String.valueOf(actionCircleFieldCount.getValue()));
-            prop.setProperty("simpleActions", durationSimpleActionField.getText());
-            prop.setProperty("simpleActionsSurcharge", durationComplexActionField.getText());
-            prop.setProperty("simpleReactions", durationSimpleReactionField.getText());
-            prop.setProperty("simpleReactionsSurcharge", durationComplexReactionField.getText());
-            prop.setProperty("freeActions", durationFreeActionField.getText());
-            prop.store(new FileOutputStream("settings.settings.properties"), "updated");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
+
+        Properties prop = Serializer.readConfigFile();
+        prop.setProperty("autoSaveInterval", autoSaveIntervalField.getText());
+        prop.setProperty("autoSaveButton", String.valueOf(autoSaveButton.isSelected()));
+        prop.setProperty("hideLogButton", String.valueOf(hideLogButton.isSelected()));
+        prop.setProperty("colorFighter", Serializer.color2string(colorPickerFighter.getValue()));
+        prop.setProperty("colorAlly", Serializer.color2string(colorPickerAlly.getValue()));
+        prop.setProperty("colorEnemy", Serializer.color2string(colorPickerEnemy.getValue()));
+        prop.setProperty("actionCircleFieldCount", String.valueOf(actionCircleFieldCount.getValue()));
+        prop.setProperty("simpleActions", durationSimpleActionField.getText());
+        prop.setProperty("simpleActionsSurcharge", durationComplexActionField.getText());
+        prop.setProperty("simpleReactions", durationSimpleReactionField.getText());
+        prop.setProperty("simpleReactionsSurcharge", durationComplexReactionField.getText());
+        prop.setProperty("freeActions", durationFreeActionField.getText());
+
+        ConfirmDialog cfd = new ConfirmDialog(locale.getString("changeSettingsMessage"));
+        Optional<Boolean> booleanOptional = cfd.showAndWait();
+        if (booleanOptional.isPresent() && booleanOptional.get()) {
+            Serializer.writeConfigFile(prop, null);
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
      * Checks the textfield for consistency.
      * If anything is wrong, the field is highlighted and a popup is shown.
-     * @param observable A TextField object to be validated.
+     * @param tf A TextField object to be validated.
      */
-    private void validateTextField(Observable observable) {
-        TextField obs;
-        Tooltip tooltip = new Tooltip();
+    private void validateTextField(TextField tf) {
 
-        try {
-            obs = (TextField) observable;
-        } catch (ClassCastException e) {
-            e.printStackTrace();
+        tf.setStyle(null);
+
+        int value = 0;
+        String strValue = tf.getText();
+
+        if (strValue.matches("^[0-9]+$")) {
+            value = Integer.parseInt(strValue);
+        } else {
+            tf.setStyle("-fx-text-box-border: red;");
+            validatedFields.put(tf.getId(), false);
             return;
         }
 
-        int value = 0;
-        try {
-            value = Integer.parseInt(obs.getText());
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            tooltip.setText(locale.getString("numberFormatExceptionMessage"));
-            obs.setTooltip(tooltip);
-            tooltip.show(this.getOwner());
-            validatedFields.put(obs.getId(), false);
-        }
-
-        String defaultStyle = obs.getStyle();
-        if(value < 1 || value > actionCircleFieldCount.getValue()) {
-            // change border color
-            obs.setStyle("-fx-text-box-border: red;");
-            // show tooltip with info
-            tooltip.setText(locale.getString("textFieldValidationMessage"));
-            tooltip.show(this.getOwner());
-            validatedFields.put(obs.getId(), false);
+        if (value < 0 | value > actionCircleFieldCount.getValue()) {
+            tf.setStyle("-fx-text-box-border: red;");
+            validatedFields.put(tf.getId(), false);
         } else {
-            // revert style
-            obs.setStyle(defaultStyle);
-            obs.setTooltip(null);
-            validatedFields.put(obs.getId(), true);
+            tf.setStyle(null);
+            validatedFields.put(tf.getId(), true);
         }
     }
 
     @FXML
     private void initialize() {
 
-        savePath.setText(System.getProperty("user.home") + settings.getProperty("savePath"));
+        savePath.setText(settings.getProperty("savePath"));
 
         actionCircleFieldCount.getItems().addAll(12,16,20,24);
+        Tooltip tp = new Tooltip(locale.getString("actionFieldArcsTooltip"));
+        tp.setWrapText(true);
+        actionCircleFieldCount.setTooltip(tp);
 
         // use defined functions to init
         resetForm();
 
-        durationSimpleActionField.focusedProperty().addListener(this::validateTextField);
-        durationComplexActionField.focusedProperty().addListener(this::validateTextField);
-        durationSimpleReactionField.focusedProperty().addListener(this::validateTextField);
-        durationComplexReactionField.focusedProperty().addListener(this::validateTextField);
-        durationFreeActionField.focusedProperty().addListener(this::validateTextField);
+        durationSimpleActionField.focusedProperty().addListener(observable -> validateTextField(durationSimpleActionField));
+        durationComplexActionField.focusedProperty().addListener(observable -> validateTextField(durationComplexActionField));
+        durationSimpleReactionField.focusedProperty().addListener(observable -> validateTextField(durationSimpleReactionField));
+        durationComplexReactionField.focusedProperty().addListener(observable -> validateTextField(durationComplexReactionField));
+        durationFreeActionField.focusedProperty().addListener(observable -> validateTextField(durationFreeActionField));
     }
 
     @FXML

@@ -1,6 +1,8 @@
 package mvc;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -13,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -35,6 +38,8 @@ public class ListController implements ChangeListener {
 
     @FXML
     private TitledPane titledPane;
+    @FXML
+    private GridPane listButtonsPane;
     @FXML
     private ListView<Fighter> listView;
     @FXML
@@ -70,10 +75,10 @@ public class ListController implements ChangeListener {
         // adjust the font size according to panel size
         titledPane.heightProperty().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
-                buttonNew.setFont(Font.font(newValue.doubleValue() / 48));
-                buttonEdit.setFont(Font.font(newValue.doubleValue() / 48));
-                buttonRemove.setFont(Font.font(newValue.doubleValue() / 48));
-                ((TextArea)listView.getPlaceholder()).setFont(Font.font(newValue.doubleValue() / 48));
+                buttonNew.setFont(Font.font(newValue.doubleValue() / 50));
+                buttonEdit.setFont(Font.font(newValue.doubleValue() / 50));
+                buttonRemove.setFont(Font.font(newValue.doubleValue() / 50));
+                ((TextArea)listView.getPlaceholder()).setFont(Font.font(newValue.doubleValue() / 50));
             });
         });
     }
@@ -142,7 +147,7 @@ public class ListController implements ChangeListener {
                 }
                 fightersList.updateSubLists(returned.get());
                 controller.getMenuController().action();
-                controller.getLogController().action(returned.get(), "bearbeitet");
+                controller.getLogController().action(returned.get(), "edited");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -200,7 +205,7 @@ public class ListController implements ChangeListener {
         this.model = model;
     }
 
-    public SelectionModel getSelectionModel() {
+    public SelectionModel<Fighter> getSelectionModel() {
         return selectionModel;
     }
 

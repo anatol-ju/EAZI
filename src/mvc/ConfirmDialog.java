@@ -14,7 +14,7 @@ public class ConfirmDialog extends Dialog<Boolean> {
     public ConfirmDialog(String confirmMessage) {
 
         super();
-        ResourceBundle rb = ResourceBundle.getBundle("OtherDialog", Locale.getDefault());
+        ResourceBundle rb = ResourceBundle.getBundle("locales.OtherDialog", Locale.getDefault());
         this.setTitle(rb.getString("confirmTitle"));
         this.getDialogPane().getButtonTypes().add(ButtonType.OK);
         this.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
@@ -33,8 +33,5 @@ public class ConfirmDialog extends Dialog<Boolean> {
                 return false;
             }
         });
-
-        this.showAndWait();
-
     }
 }

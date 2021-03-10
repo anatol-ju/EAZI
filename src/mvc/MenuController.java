@@ -11,6 +11,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.WritableImage;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
@@ -137,6 +138,7 @@ public class MenuController implements ListChangeListener {
 
         data.setFighterList(list);
         data.setFieldIndex(fl.getSubListIndex());
+        data.setMaxIni(fl.getMaxIni());
 
         File file = null;
         FileChooser fc = new FileChooser();
@@ -329,6 +331,8 @@ public class MenuController implements ListChangeListener {
 
     public void showSettingsDialogAction() {
         SettingsDialog sd = new SettingsDialog();
+        sd.initOwner(menuBar.getScene().getWindow());
+        sd.initModality(Modality.WINDOW_MODAL);
         Optional<Boolean> booleanOptional = sd.showAndWait();
     }
 

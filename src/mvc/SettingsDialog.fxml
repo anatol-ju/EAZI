@@ -140,14 +140,14 @@
                         </VBox>
                      </center>
                      <bottom>
-                        <VBox alignment="CENTER" prefHeight="50.0" BorderPane.alignment="CENTER">
+                        <VBox alignment="CENTER" BorderPane.alignment="CENTER">
                            <children>
                               <Separator prefWidth="200.0">
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                                  </VBox.margin>
                               </Separator>
-                              <Label fx:id="textFieldInfoLabel" prefHeight="30.0" text="%textFieldInfoLabel">
+                              <Label fx:id="textFieldInfoLabel" text="%textFieldInfoLabel" wrapText="true">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
