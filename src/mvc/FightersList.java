@@ -32,7 +32,7 @@ public class FightersList
 
         super();
 
-        this.settings = Serializer.readConfigFile();
+        this.settings = Configuration.get();
         this.maxIni = Integer.parseInt(settings.getProperty("actionCircleFieldCount"));
         this.subListIndex = maxIni - 1;
 
@@ -50,7 +50,7 @@ public class FightersList
 
         super();
 
-        this.settings = Serializer.readConfigFile();
+        this.settings = Configuration.get();
         this.maxIni = size;
         this.subListIndex = maxIni - 1;
 
@@ -74,7 +74,7 @@ public class FightersList
             return;
         }
 
-        this.settings = Serializer.readConfigFile();
+        this.settings = Configuration.get();
         this.maxIni = Integer.parseInt(settings.getProperty("actionCircleFieldCount"));
         this.subListIndex = fightersList.getSubListIndex();
 

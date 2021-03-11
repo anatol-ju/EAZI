@@ -291,7 +291,7 @@ public class MenuController implements ListChangeListener {
                 "file from your computer?");
         Optional<Boolean> b = cd.showAndWait();
         if (b.isPresent() && b.get()) {
-            File file = ConfigContainer.getSettingsFilePath().toFile();
+            File file = Configuration.getSettingsFilePath().toFile();
             file.deleteOnExit();
             file = file.getParentFile();
             if (file.isDirectory()) {

@@ -197,9 +197,9 @@ public class Serializer {
      * @param comment Include a comment, use empty string if not required.
      */
     public static void editConfig(String key, String value, String comment) {
-        Properties prp = readConfigFile();
+        Configuration prp= Configuration.get();
         prp.setProperty(key, value);
-        writeConfigFile(prp, comment);
+        Configuration.save(comment);
     }
 
 }

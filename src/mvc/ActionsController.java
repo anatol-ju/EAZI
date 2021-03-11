@@ -97,7 +97,7 @@ public class ActionsController implements ChangeListener {
     private void initialize() {
 
         // set config file and frequently used data
-        config = Serializer.readConfigFile();
+        config = Configuration.get();
         loadDurationValues();
 
         // define locales

@@ -48,7 +48,7 @@ public class Controller implements ListChangeListener {
             model = new Model(this);
 
             // load once and pass to sub-controllers
-            settings = Serializer.readConfigFile();
+            settings = Configuration.get();
 
             fightersList = model.getFightersList();
 

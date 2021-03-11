@@ -35,7 +35,7 @@ public class Fighter extends SimpleObjectProperty<Fighter> implements Serializab
         modOrientate = 0;
         modLoadBow = 0;
         modDrawWeapon = 0;
-        maxIni = Integer.parseInt(Serializer.readConfigFile().getProperty("actionCircleFieldCount"));
+        maxIni = Integer.parseInt(Configuration.get().getProperty("actionCircleFieldCount"));
         isSelected = false;
     }
 

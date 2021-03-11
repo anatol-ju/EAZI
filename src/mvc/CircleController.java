@@ -85,7 +85,7 @@ public class CircleController implements ChangeListener, ListChangeListener {
         coordinateMap = new HashMap<>();
 
         // use properties
-        settings = Serializer.readConfigFile();
+        settings = Configuration.get();
         fields = Integer.parseInt(settings.getProperty("actionCircleFieldCount"));
         arcAngle = 360.0/fields;
         tokenLimit = calcTokenLimit();

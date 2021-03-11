@@ -1,5 +1,6 @@
 package mvc;
 
+import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -53,7 +54,7 @@ public class SettingsDialog extends Dialog<Boolean> {
 
     private final HashMap<String, Boolean> validatedFields = new HashMap<>();
 
-    private final Properties settings = Serializer.readConfigFile();
+    private final Configuration settings = Configuration.get();
     private final ResourceBundle locale = ResourceBundle.getBundle("locales.SettingsDialog", Locale.getDefault());
 
     public SettingsDialog() {
@@ -161,7 +162,7 @@ public class SettingsDialog extends Dialog<Boolean> {
             }
         }
 
-        Properties prop = Serializer.readConfigFile();
+        Configuration prop = Configuration.get();
         prop.setProperty("autoSaveInterval", autoSaveIntervalField.getText());
         prop.setProperty("autoSaveButton", String.valueOf(autoSaveButton.isSelected()));
         prop.setProperty("hideLogButton", String.valueOf(hideLogButton.isSelected()));
@@ -178,11 +179,30 @@ public class SettingsDialog extends Dialog<Boolean> {
         ConfirmDialog cfd = new ConfirmDialog(locale.getString("changeSettingsMessage"));
         Optional<Boolean> booleanOptional = cfd.showAndWait();
         if (booleanOptional.isPresent() && booleanOptional.get()) {
-            Serializer.writeConfigFile(prop, null);
+            Configuration.save(null);
+
+            ConfirmDialog cd = new ConfirmDialog(locale.getString("resetConfirmationMessage"));
+            Optional<Boolean> confirm = cd.showAndWait();
+            if (confirm.isPresent() && confirm.get()) {
+                resetWindow();
+            }
+
             return true;
         }
 
         return false;
+    }
+
+    public void resetWindow() {
+        ((Stage)this.getOwner().getScene().getWindow()).close();
+        Platform.runLater(() ->
+        {
+            try {
+                new Main().start(new Stage());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
