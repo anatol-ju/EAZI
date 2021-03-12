@@ -71,16 +71,6 @@ public class ListController implements ChangeListener {
         buttonNew.setText(rb.getString("buttonNew"));
         buttonEdit.setText(rb.getString("buttonEdit"));
         buttonRemove.setText(rb.getString("buttonRemove"));
-
-        // adjust the font size according to panel size
-        titledPane.heightProperty().addListener((observable, oldValue, newValue) -> {
-            Platform.runLater(() -> {
-                buttonNew.setFont(Font.font(newValue.doubleValue() / 50));
-                buttonEdit.setFont(Font.font(newValue.doubleValue() / 50));
-                buttonRemove.setFont(Font.font(newValue.doubleValue() / 50));
-                ((TextArea)listView.getPlaceholder()).setFont(Font.font(newValue.doubleValue() / 50));
-            });
-        });
     }
 
     @Override

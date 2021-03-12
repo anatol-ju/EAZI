@@ -127,16 +127,6 @@ public class ActionsController implements ChangeListener {
         ObservableList<String> modList = FXCollections.observableList(Arrays.asList(makeComboBoxList()));
         mod.setItems(modList);
         mod.getSelectionModel().select(3);
-
-        // allow scaling of text
-        actionGridPane.heightProperty().addListener((observable, oldValue, newValue) -> {
-            Platform.runLater(() -> {
-                fontSize = newValue.doubleValue() / 50;
-                resizeControlsText();
-            });
-        });
-
-        //selectedIndex.addListener(this);
     }
 
     @Override
@@ -175,17 +165,6 @@ public class ActionsController implements ChangeListener {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Ermöglicht Kommunikation zwischen diesem Controller und anderen
-     * Komponenten, die nicht in <code>initialize()</code> verfügbar sind.
-     */
-    public void setRelations() {
-        selectedIndex = this.controller.getListController().getSelectionModel().selectedIndexProperty();
-        //this.selectionModel.selectedIndexProperty();
-        selectedIndex.addListener(this);
-        fightersList = controller.fightersListProperty();
     }
 
     /**
@@ -305,33 +284,6 @@ public class ActionsController implements ChangeListener {
             new InfoDialog(rbd.getString("infoValuesGreaterZero")).showAndWait();
         }
     }
-
-    /*
-    private int actionMod(int modMore, int modLess) {
-        int range = 0;
-        if(more.isSelected()) {
-            range = range + modMore;
-            more.setSelected(false);
-        } else if(less.isSelected()) {
-            range = range - modLess;
-            less.setSelected(false);
-        }
-        return range;
-    }
-     **/
-
-    /*
-    private int reactionMod() {
-        if(more.isSelected()) {
-            more.setSelected(false);
-            return 3;
-        } else if(less.isSelected()) {
-            less.setSelected(false);
-            return -3;
-        }
-        return 0;
-    }
-     **/
 
     /**
      * Create entries for the ComboBox control based on the number of fields
@@ -524,28 +476,6 @@ public class ActionsController implements ChangeListener {
         }
     }
 
-    /*
-    public void moreAction() {
-        if (more.isSelected()) {
-            less.setSelected(false);
-            actionMod = Integer.parseInt(controller.getSettings().getProperty("actionCircleFieldCount")) / 4;
-        } else {
-            actionMod = 0;
-        }
-    }
-     **/
-
-    /*
-    public void lessAction() {
-        if (less.isSelected()) {
-            more.setSelected(false);
-            actionMod = - Integer.parseInt(controller.getSettings().getProperty("actionCircleFieldCount")) / 4;
-        } else {
-            actionMod = 0;
-        }
-    }
-     **/
-
     /**
      * Defines the actions performed when using key combinations.
      * @param event the <c>KeyEvent</c> to be processed.
@@ -668,10 +598,6 @@ public class ActionsController implements ChangeListener {
         this.selectionModel = selectionModel;
     }
 
-    public SelectionModel<Fighter> getSelectionModel() {
-        return this.selectionModel;
-    }
-
     public Button getAttack() {
         return attack;
     }
@@ -734,22 +660,6 @@ public class ActionsController implements ChangeListener {
 
     public ToggleButton getOtherAction() {
         return otherAction;
-    }
-
-    public Button getChoice() {
-        return choice;
-    }
-
-    public ToggleButton getUnarmed() {
-        return unarmed;
-    }
-
-    public ComboBox<String> getMod() {
-        return mod;
-    }
-
-    public TextField getWert() {
-        return value;
     }
 
     public Button getFreeAction() {
