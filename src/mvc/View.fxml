@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -16,8 +17,7 @@
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="400.0" prefWidth="460.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="400.0" prefHeight="460.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="250.0" minHeight="200.0" prefHeight="250.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="568.0" prefHeight="568.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <BorderPane GridPane.rowSpan="2">
@@ -34,11 +34,9 @@
                      <center>
                         <fx:include fx:id="circle" source="ViewOfCircle.fxml" />
                      </center>
-                  </BorderPane>
-                  <BorderPane GridPane.columnIndex="2" GridPane.rowIndex="1">
-                     <center>
+                     <bottom>
                         <fx:include fx:id="log" source="ViewOfLog.fxml" />
-                     </center>
+                     </bottom>
                   </BorderPane>
                </children>
             </GridPane>

@@ -101,7 +101,7 @@ public class CircleController implements ChangeListener, ListChangeListener {
         arcRadius = Math.min(panel.getHeight(), panel.getWidth()) -
                 2 * Math.min(getBorderOffsets().getWidth(), getBorderOffsets().getHeight());
 
-        numberFontSize = (int) (panel.getHeight() / 20);
+        numberFontSize = (int) (Math.min(panel.getHeight(), panel.getWidth()) / 20);
         numberRadius = arcRadius / 7;                           // ratio based on visuals
 
         tokenSize = Math.toRadians(arcAngle / 14) * arcRadius;  // ratio based on visuals

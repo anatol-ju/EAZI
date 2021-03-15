@@ -25,13 +25,13 @@ public class Main extends Application {
 
         Controller controller = loader.getController();
         controller.setOnKeyPressed(scene);
-        controller.setOwner(primaryStage.getOwner());
+        controller.setOwner(scene.getWindow());
 
         primaryStage.show();
     }
 
     /**
-     * Returns a RecourceBundle containing a Locale to switch between languages.
+     * Returns a ResourceBundle containing a Locale to switch between languages.
      * English is default unless another language is used and provided by properties.
      * @return ResourceBundle
      */

@@ -17,6 +17,9 @@ public class Configuration extends Properties {
     private static final Path SETTINGS_FILE_PATH = Paths.get(
             System.getProperty("user.home"), ".eazi", "userSettings.properties");
 
+    private static final Path FILE_PATH = Paths.get(
+            System.getProperty("user.home"), ".eazi");
+
     // thread safe initialization of object
     private static final class InstanceHolder {
         static final Configuration INSTANCE;
@@ -106,5 +109,9 @@ public class Configuration extends Properties {
 
     public static Path getSettingsFilePath() {
         return SETTINGS_FILE_PATH;
+    }
+
+    public static Path getFilePath() {
+        return FILE_PATH;
     }
 }

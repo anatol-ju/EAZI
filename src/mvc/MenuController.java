@@ -20,6 +20,7 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -108,12 +109,35 @@ public class MenuController implements ListChangeListener {
 
     }
 
+    /**
+     * Reset the whole window by closing and restarting the application.
+     */
     public void resetAction() {
+        // make a temporary save of the current data
+        DataContainer d = new DataContainer(controller.getFightersList());
+
+        Serializer serializer = new Serializer();
+        File file = Configuration.getFilePath().toFile();
+        String fileName;
+        if (file.isDirectory()) {
+            try {
+                fileName = Paths.get(file.getCanonicalPath(), "temp.save").toFile().getCanonicalPath();
+                serializer.saveXML(d, fileName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         ((Stage)this.menuBar.getScene().getWindow()).close();
         Platform.runLater(() ->
         {
             try {
                 new Main().start(new Stage());
+                // try to reload temporary save
+                DataContainer data = (DataContainer)serializer.loadXML(Paths.get(file.getCanonicalPath(), "temp.save").toFile().getCanonicalPath());
+                if (data != null) {
+                    controller.updateModel(data.getData());
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -122,23 +146,7 @@ public class MenuController implements ListChangeListener {
 
     public void saveWindowAction() {
         Serializer serializer = new Serializer();
-        DataContainer data = new DataContainer();
-        FightersList fl = controller.getFightersList();
-
-        // copy the FightersList instance into common List
-        List<List<Fighter>> list = new ArrayList<>(fl.size());
-
-        for (int index = 0; index < fl.size(); index++) {
-            List<Fighter> sublist = new ArrayList<>(fl.get(index).size());
-            list.add(index, sublist);
-            for (int ind = 0; ind < fl.get(index).size(); ind++) {
-                sublist.add(ind, fl.get(index).get(ind));
-            }
-        }
-
-        data.setFighterList(list);
-        data.setFieldIndex(fl.getSubListIndex());
-        data.setMaxIni(fl.getMaxIni());
+        DataContainer data = new DataContainer(controller.getFightersList());
 
         File file = null;
         FileChooser fc = new FileChooser();
@@ -175,18 +183,7 @@ public class MenuController implements ListChangeListener {
 
         // copy data into new FightersList
         if (data != null) {
-            List<List<Fighter>> list = data.getFighterList();
-            FightersList fl = new FightersList(list.size());
-
-            for (int index = 0; index < list.size(); index++) {
-                for (int ind = 0; ind < list.get(index).size(); ind++) {
-                    fl.get(index).add(ind, list.get(index).get(ind));
-                }
-            }
-
-            // update the model
-            fl.setSubListIndex(data.getFieldIndex());
-            controller.updateModel(fl);
+            controller.updateModel(data.getData());
         }
     }
 

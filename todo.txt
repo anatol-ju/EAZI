@@ -1,5 +1,4 @@
 TODO model, view, controller sortieren in mvc.model etc.
 TODO Action-Buttons abhängig von Auswahl anzeigen/auslenden
 TODO Zauber tokens
-TODO adjust FighterCellFactory size
-TODO scale factors for views
+TODO temporary save for restarting GUI

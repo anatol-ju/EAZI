@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.SelectionModel;
+import javafx.scene.control.SplitPane;
 import javafx.stage.Window;
 
 import java.io.FileNotFoundException;
@@ -176,7 +177,7 @@ public class Controller implements ListChangeListener {
         return fightersList;
     }
 
-    public ObservableList getObservableList() {
+    public ObservableList<Fighter> getObservableList() {
         return this.observableList;
     }
 

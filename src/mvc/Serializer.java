@@ -176,7 +176,7 @@ public class Serializer {
      * values of red, green and blue with values 0-255.
      */
     public static String color2string(Color c) {
-        return (int)c.getRed()*255 + "," + (int)c.getGreen()*255 + "," + (int)c.getBlue()*255;
+        return (int)(c.getRed()*255) + "," + (int)(c.getGreen()*255) + "," + (int)(c.getBlue()*255);
     }
 
     /**

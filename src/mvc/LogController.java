@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TitledPane;
 import javafx.scene.text.Font;
 
 import java.net.URL;
@@ -21,6 +22,8 @@ public class LogController {
     private int undoPointer = -1;
 
     @FXML
+    private TitledPane logTitledPane;
+    @FXML
     private TextArea textPanel;
 
     @FXML
@@ -32,23 +35,19 @@ public class LogController {
 
         textPanel.setText(logMessageFactory.getRandomMessage("init") + "\n");
 
-        // adjust the font size according to panel size
-        textPanel.heightProperty().addListener((observable, oldValue, newValue) -> {
-            Platform.runLater(() -> {
-                textPanel.setFont(Font.font(newValue.doubleValue() / 12));
-            });
-        });
-
+        logTitledPane.managedProperty().bind(logTitledPane.visibleProperty());
+        boolean hidingLog = Boolean.parseBoolean(Configuration.get().getProperty("hideLogButton"));
+        logTitledPane.setVisible(!hidingLog);
     }
 
     public void action(Fighter fighter, String actionPerformed) {
 
         synchronized (this) {
-            // Die Liste auf 10 Einträge begrenzen.
+            // limit to 10 entries
             if (undoList.size() > 10) {
                 undoList.remove(0);
             }
-            // Den Zeiger auf die Liste auf die Länge der Liste beschränken.
+            // make sure pointer is limited too
             if (undoPointer >= 10) {
                 undoPointer = undoList.size() - 1;
             }
