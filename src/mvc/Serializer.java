@@ -24,6 +24,8 @@ public class Serializer {
     private String location = null;
     private static final ResourceBundle rb = ResourceBundle.getBundle("locales.Serializer", Locale.getDefault());
 
+    private static final String TEMP_SAVE_FILE_NAME = "temp.save";
+
     public Serializer() {
         try {
             this.location = getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
@@ -101,7 +103,7 @@ public class Serializer {
      * @param object The serializable object to save.
      * @param file The string representation of the file path, including file name.
      */
-    public synchronized void saveXML(Object object, String file) {
+    public static synchronized void saveXML(Object object, String file) {
         XMLEncoder encoder = null;
         try {
             encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)));
@@ -121,7 +123,7 @@ public class Serializer {
      * @param file The path to the file, including the file name.
      * @return Object containing the data from the XML file. Must be casted to the required object.
      */
-    public synchronized Object loadXML(String file) {
+    public static synchronized Object loadXML(String file) {
         Object loaded = new Object();
         try (XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)))) {
             loaded = decoder.readObject();
@@ -167,6 +169,38 @@ public class Serializer {
             }
         }
         return prp;
+    }
+
+    /**
+     * Uses a temporary file to save the current <c>FightersList</c>.
+     * @param fightersList the current data to save.
+     * @return <c>true</c> if save was successful, <c>false</c> otherwise.
+     * @throws IOException if the path to the file could not be resolved.
+     */
+    public static void quickSave(FightersList fightersList) throws IOException {
+        DataContainer d = new DataContainer(fightersList);
+        File dir = Configuration.getFilePath().toFile();
+        String fileName;
+        if (dir.isDirectory()) {
+            fileName = Paths.get(dir.getCanonicalPath(), TEMP_SAVE_FILE_NAME).toFile().getCanonicalPath();
+            saveXML(d, fileName);
+        }
+    }
+
+    /**
+     * Loads data from the temporary file and deletes the file afterwards.
+     * @return a <c>FightersList</c> with the saved data.
+     * @throws IOException if the path to the file could not be resolved.
+     */
+    public static FightersList quickLoad() throws IOException {
+        File dir = Configuration.getFilePath().toFile();
+        File file = Paths.get(dir.getCanonicalPath(), TEMP_SAVE_FILE_NAME).toFile();
+        DataContainer data = (DataContainer) loadXML(file.getCanonicalPath());
+
+        if (data != null && file.delete()) {
+            return data.getData();
+        }
+        return null;
     }
 
     /**

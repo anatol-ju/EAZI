@@ -114,18 +114,11 @@ public class MenuController implements ListChangeListener {
      */
     public void resetAction() {
         // make a temporary save of the current data
-        DataContainer d = new DataContainer(controller.getFightersList());
-
-        Serializer serializer = new Serializer();
-        File file = Configuration.getFilePath().toFile();
-        String fileName;
-        if (file.isDirectory()) {
-            try {
-                fileName = Paths.get(file.getCanonicalPath(), "temp.save").toFile().getCanonicalPath();
-                serializer.saveXML(d, fileName);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            Serializer.quickSave(controller.getFightersList());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
         }
 
         ((Stage)this.menuBar.getScene().getWindow()).close();
@@ -134,9 +127,9 @@ public class MenuController implements ListChangeListener {
             try {
                 new Main().start(new Stage());
                 // try to reload temporary save
-                DataContainer data = (DataContainer)serializer.loadXML(Paths.get(file.getCanonicalPath(), "temp.save").toFile().getCanonicalPath());
-                if (data != null) {
-                    controller.updateModel(data.getData());
+                FightersList fl = Serializer.quickLoad();
+                if (fl != null) {
+                    controller.updateModel(fl);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -327,7 +320,7 @@ public class MenuController implements ListChangeListener {
     }
 
     public void showSettingsDialogAction() {
-        SettingsDialog sd = new SettingsDialog();
+        SettingsDialog sd = new SettingsDialog(controller);
         sd.initOwner(menuBar.getScene().getWindow());
         sd.initModality(Modality.WINDOW_MODAL);
         Optional<Boolean> booleanOptional = sd.showAndWait();

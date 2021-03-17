@@ -1,5 +1,6 @@
 package mvc;
 
+import com.sun.javafx.css.Style;
 import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
@@ -56,8 +57,14 @@ public class SettingsDialog extends Dialog<Boolean> {
 
     private final Configuration settings = Configuration.get();
     private final ResourceBundle locale = ResourceBundle.getBundle("locales.SettingsDialog", Locale.getDefault());
+    private String defaultStyle;
+    private boolean dialogShowed = false;
 
-    public SettingsDialog() {
+    private Controller controller;
+
+    public SettingsDialog(Controller controller) {
+
+        this.controller = controller;
 
         reset = new ButtonType("Reset");
         buttonOk = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
@@ -176,29 +183,30 @@ public class SettingsDialog extends Dialog<Boolean> {
         prop.setProperty("simpleReactionsSurcharge", durationComplexReactionField.getText());
         prop.setProperty("freeActions", durationFreeActionField.getText());
 
-        ConfirmDialog cfd = new ConfirmDialog(locale.getString("changeSettingsMessage"));
-        Optional<Boolean> booleanOptional = cfd.showAndWait();
-        if (booleanOptional.isPresent() && booleanOptional.get()) {
+        ConfirmDialog cd = new ConfirmDialog(locale.getString("resetConfirmationMessage"));
+        Optional<Boolean> confirm = cd.showAndWait();
+        if (confirm.isPresent() && confirm.get()) {
             Configuration.save(null);
-
-            ConfirmDialog cd = new ConfirmDialog(locale.getString("resetConfirmationMessage"));
-            Optional<Boolean> confirm = cd.showAndWait();
-            if (confirm.isPresent() && confirm.get()) {
-                resetWindow();
-            }
-
-            return true;
+            resetWindow();
         }
 
-        return false;
+        return true;
     }
 
     public void resetWindow() {
+        try {
+            Serializer.quickSave(controller.getFightersList());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
         ((Stage)this.getOwner().getScene().getWindow()).close();
         Platform.runLater(() ->
         {
             try {
                 new Main().start(new Stage());
+                controller.updateModel(Serializer.quickLoad());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -208,11 +216,9 @@ public class SettingsDialog extends Dialog<Boolean> {
     /**
      * Checks the textfield for consistency.
      * If anything is wrong, the field is highlighted and a popup is shown.
-     * @param tf A TextField object to be validated.
+     * @param tf a TextField object to be validated.
      */
     private void validateTextField(TextField tf) {
-
-        tf.setStyle(null);
 
         int value = 0;
         String strValue = tf.getText();
@@ -229,7 +235,7 @@ public class SettingsDialog extends Dialog<Boolean> {
             tf.setStyle("-fx-text-box-border: red;");
             validatedFields.put(tf.getId(), false);
         } else {
-            tf.setStyle(null);
+            tf.setStyle(defaultStyle);
             validatedFields.put(tf.getId(), true);
         }
     }
@@ -239,10 +245,13 @@ public class SettingsDialog extends Dialog<Boolean> {
 
         savePath.setText(settings.getProperty("savePath"));
 
+        defaultStyle = durationSimpleActionField.getStyle();
+
         actionCircleFieldCount.getItems().addAll(12,16,20,24);
         Tooltip tp = new Tooltip(locale.getString("actionFieldArcsTooltip"));
         tp.setWrapText(true);
         actionCircleFieldCount.setTooltip(tp);
+        actionCircleFieldCount.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> selectActionCircleFieldCount(newValue));
 
         // use defined functions to init
         resetForm();
@@ -278,6 +287,16 @@ public class SettingsDialog extends Dialog<Boolean> {
             hideLogButton.setText(locale.getString("toggleOn"));
         } else {
             hideLogButton.setText(locale.getString("toggleOff"));
+        }
+    }
+
+    @FXML
+    private void selectActionCircleFieldCount(int num) {
+        boolean actionCircleFieldCountChanged = Integer.parseInt(settings.getProperty("actionCircleFieldCount")) != num;
+
+        if (actionCircleFieldCountChanged && !dialogShowed) {
+            dialogShowed = true;
+            new InfoDialog(locale.getString("actionCircleFieldCountChangedMessage")).showAndWait();
         }
     }
 }

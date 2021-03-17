@@ -33,6 +33,7 @@ public class ActionsController implements ChangeListener {
     private double fontSize;
     private ResourceBundle rb;
     private Properties config;
+    private String style;
 
     private int freeActionDuration;
     private int simpleAction;
