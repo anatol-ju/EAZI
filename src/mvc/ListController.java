@@ -1,12 +1,10 @@
 package mvc;
 
-import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
+
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,21 +14,17 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
-import java.util.LinkedList;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class ListController implements ChangeListener {
+public class ListController {
 
-    private Model model;
     private Controller controller;
 
-    private ObservableList<Fighter> observableList;
     private SelectionModel<Fighter> selectionModel;
     private ReadOnlyIntegerProperty selectedIndex;
     private Fighter toReturn;
@@ -53,6 +47,7 @@ public class ListController implements ChangeListener {
     private void initialize() {
 
         ResourceBundle rb = ResourceBundle.getBundle("locales.ListController", Locale.getDefault());
+
         buttonNew.setTooltip(new Tooltip(rb.getString("buttonNewTooltip")));
         buttonEdit.setTooltip(new Tooltip(rb.getString("buttonEditTooltip")));
         buttonEdit.setDisable(true);
@@ -61,11 +56,11 @@ public class ListController implements ChangeListener {
 
         listView.setCellFactory(new FighterCellFactory());
         listView.setPlaceholder(makePlaceholder());
-        listView.setItems(FightersList.sortedList);
+        //listView.setItems(sortedList);
 
         selectionModel = listView.getSelectionModel();
         selectedIndex = selectionModel.selectedIndexProperty();
-        selectedIndex.addListener(this);
+        selectedIndex.addListener(this::changed);
 
         titledPane.setText(rb.getString("title"));
         buttonNew.setText(rb.getString("buttonNew"));
@@ -73,10 +68,15 @@ public class ListController implements ChangeListener {
         buttonRemove.setText(rb.getString("buttonRemove"));
     }
 
-    @Override
-    public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+    /**
+     * Used by {@link ChangeListener} to enable/disable controls depending on selection.
+     * @param observable the index of the selected list entry.
+     * @param oldValue old selected index.
+     * @param newValue currently selected index.
+     */
+    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-        int selectedIndex = (int) newValue;
+        int selectedIndex = newValue.intValue();
         if(selectedIndex == -1) {
             buttonEdit.setDisable(true);
             buttonRemove.setDisable(true);
@@ -84,13 +84,12 @@ public class ListController implements ChangeListener {
             buttonEdit.setDisable(false);
             buttonRemove.setDisable(false);
         }
-
     }
 
     /**
      * Defines a placeholder node to be shown on the View when the FightersList
      * is empty. Can be used as a short manual.
-     * @return Node, in this case a <code>TextArea</code>. The text is taken
+     * @return Node, in this case a {@link TextArea}. The text is taken
      * directly from the locales.
      */
     private Node makePlaceholder() {
@@ -102,7 +101,7 @@ public class ListController implements ChangeListener {
     }
 
     /**
-     * Creates a new Fighter object using the <code>SelectionDialog</code> dialog.
+     * Creates a new Fighter object using the {@link SelectionDialog} dialog.
      * @param actionEvent Not used.
      */
     public void makeNewFighter(ActionEvent actionEvent) {
@@ -121,7 +120,7 @@ public class ListController implements ChangeListener {
     }
 
     /**
-     * Edit data from a Fighter object using the given instance.
+     * Edit data from a {@link Fighter} object using the given instance.
      * If the fighters affiliation changes, the returned object is a new instance.
      * @param actionEvent Not used.
      */
@@ -149,7 +148,7 @@ public class ListController implements ChangeListener {
     }
 
     /**
-     * Remove the Fighter object from the list.
+     * Remove the {@link Fighter} object from the list.
      * @param actionEvent Not used.
      */
     public void removeFighter(ActionEvent actionEvent) {
@@ -165,8 +164,8 @@ public class ListController implements ChangeListener {
             e.printStackTrace();
         }
 
-        buttonEdit.setDisable(FightersList.sortedList.isEmpty());
-        buttonRemove.setDisable(FightersList.sortedList.isEmpty());
+        buttonEdit.setDisable(fightersList.getSortedList().isEmpty());
+        buttonRemove.setDisable(fightersList.getSortedList().isEmpty());
 
         listView.refresh();
     }
@@ -191,10 +190,6 @@ public class ListController implements ChangeListener {
         }
     }
 
-    public void setModel(Model model) {
-        this.model = model;
-    }
-
     public SelectionModel<Fighter> getSelectionModel() {
         return selectionModel;
     }
@@ -213,5 +208,6 @@ public class ListController implements ChangeListener {
 
     public void setFightersList(FightersList fightersList) {
         this.fightersList = fightersList;
+        this.listView.setItems(this.fightersList.getSortedList());
     }
 }

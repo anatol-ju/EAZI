@@ -16,8 +16,8 @@ import java.util.ResourceBundle;
 
 /**
  * This class contains methods to serialize objects.
- * It includes support for <code>Fighter</code>, <code>DataContainer</code> and
- * any <code>Object</code>.
+ * It includes support for {@link Fighter}, {@link DataContainer} and
+ * any {@link Object}.
  */
 public class Serializer {
 
@@ -81,7 +81,7 @@ public class Serializer {
 
     /**
      * Loading saved Fighter object using XML files.
-     * @return The Fighter Object contained in the saved file.
+     * @return The {@link Fighter} object contained in the saved file.
      */
     public Fighter loadFighter() {
         Fighter toLoad = null;
@@ -99,27 +99,21 @@ public class Serializer {
     }
 
     /**
-     * Function to save any object into a XML file. FileChooser not included.
+     * Function to save any object into a XML file. {@link FileChooser} not included.
      * @param object The serializable object to save.
      * @param file The string representation of the file path, including file name.
      */
     public static synchronized void saveXML(Object object, String file) {
-        XMLEncoder encoder = null;
-        try {
-            encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)));
+        try (XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
             encoder.writeObject(object);
         } catch(IOException e) {
             new InfoDialog(rb.getString("errorSave")).showAndWait();
-        } finally {
-            if (encoder != null) {
-                encoder.flush();
-                encoder.close();
-            }
-        } // end of try
+        }
+        // end of try
     }
 
     /**
-     * Function to load a XML file data into an object. FileChooser not included.
+     * Function to load a XML file data into an object. {@link FileChooser} not included.
      * @param file The path to the file, including the file name.
      * @return Object containing the data from the XML file. Must be casted to the required object.
      */
@@ -135,7 +129,7 @@ public class Serializer {
 
     /**
      * Write settings properties into a file.
-     * Default directory is defined in <code>ConfigContainer.java</code>.
+     * Default directory is defined in {@link ConfigContainer}.
      * @param properties The Properties object to write.
      * @param comment The comment to write.
      */
@@ -172,9 +166,9 @@ public class Serializer {
     }
 
     /**
-     * Uses a temporary file to save the current <c>FightersList</c>.
+     * Uses a temporary file to save the current {@link FightersList}.
      * @param fightersList the current data to save.
-     * @return <c>true</c> if save was successful, <c>false</c> otherwise.
+     * @return <code>true</code> if save was successful, <code>false</code> otherwise.
      * @throws IOException if the path to the file could not be resolved.
      */
     public static void quickSave(FightersList fightersList) throws IOException {
@@ -189,24 +183,26 @@ public class Serializer {
 
     /**
      * Loads data from the temporary file and deletes the file afterwards.
-     * @return a <c>FightersList</c> with the saved data.
+     * @return a {@link FightersList} with the saved data.
      * @throws IOException if the path to the file could not be resolved.
      */
     public static FightersList quickLoad() throws IOException {
         File dir = Configuration.getFilePath().toFile();
         File file = Paths.get(dir.getCanonicalPath(), TEMP_SAVE_FILE_NAME).toFile();
-        DataContainer data = (DataContainer) loadXML(file.getCanonicalPath());
 
-        if (data != null && file.delete()) {
-            return data.getData();
+        if (file.exists()) {
+            DataContainer data = (DataContainer) loadXML(file.getCanonicalPath());
+            if (data != null && file.delete()) {
+                return data.getData();
+            }
         }
         return null;
     }
 
     /**
-     * Converts a <c>Color</c> object into it's string representation using RGB values.
-     * @param c the <c>Color</c> defined by it's red, green and blue values.
-     * @return a string in the format <c>r,g,b</c> representing the color
+     * Converts a {@link Color} object into it's string representation using RGB values.
+     * @param c The{@link Color} defined by it's red, green and blue values.
+     * @return A string in the format <code>r,g,b</code> representing the color
      * values of red, green and blue with values 0-255.
      */
     public static String color2string(Color c) {
@@ -214,10 +210,10 @@ public class Serializer {
     }
 
     /**
-     * Converts a string into a <c>Color</c> object.
-     * @param s a string in the format <c>r,g,b</c> including red, green and
+     * Converts a string into a {@link Color} object.
+     * @param s a string in the format <code>r,g,b</code> including red, green and
      *          blue values from 0 to 255.
-     * @return the <c>Color</c> object constructed from RGB values.
+     * @return the {@link Color} object constructed from RGB values.
      */
     public static Color string2color(String s) {
         String[] str = s.split(",");

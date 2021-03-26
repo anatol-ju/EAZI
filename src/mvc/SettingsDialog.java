@@ -1,22 +1,15 @@
 package mvc;
 
-import com.sun.javafx.css.Style;
+import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -235,7 +228,7 @@ public class SettingsDialog extends Dialog<Boolean> {
             tf.setStyle("-fx-text-box-border: red;");
             validatedFields.put(tf.getId(), false);
         } else {
-            tf.setStyle(defaultStyle);
+            Application.setUserAgentStylesheet(null);
             validatedFields.put(tf.getId(), true);
         }
     }
@@ -246,6 +239,7 @@ public class SettingsDialog extends Dialog<Boolean> {
         savePath.setText(settings.getProperty("savePath"));
 
         defaultStyle = durationSimpleActionField.getStyle();
+        Application.setUserAgentStylesheet(null);
 
         actionCircleFieldCount.getItems().addAll(12,16,20,24);
         Tooltip tp = new Tooltip(locale.getString("actionFieldArcsTooltip"));

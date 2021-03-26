@@ -2,31 +2,26 @@ package mvc;
 
 import javafx.application.Platform;
 import javafx.beans.binding.DoubleBinding;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.ArcType;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.*;
 
-public class CircleController implements ChangeListener, ListChangeListener {
+public class CircleController implements ListChangeListener<Fighter> {
 
     private Model model;
     private Controller controller;
@@ -35,7 +30,7 @@ public class CircleController implements ChangeListener, ListChangeListener {
     private GraphicsContext gcTokens;
     private GraphicsContext gcForeground;
 
-    private ObservableList<Fighter> observableList;
+    private ObservableList<Fighter> sortedList;
     private HashMap<Fighter, Point2D> coordinateMap;
 
     private double arcRadius = 150;
@@ -73,14 +68,12 @@ public class CircleController implements ChangeListener, ListChangeListener {
     @FXML
     private void initialize() {
 
-        observableList = FightersList.sortedList;
-
         gcBackground = backgroundCanvas.getGraphicsContext2D();
         gcTokens = tokenCanvas.getGraphicsContext2D();
         gcForeground = foregroundCanvas.getGraphicsContext2D();
 
         windowSize = panel.widthProperty().add(panel.heightProperty());
-        windowSize.addListener(this);
+        windowSize.addListener(this::windowSizeListener);
 
         coordinateMap = new HashMap<>();
 
@@ -93,9 +86,7 @@ public class CircleController implements ChangeListener, ListChangeListener {
         updateCanvasSize();
     }
 
-    @Override
-    public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-
+    private void windowSizeListener(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
         updateCanvasSize();
 
         arcRadius = Math.min(panel.getHeight(), panel.getWidth()) -
@@ -109,6 +100,10 @@ public class CircleController implements ChangeListener, ListChangeListener {
         Platform.runLater(this::draw);
     }
 
+    /**
+     * Used by {@link ListChangeListener} implementation.
+     * @param c The change that had been done to the list.
+     */
     @Override
     public void onChanged(Change c) {
         c.next();
@@ -162,6 +157,7 @@ public class CircleController implements ChangeListener, ListChangeListener {
         gcTokens.clearRect(0, 0, panel.getWidth(), panel.getHeight());
         coordinateMap.clear();
 
+        // must re-calculate position every time
         for (int index = 0; index < fields; index++) {
             calcTokenLocations(index);
         }
@@ -175,7 +171,7 @@ public class CircleController implements ChangeListener, ListChangeListener {
             double size = tokenSize;
             double fontSize = tokenSize * 0.8;
 
-            if(!observableList.isEmpty() && entry.getKey().equals(observableList.get(0))) {
+            if(!sortedList.isEmpty() && entry.getKey().equals(sortedList.get(0))) {
                 size = size * 1.4;
                 fontSize = fontSize * 1.4;
             }
@@ -208,7 +204,7 @@ public class CircleController implements ChangeListener, ListChangeListener {
      * Converts polar coordinates into cartesian.
      * @param radius The given radial coordinate.
      * @param angle The given angle coordinate.
-     * @return A Point2D object containing the cartesian coordinates.
+     * @return A {@link Point2D} object containing the cartesian coordinates.
      */
     private Point2D polar2cartesian(double radius, double angle) {
         double radians = Math.toRadians(angle);
@@ -219,7 +215,7 @@ public class CircleController implements ChangeListener, ListChangeListener {
 
     /**
      * Calculates offsets for the circle, so it is not drawn starting from the edge of the canvas.
-     * @return Dimension2D object, where width and height represent the offsets of x and y axes.
+     * @return A {@link Dimension2D} object, where width and height represent the offsets of x and y axes.
      */
     private Dimension2D getBorderOffsets() {
         Dimension2D dimension;
@@ -241,8 +237,8 @@ public class CircleController implements ChangeListener, ListChangeListener {
      */
     public void updateArcs() {
         int fields = Integer.parseInt(settings.getProperty("actionCircleFieldCount"));
-        if (!observableList.isEmpty()) {
-            actionIndex = fields - (observableList.get(0)).getIni();
+        if (!sortedList.isEmpty()) {
+            actionIndex = fields - (sortedList.get(0)).getIni();
             while (actionIndex < 0) {
                 actionIndex = actionIndex + fields;
             }
@@ -339,15 +335,15 @@ public class CircleController implements ChangeListener, ListChangeListener {
 
     /**
      * Calculates the coordinates for the tokens and saves them as a
-     * <code>Point2D</code> object in <code>coordinateMap</code>.
+     * {@link Point2D} object in {@code coordinateMap}.
      * The saved coordinates are translated by their respective sizes.
      * If more tokens need to be drawn than space available, remaining tokens
-     * are placed in a 'bin' using the <code>drawTokenBin()</code> method.
+     * are placed in a 'bin' using the {@code drawTokenBin} method.
      * @param arcIndex The index of the arc.
      */
     private void calcTokenLocations(int arcIndex) {
 
-        List<Fighter> subList = fightersList.subListByIni(arcIndex + 1);
+        List<Fighter> subList = fightersList.get(arcIndex);
 
         int subListSize = subList.size();
 
@@ -398,20 +394,15 @@ public class CircleController implements ChangeListener, ListChangeListener {
         return limit;
     }
 
-    public void setModel(Model model) {
-        this.model = model;
-    }
-
-    public void setController(Controller controller) {
-        this.controller = controller;
-    }
-
     public void setFightersList(FightersList fightersList) {
         this.fightersList = fightersList;
+        this.fightersList.addListChangeListener(this);
+        this.sortedList = this.fightersList.getSortedList(); // TODO sortedlist ist not right after load
+        draw();
     }
 
-    public void setObservableList(ObservableList<Fighter> observableList) {
-        this.observableList = observableList;
+    public void setSortedList(ObservableList<Fighter> sortedList) {
+        this.sortedList = sortedList;
     }
 
     public void setSettings(Properties settings) {
@@ -422,5 +413,21 @@ public class CircleController implements ChangeListener, ListChangeListener {
         WritableImage img = new WritableImage((int)panel.getWidth(), (int)panel.getHeight());
         panel.snapshot(null, img);
         return img;
+    }
+
+    public Model getModel() {
+        return model;
+    }
+
+    public void setModel(Model model) {
+        this.model = model;
+    }
+
+    public Controller getController() {
+        return controller;
+    }
+
+    public void setController(Controller controller) {
+        this.controller = controller;
     }
 }

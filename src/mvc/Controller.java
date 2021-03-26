@@ -1,27 +1,24 @@
 package mvc;
 
-import javafx.application.Platform;
-import javafx.beans.property.SimpleListProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.SelectionModel;
-import javafx.scene.control.SplitPane;
 import javafx.stage.Window;
 
-import java.io.FileNotFoundException;
-import java.net.URL;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.util.*;
 
-public class Controller implements ListChangeListener {
+public class Controller implements PropertyChangeListener {
 
     private Model model;
 
-    private ObservableList<Fighter> observableList;
+    private ObservableList<Fighter> sortedFightersList;
     private FightersList fightersList;
+    private List<FightersList> undoList;
+    private int undoPointer;
 
     private Properties settings;
 
@@ -39,7 +36,7 @@ public class Controller implements ListChangeListener {
     private MenuController menuController;
 
     /**
-     * Initialisiert das Model und andere Attribute.
+     * Initialize the Model and FightersList instance.
      */
     @FXML
     private void initialize() {
@@ -48,101 +45,77 @@ public class Controller implements ListChangeListener {
             // make a new model
             model = new Model(this);
 
-            // load once and pass to sub-controllers
-            settings = Configuration.get();
+            // try to find a temporary save
+            // if not available, use list from model
+            try {
+                fightersList = Serializer.quickLoad();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-            fightersList = model.getFightersList();
+            if (fightersList != null) {
+                model.updateFightersList(fightersList);
+            } else {
+                fightersList = model.getFightersList();
+            }
 
             wire();
         }
     }
 
     /**
-     * Wird von ListChangeListener verwendet.
-     * Debug only.
-     * @param c
-     */
-    @Override
-    public void onChanged(Change c) {
-        c.next();
-        if(c.wasPermutated()) {
-            System.out.println("permutated");
-        } else if(c.wasAdded()) {
-            System.out.println("added");
-        } else if(c.wasRemoved()) {
-            System.out.println("removed");
-        } else if(c.wasUpdated()) {
-            System.out.println("updated");
-        }
-    }
-
-    /**
-     * Wenn Änderungen an der Liste gemacht werden, werden die Änderungen an
-     * die Controller der einzelnen Views weiter gereicht.
-     */
-    private void onChanging() {
-    }
-
-    /**
      * Wires all connections between sub-controllers and registers listeners
      */
     private void wire() {
-
-        observableList = FightersList.sortedList;
-        observableList.addListener(this);
-        observableList.addListener(circleController);
-        observableList.addListener(menuController);
-
         // register model and main controller at all sub-controllers
         // to allow access between all of them
-        listController.setModel(model);
         listController.setController(this);
-        listController.setFightersList(fightersList);
-        listController.getSelectionModel().selectedIndexProperty().addListener(actionsController);
+
+        SelectionModel<Fighter> selectionModel = listController.getSelectionModel();
+        actionsController.bindSelectedIndexProperty(selectionModel.selectedIndexProperty());
 
         actionsController.setModel(model);
         actionsController.setController(this);
-        actionsController.setSelectionModel(listController.getSelectionModel());
-        actionsController.setSelectedIndex(listController.getSelectionModel().selectedIndexProperty());
-        actionsController.setFightersList(fightersList);
 
         circleController.setModel(model);
         circleController.setController(this);
-        circleController.setFightersList(fightersList);
 
         logController.setModel(model);
         logController.setController(this);
 
         menuController.setModel(model);
         menuController.setController(this);
-
-        // Alle Controller im Model anmelden für späteren Zugriff
-        model.setListController(listController);
-        model.setActionsController(actionsController);
-        model.setCircleController(circleController);
-        model.setLogController(logController);
+        menuController.setUndoList(model.getUndoList());
     }
 
     /**
-     * This method is required to implement undo and redo functionality.
-     * It updates the <code>FightersList</code> with another instance
-     * that had been saved previously in an undo-list.
+     * Use this method to update the {@link FightersList} instance.
+     * This pushes the request to the model directly and updates all required
+     * instances and listeners.<br/>
+     * <b>Warning:</b> Do not use {@link #setFightersList(FightersList)}!
      * @param fightersList The instance to be used. Overwrites the current one.
      */
     public void updateModel(FightersList fightersList) {
-        this.fightersList = fightersList;
-
-        this.listController.setFightersList(fightersList);
-        this.actionsController.setFightersList(fightersList);
-        this.circleController.setFightersList(fightersList);
-
-        this.fightersList.updateSortedList();
+        model.updateFightersList(fightersList);
     }
 
     /**
-     * Diese Funktion wird von <code>Main</code> aufgerufen und leitet
-     * die Scene weiter um KeyEvents zu definieren.
-     * @param scene
+     * Reports changes in {@link FightersList} instance to associated observers.
+     * @param evt the event, fired by the observable.
+     */
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        this.fightersList = (FightersList) evt.getNewValue();
+        //this.fightersList.updateSortedList();
+
+        this.listController.setFightersList(this.fightersList);
+        this.actionsController.setFightersList(this.fightersList);
+        this.circleController.setFightersList(this.fightersList);
+    }
+
+    /**
+     * Manage key events.
+     * @param scene The scene that events are to be applied to.
      */
     public void setOnKeyPressed(Scene scene) {
         this.actionsController.setKeyEventHandlers(scene);
@@ -177,23 +150,28 @@ public class Controller implements ListChangeListener {
         return fightersList;
     }
 
-    public ObservableList<Fighter> getObservableList() {
-        return this.observableList;
-    }
-
-    public void setObservableList(ObservableList<Fighter> observableList) {
-        this.observableList = observableList;
-    }
-
-    public Properties getSettings() {
-        return this.settings;
-    }
-
     public void setOwner(Window owner) {
         this.owner = owner;
     }
 
     public Window getOwner() {
         return this.owner;
+    }
+
+    public void setFightersList(FightersList fightersList) {
+        this.fightersList = fightersList;
+        // wiring
+        listController.setFightersList(fightersList);
+        actionsController.setFightersList(fightersList);
+        circleController.setFightersList(fightersList);
+    }
+
+    public List<FightersList> getUndoList() {
+        return undoList;
+    }
+
+    public void setUndoList(List<FightersList> undoList) {
+        this.undoList = undoList;
+
     }
 }

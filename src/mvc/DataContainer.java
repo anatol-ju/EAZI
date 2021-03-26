@@ -3,7 +3,6 @@ package mvc;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 public class DataContainer implements Serializable {
 
@@ -12,7 +11,19 @@ public class DataContainer implements Serializable {
     private int fieldIndex;
     private int maxIni;
 
+    /**
+     * Default constructor.
+     */
     public DataContainer() {
+        int max = Integer.parseInt(Configuration.get().getProperty("actionCircleFieldCount"));
+        List<List<Fighter>> list = new ArrayList<>();
+        for (int index = 0; index < max; index++) {
+            ArrayList<Fighter> baseList = new ArrayList<>();
+            list.add(baseList);
+        }
+        this.list = list;
+        this.fieldIndex = max-1;
+        this.maxIni = max;
     }
 
     /**
@@ -58,6 +69,7 @@ public class DataContainer implements Serializable {
         }
         fl.setMaxIni(maxIni);
         fl.setSubListIndex(fieldIndex);
+        fl.updateSortedFightersList();
         return fl;
     }
 

@@ -1,7 +1,5 @@
 package mvc;
 
-import com.sun.scenario.Settings;
-import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -15,19 +13,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.logging.Logger;
+import java.util.*;
 
-public class MenuController implements ListChangeListener {
+public class MenuController implements PropertyChangeListener, ListChangeListener<Fighter> {
 
     private Model model;
     private Controller controller;
@@ -38,6 +31,8 @@ public class MenuController implements ListChangeListener {
     private boolean blockListChange = false;
 
     private static File lastSave = null;
+
+    private static ResourceBundle locales;
 
     @FXML
     private MenuBar menuBar;
@@ -51,9 +46,9 @@ public class MenuController implements ListChangeListener {
     @FXML
     private void initialize() {
 
-        undoList = new LinkedList<>();
+        locales = ResourceBundle.getBundle("locales.OtherDialog", Locale.getDefault());
+
         undoPointer = -1;
-        System.out.println("init: list " + undoList.size());
 
         undo.setDisable(true);
         redo.setDisable(true);
@@ -68,28 +63,28 @@ public class MenuController implements ListChangeListener {
     }
 
     /**
-     * Diese Funktion muss von einem Controller ausgeführt werden, wenn die
-     * Handlung in der undoList berücksichtigt werden soll.
+     * Always use this method to include undo/redo functionality.
      */
     public void action() {
 
         synchronized (this) {
-            // Die Liste auf 10 Einträge begrenzen.
+
+            // limit to 10 entries
             if (undoList.size() > 10) {
                 undoList.remove(0);
             }
-            // Den Zeiger auf die Liste auf die Länge der Liste beschränken.
+            // limit pointer to list size
             if (undoPointer >= 10) {
                 undoPointer = undoList.size() - 1;
             }
 
-            System.out.println("< action() >");
+            System.out.println("< MenuController:action() >");
             System.out.println("Pointer ist bei " + undoPointer);
             System.out.println("FightersList: \n" + controller.getFightersList());
             undoPointer = undoPointer + 1;
             FightersList copy = new FightersList(controller.fightersListProperty());
 
-            // Wenn weitere Einträge in der Liste sind, werden diese gelöscht.
+            // delete entries that are out of range
             if (undoPointer < undoList.size()) {
                 List<FightersList> subList = undoList.subList(undoPointer, undoList.size());
                 if (!subList.isEmpty()) {
@@ -104,13 +99,14 @@ public class MenuController implements ListChangeListener {
             System.out.println("pointer: " + undoPointer);
             System.out.println("list size: " + undoList.size());
 
-            System.out.println("</ action() >");
+            System.out.println("</ MenuController:action() >");
         }
 
     }
 
     /**
-     * Reset the whole window by closing and restarting the application.
+     * Reset the window by saving the current data to a temporary file using
+     * {@code quickSave()} method from {@code Serializer} class.
      */
     public void resetAction() {
         // make a temporary save of the current data
@@ -121,35 +117,21 @@ public class MenuController implements ListChangeListener {
             return;
         }
 
-        ((Stage)this.menuBar.getScene().getWindow()).close();
-        Platform.runLater(() ->
-        {
-            try {
-                new Main().start(new Stage());
-                // try to reload temporary save
-                FightersList fl = Serializer.quickLoad();
-                if (fl != null) {
-                    controller.updateModel(fl);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        closeAction();
     }
 
     public void saveWindowAction() {
-        Serializer serializer = new Serializer();
         DataContainer data = new DataContainer(controller.getFightersList());
-
-        File file = null;
         FileChooser fc = new FileChooser();
-        file = fc.showSaveDialog(controller.getOwner());
+        fc.setInitialDirectory(new File(Configuration.get().getProperty("usedPath")));
+        File file = fc.showSaveDialog(controller.getOwner());
 
         if (file != null) {
             try {
                 String canonicalPath;
                 canonicalPath = file.getCanonicalPath();
-                serializer.saveXML(data, canonicalPath);
+                Serializer.saveXML(data, canonicalPath);
+                Configuration.saveProperty("usedPath", file.getParent(), null);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -157,18 +139,17 @@ public class MenuController implements ListChangeListener {
     }
 
     public void loadWindowAction() {
-        Serializer serializer = new Serializer();
         DataContainer data = null;
-
-        File file = null;
         FileChooser fc = new FileChooser();
-        file = fc.showOpenDialog(controller.getOwner());
+        fc.setInitialDirectory(new File(Configuration.get().getProperty("usedPath")));
+        File file = fc.showOpenDialog(controller.getOwner());
 
         if (file != null) {
             try {
                 String canonicalPath;
                 canonicalPath = file.getCanonicalPath();
-                data = (DataContainer)serializer.loadXML(canonicalPath);
+                data = (DataContainer)Serializer.loadXML(canonicalPath);
+                Configuration.saveProperty("usedPath", file.getParent(), null);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -177,6 +158,7 @@ public class MenuController implements ListChangeListener {
         // copy data into new FightersList
         if (data != null) {
             controller.updateModel(data.getData());
+            System.out.println("Group loaded successfully!\n" + data.getData());
         }
     }
 
@@ -252,11 +234,13 @@ public class MenuController implements ListChangeListener {
 
         // start FileChooser at last used directory
         if (lastSave != null) {
-            fileChooser.setInitialDirectory(new File(lastSave.getParent()));
+            fileChooser.setInitialDirectory(new File(Configuration.get().getProperty("userPath")));
         }
 
         //Show save file dialog
         lastSave = fileChooser.showSaveDialog(controller.getOwner());
+        // save directory to configuration
+        Configuration.saveProperty("userPath", lastSave.getParent(), null);
 
         if(lastSave != null){
             try {
@@ -277,8 +261,7 @@ public class MenuController implements ListChangeListener {
      * Used to delete the settings file and the folder that contains it.
      */
     public void deleteSettingsFileAction() {
-        ConfirmDialog cd = new ConfirmDialog("Are you sure to delete the configurations\n" +
-                "file from your computer?");
+        ConfirmDialog cd = new ConfirmDialog(locales.getString("confirmDeleteSettings"));
         Optional<Boolean> b = cd.showAndWait();
         if (b.isPresent() && b.get()) {
             File file = Configuration.getSettingsFilePath().toFile();
@@ -287,20 +270,19 @@ public class MenuController implements ListChangeListener {
             if (file.isDirectory()) {
                 file.deleteOnExit();
             }
-            new InfoDialog("The file will be deleted after the application is closed.").showAndWait();
         }
     }
 
     public void saveFighterAction() {
-
+        // TODO
     }
 
     public void loadFighterAction() {
-
+        // TODO
     }
 
     public void aboutAction() {
-
+        // TODO
     }
 
     private void handleMenuItems() {
@@ -334,4 +316,12 @@ public class MenuController implements ListChangeListener {
         this.controller = controller;
     }
 
+    public void setUndoList(List<FightersList> undoList) {
+        this.undoList = undoList;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+
+    }
 }

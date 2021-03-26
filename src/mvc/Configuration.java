@@ -48,6 +48,7 @@ public class Configuration extends Properties {
         }
 
         InstanceHolder.INSTANCE.setProperty("savePath", SETTINGS_FILE_PATH.toString());
+        InstanceHolder.INSTANCE.setProperty("usedPath", FILE_PATH.toString());
         InstanceHolder.INSTANCE.setProperty("actionCircleFieldCount", "12");
         InstanceHolder.INSTANCE.setProperty("autoSaveButton", "true");
         InstanceHolder.INSTANCE.setProperty("intervalBox", "false");
@@ -96,6 +97,23 @@ public class Configuration extends Properties {
         catch (IOException e) {
             new InfoDialog(ResourceBundle.getBundle("locales.Serializer", Locale.getDefault()).getString("errorConfigSave")).showAndWait();
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Saves a single property into the {@code Configuration} file. This is
+     * done by loading the existing file and checking for occurrences first.
+     * A save to the file is only done if either the property name or value
+     * do not exist yet.
+     * @param propertyName A String representation of the property's name.
+     * @param propertyValue A String representation of the property's value.
+     * @param comment Possible comment to include in the file when saving.
+     */
+    public static void saveProperty(String propertyName, String propertyValue, String comment) {
+        load();
+        if (!InstanceHolder.INSTANCE.containsKey(propertyName) || !InstanceHolder.INSTANCE.containsValue(propertyValue)) {
+            InstanceHolder.INSTANCE.setProperty(propertyName, propertyValue);
+            save(comment);
         }
     }
 

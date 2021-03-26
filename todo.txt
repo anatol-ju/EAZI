@@ -1,3 +1,6 @@
 TODO model, view, controller sortieren in mvc.model etc.
 TODO Action-Buttons abhängig von Auswahl anzeigen/auslenden
 TODO Zauber tokens
+TODO adjust INI from loaded files to match current maxINI
+TODO autosave
+TODO enforce reactions if PA>0

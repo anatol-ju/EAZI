@@ -1,8 +1,6 @@
 package mvc;
 
-import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyIntegerProperty;
-import javafx.beans.value.ChangeListener;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,7 +15,7 @@ import javafx.util.converter.NumberStringConverter;
 
 import java.util.*;
 
-public class ActionsController implements ChangeListener {
+public class ActionsController {
 
     private Model model;
     private Controller controller;
@@ -25,9 +23,9 @@ public class ActionsController implements ChangeListener {
     private List<Control> actionControls;
     private List<Control> reactionControls;
 
-    private ReadOnlyIntegerProperty selectedIndex;
-    private SelectionModel<Fighter> selectionModel;
+    private final SimpleIntegerProperty selectedIndexProperty = new SimpleIntegerProperty();
     private FightersList fightersList;
+    private Fighter selectedFighter;
 
     private int unarmedMod;
     private double fontSize;
@@ -127,27 +125,20 @@ public class ActionsController implements ChangeListener {
         // create selections for combo elements
         ObservableList<String> modList = FXCollections.observableList(Arrays.asList(makeComboBoxList()));
         mod.setItems(modList);
-        mod.getSelectionModel().select(3);
+        mod.getSelectionModel().select((int)Math.floor(modList.size()/2.0));
     }
 
-    @Override
-    public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-
-        if(observable.equals(selectedIndex)) {
-            int index = (int) newValue;
-            changedIndex(index);
-        }
-    }
-
-    private void changedIndex(int index) {
-
-        if(index == 0) {
+    private void selectedIndexListener(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+        if(newValue.intValue() == 0) {
+            selectedFighter = fightersList.getSortedList().get(0);
             setDisableGroup(actionControls, false);
             setDisableGroup(reactionControls, false);
-        } else if(index == -1){
+        } else if(newValue.intValue() == -1){
+            selectedFighter = null;
             setDisableGroup(actionControls, true);
             setDisableGroup(reactionControls, true);
         } else {
+            selectedFighter = fightersList.getSortedList().get(newValue.intValue());
             setDisableGroup(actionControls, true);
             setDisableGroup(reactionControls, false);
         }
@@ -247,7 +238,7 @@ public class ActionsController implements ChangeListener {
 
     /**
      * Sets the disabled or enabled state for a group of controls.
-     * @param group A <code>List</code> of controls with the state to be changed.
+     * @param group A {@link List} of controls with the state to be changed.
      * @param isDisabled Set to <code>true</code> if the controls in the
      *                   group needs to be disabled ot <code>false</code> if
      *                   they need to be enabled.
@@ -268,7 +259,7 @@ public class ActionsController implements ChangeListener {
      */
     private void action(int range, String actionPerformed) {
 
-        Fighter fighter = selectionModel.getSelectedItem();
+        Fighter fighter = selectedFighter;
 
         if (fighter != null && range >= 0) {
             if (range < Integer.parseInt(config.getProperty("actionCircleFieldCount"))) {
@@ -288,9 +279,9 @@ public class ActionsController implements ChangeListener {
 
     /**
      * Create entries for the ComboBox control based on the number of fields
-     * in the action circle. The entries are in range of <c>[-MAX/4, MAX/4]</c>
-     * with steps of <c>1</c>.
-     * @return a <code>String[]</code> array containing elements of the <c>ComboBox</c>.
+     * in the action circle. The entries are in range of <code>[-MAX/4, MAX/4]</code>
+     * with steps of <code>1</code>.
+     * @return A {@link String} array containing elements of the {@link ComboBox}.
      */
     private String[] makeComboBoxList() {
         // one quarter of the max INI for +mod and -mod, also count 0
@@ -306,14 +297,14 @@ public class ActionsController implements ChangeListener {
     }
 
     public void attackAction() {
-        int range = simpleAction + (selectionModel.getSelectedItem()).getModAT() +
+        int range = simpleAction + (selectedFighter).getModAT() +
                 mod.getSelectionModel().getSelectedIndex() - 3 +
                 unarmedMod;
         action(range, "attack");
     }
 
     public void attack2Action() {
-        int range = simpleAction + simpleActionSurcharge + (selectionModel.getSelectedItem()).getModAT() +
+        int range = simpleAction + simpleActionSurcharge + (selectedFighter).getModAT() +
                 mod.getSelectionModel().getSelectedIndex() - 3 +
                 unarmedMod;
         action(range, "attack2");
@@ -344,24 +335,24 @@ public class ActionsController implements ChangeListener {
     }
 
     public void positionAction() {
-        int range = simpleAction + (selectionModel.getSelectedItem()).getModPosition() +
+        int range = simpleAction + (selectedFighter).getModPosition() +
                 mod.getSelectionModel().getSelectedIndex() - 3;
         action(range, "position");
     }
 
     public void orientateAction() {
-        int range = simpleAction + simpleActionSurcharge + (selectionModel.getSelectedItem()).getModPosition() +
+        int range = simpleAction + simpleActionSurcharge + (selectedFighter).getModPosition() +
                 mod.getSelectionModel().getSelectedIndex() - 3;
         action(range, "orientate");
     }
 
     public void drawWeaponAction() {
-        int range = simpleAction + (selectionModel.getSelectedItem()).getModDrawWeapon() +
+        int range = simpleAction + (selectedFighter).getModDrawWeapon() +
                 mod.getSelectionModel().getSelectedIndex() - 3;
         action(range, "drawWeapon");
     }
     public void loadBowAction() {
-        int range = simpleAction + (selectionModel.getSelectedItem()).getModLoadBow() +
+        int range = simpleAction + (selectedFighter).getModLoadBow() +
                 mod.getSelectionModel().getSelectedIndex() - 3;
         action(range, "loadBow");
     }
@@ -479,7 +470,7 @@ public class ActionsController implements ChangeListener {
 
     /**
      * Defines the actions performed when using key combinations.
-     * @param event the <c>KeyEvent</c> to be processed.
+     * @param event The {@link KeyEvent} to be processed.
      */
     private void processKeyEvents(KeyEvent event) {
         if (event.isControlDown() && !event.isShiftDown()) {
@@ -586,17 +577,8 @@ public class ActionsController implements ChangeListener {
         this.fightersList = fightersList;
     }
 
-    public void setSelectedIndex(ReadOnlyIntegerProperty selectedIndex) {
-        this.selectedIndex = selectedIndex;
-        selectedIndex.addListener(this);
-    }
-
     public void setKeyEventHandlers(Scene scene) {
         scene.addEventHandler(KeyEvent.KEY_PRESSED, this::processKeyEvents);
-    }
-
-    public void setSelectionModel(SelectionModel<Fighter> selectionModel) {
-        this.selectionModel = selectionModel;
     }
 
     public Button getAttack() {
@@ -665,5 +647,10 @@ public class ActionsController implements ChangeListener {
 
     public Button getFreeAction() {
         return freeAction;
+    }
+
+    public void bindSelectedIndexProperty(ObservableValue<? extends Number> property) {
+        this.selectedIndexProperty.bind(property);
+        this.selectedIndexProperty.addListener(this::selectedIndexListener);
     }
 }

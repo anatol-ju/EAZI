@@ -7,6 +7,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
 import javafx.scene.text.Font;
 
+import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
